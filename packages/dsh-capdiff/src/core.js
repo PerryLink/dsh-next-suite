@@ -13,7 +13,7 @@ import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 
 export const TOOL_NAME = 'dsh-capdiff'
-export const TOOL_VERSION = '0.1.2'
+export const TOOL_VERSION = '0.1.3'
 
 /** Source extensions scanned by {@link collectSourceFiles}. */
 export const SOURCE_EXTENSIONS = Object.freeze(['.js', '.mjs', '.cjs'])

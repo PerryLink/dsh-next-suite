@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-11-14
+
+### Changed
+- First release published by the GitHub Actions `release.yml` workflow with npm provenance.
+- No functional changes; version alignment only.
+
 ## [0.1.2] - 2026-11-14
 
 ### Fixed

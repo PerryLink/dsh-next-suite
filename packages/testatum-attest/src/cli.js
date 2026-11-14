@@ -16,7 +16,7 @@ import {
   verifyCardIntegrity,
 } from './core.js'
 
-const VERSION = '0.1.2'
+const VERSION = '0.1.3'
 
 const USAGE = `testatum-attest ${VERSION} - HMAC-signed trust cards for plugin artifacts
 
