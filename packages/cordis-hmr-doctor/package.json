@@ -1,0 +1,47 @@
+{
+  "name": "cordis-hmr-doctor",
+  "version": "0.1.0",
+  "description": "Explain Cordis HMR logs: parse settled/aborted/skipped lines and suggest likely causes. Unofficial.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "cordis-hmr-doctor": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "cordis",
+    "hmr",
+    "hot-reload",
+    "diagnostics",
+    "logs",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/cordis-hmr-doctor"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/cordis-hmr-doctor#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}

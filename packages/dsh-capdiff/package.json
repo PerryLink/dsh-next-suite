@@ -1,0 +1,47 @@
+{
+  "name": "dsh-capdiff",
+  "version": "0.1.0",
+  "description": "Static capability diff scanner for DSH plugin manifests: declared dsh.capabilities vs imports and eval/env use found in code, with JSON and SARIF output.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "dsh-capdiff": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "capabilities",
+    "plugin-security",
+    "sarif",
+    "static-analysis"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/dsh-capdiff"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/dsh-capdiff#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}

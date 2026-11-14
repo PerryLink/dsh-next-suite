@@ -1,0 +1,50 @@
+{
+  "name": "dsh-upgrade-atlas",
+  "version": "0.1.0",
+  "description": "Community-maintained atlas of DeepSeek Harness (DSH) upgrade breakpoints: validate, query, and render Markdown.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "dsh-upgrade-atlas": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js",
+    "./data/atlas.json": "./data/atlas.json"
+  },
+  "files": [
+    "src",
+    "data",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/dsh-upgrade-atlas"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/dsh-upgrade-atlas#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh",
+    "upgrade",
+    "breaking-changes",
+    "migration",
+    "atlas"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "dsh-next-suite",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "node --test packages/*/test/*.test.js"
+  }
+}

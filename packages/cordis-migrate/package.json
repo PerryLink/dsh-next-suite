@@ -1,0 +1,48 @@
+{
+  "name": "cordis-migrate",
+  "version": "0.1.0",
+  "description": "Cordis 3→4 migration rule engine: scan, dry-run, apply. Rules are illustrative examples, not an official migration table.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "cordis-migrate": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "cordis",
+    "cordis-4",
+    "migration",
+    "codemod",
+    "codemod-cli",
+    "dry-run",
+    "unofficial"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/cordis-migrate"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/cordis-migrate#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}

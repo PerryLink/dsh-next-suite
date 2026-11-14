@@ -1,0 +1,50 @@
+{
+  "name": "dsh-supply-watch",
+  "version": "0.1.0",
+  "description": "Offline heuristics for npm package name typosquatting and version anomalies.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "dsh-supply-watch": "./src/cli.js"
+  },
+  "main": "./src/core.js",
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "supply-chain",
+    "typosquat",
+    "npm",
+    "security",
+    "heuristics",
+    "offline",
+    "deepseek",
+    "dsh"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/dsh-supply-watch"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/dsh-supply-watch#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}

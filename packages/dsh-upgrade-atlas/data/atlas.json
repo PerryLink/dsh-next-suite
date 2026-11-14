@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "title": "DSH Upgrade Atlas",
+  "unofficial": true,
+  "license": "Apache-2.0",
+  "maintainedBy": "dsh-next-suite contributors",
+  "source": "https://github.com/deepseek-ai/deepseek-harness/tree/master/docs/upgrade-guide",
+  "entries": [
+    {
+      "id": "node-24-9-minimum",
+      "package": "@deepseek-ai/dsh",
+      "from": "0.2.1-rc.2",
+      "to": "*",
+      "kind": "runtime",
+      "severity": "P0",
+      "summary": "DSH requires Node.js 24.9 or newer; the Node 22.19 line is no longer supported for npm installs, source checkouts, and the Python SDK's explicit node runtime mode.",
+      "fix": "Upgrade the Node.js used to start DSH to >=24.9, update CI/container/dev pins, and confirm `node --version`. Packaged desktop apps and the bundled Python SDK runtime ship their own Node.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md"
+      ]
+    },
+    {
+      "id": "agent-team-direct-inbox",
+      "package": "@deepseek-ai/dsh-experimental-agent-team",
+      "from": "0.2.1-alpha.1",
+      "to": "*",
+      "kind": "protocol",
+      "severity": "P1",
+      "summary": "Agent Teams sends new messages directly to the target Agent inbox; send_message returns only { sent: true }, exposes no message id or queued/accepted status, and maxPendingMessagesPerMember is removed.",
+      "fix": "Drain and confirm pending Team mail before upgrading, resend required undelivered messages explicitly, remove maxPendingMessagesPerMember, and read the sent field instead of message ids or delivery statuses.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-alpha.1/team-direct-inbox/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/team-direct-inbox/guide.md"
+      ]
+    },
+    {
+      "id": "agent-team-standard-subagents",
+      "package": "@deepseek-ai/dsh-experimental-agent-team",
+      "from": "0.2.1-rc.2",
+      "to": "*",
+      "kind": "agent",
+      "severity": "P1",
+      "summary": "Team-specific spawn_teammate, Team-scoped send_message/list_agents/interrupt_agent, and ctx.agentTeams creation/messaging APIs are removed; Team members use standard subagent tools, addressed at this release by agent_id and Session id (later renamed to agent in 0.2.2-alpha.3).",
+      "fix": "Replace spawn_teammate with subagent/subagent_fork and Team-scoped calls with the standard control tools (at this release send_message({ agent_id }); see the 0.2.2-alpha.3 subagent-names entry for the later agent argument), move interrupt:false to tool-subagent-control, resume the root Session, and re-read tasks after wait_agent.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-rc.2/agent-team-subagents/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/agent-team-subagents/guide.md"
+      ]
+    },
+    {
+      "id": "tool-presentation-both-removed",
+      "package": "@deepseek-ai/dsh-agent-tool-presentation",
+      "from": "0.2.1-alpha.1",
+      "to": "*",
+      "kind": "config",
+      "severity": "P1",
+      "summary": "The mixed `both` tool-presentation mode and DSH_TOOLS_MODE=both are rejected; `mode` accepts only `native` or `ptc`, and ctx.tools.presentAs('both') must be replaced.",
+      "fix": "Choose mode: native (direct tool calls) or mode: ptc (run_code plus generated SDK) in cordis.yml/overlays, replace DSH_TOOLS_MODE=both, and update presentAs('both') callers.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-alpha.1/tool-presentation-mode/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.1/tool-presentation-mode/guide.md"
+      ]
+    },
+    {
+      "id": "python-ptc-runtime-removed",
+      "package": "@deepseek-ai/dsh-experimental-ptc-runtime-python",
+      "from": "0.2.2-rc.2",
+      "to": "*",
+      "kind": "runtime",
+      "severity": "P1",
+      "summary": "The Python PTC runtime package, Python-specific SDK renderers (jsonSchemaToPy/renderToolsSdkPy), and external Python PtcRuntime providers are removed; custom compositions must use the Node/TypeScript PTC runtime.",
+      "fix": "Replace the Python runtime row with @deepseek-ai/dsh-ptc-runtime-node (and fs/subprocess providers), remove Python SDK renderer imports, rewrite run_code programs as TypeScript, and re-enable workflows only if wanted.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-rc.2/python-ptc-removal/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/python-ptc-removal/guide.md"
+      ]
+    },
+    {
+      "id": "office-operation-skills-removed",
+      "package": "@deepseek-ai/dsh-skill-office",
+      "from": "0.2.2-alpha.3",
+      "to": "*",
+      "kind": "tool",
+      "severity": "P1",
+      "summary": "The office-render, office-recalculate, and office-export-pdf skills and the skill-office `node`/`cli` keys are removed; Office operations now use the skill-activated office_render, office_convert, and office_recalculate tools.",
+      "fix": "Load the `office` router skill and call the matching Office tool, remove node/cli and DSH_BUNDLED_OFFICE_CLI/NODE, add a tool-office row to saved standard/ptc presets, and rename DSH_BUNDLED_PRIMARY_RUNTIME to DSH_PRIMARY_RUNTIME.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-operation-tools/guide.md"
+      ]
+    },
+    {
+      "id": "office-to-pdf-renamed-office-kit",
+      "package": "@deepseek-ai/dsh-office-to-pdf",
+      "from": "0.2.2-alpha.3",
+      "to": "*",
+      "kind": "package",
+      "severity": "P2",
+      "summary": "The Office conversion provider moved from @deepseek-ai/dsh-office-to-pdf to @deepseek-ai/dsh-office-kit, renaming the office-to-pdf row, ctx.officeToPdf, officeToPdf/render and /generation Remote methods, and OfficeToPdf* exports.",
+      "fix": "Change the cordis row to id office-kit and name @deepseek-ai/dsh-office-kit, swap dependency/imports, rename ctx.officeKit, Remote methods, and OfficeKit* types, and handle OfficeKitError code `unavailable` at conversion time.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-alpha.3/office-kit-package/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/office-kit-package/guide.md"
+      ]
+    },
+    {
+      "id": "cordis-4-root-metadata",
+      "package": "@deepseek-ai/cordis",
+      "from": "0.2.2-rc.2",
+      "to": "*",
+      "kind": "api",
+      "severity": "P1",
+      "summary": "Cordis 4.0.0-rc.12 removes ctx.root and renames Service.config/resolveConfig to Service.metadata/resolveIntercept; inject precedence, ctx.isolate() fallback, Config.merge, and ctx.parallel() error behavior also change.",
+      "fix": "Use ctx[Context.root] (or Symbol.for('cordis.root')), declare [Service.metadata], call [Service.resolveIntercept](), move Config.merge to [Service.mergeIntercept](), re-provide services under ctx.isolate(), and handle AggregateError.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-rc.2/cordis-root-and-intercept-metadata/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/cordis-root-and-intercept-metadata/guide.md"
+      ]
+    },
+    {
+      "id": "cordis-loader-entry-trees",
+      "package": "@deepseek-ai/cordis-plugin-loader",
+      "from": "0.2.2-alpha.2",
+      "to": "*",
+      "kind": "api",
+      "severity": "P2",
+      "summary": "Loader 1.0.0-rc.8 removes EntryTree.write() in favor of commit(change); Include 1.1.1 persists runtime edits through a journal, applyEntryPatches always clones, and root-Include self-disposal no longer survives restart.",
+      "fix": "Implement commit(change) in EntryTree subclasses, treat applyEntryPatches output as the only mutable copy, await include.flush() after runtime edits, and stop relying on patched bundle rows persisting through a restart.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-alpha.2/cordis-loader-entry-trees/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.2/cordis-loader-entry-trees/guide.md"
+      ]
+    },
+    {
+      "id": "subagent-names-catalog-v3",
+      "package": "@deepseek-ai/dsh-tool-subagent-control",
+      "from": "0.2.2-alpha.3",
+      "to": "*",
+      "kind": "agent",
+      "severity": "P0",
+      "summary": "Subagent tools now address agents by name: send_message/interrupt_agent take `agent`, subagent/subagent_fork/subagent_oar accept `name`, list_agents rows change, Team tasks use `owner`, and subagent/catalog payload v3 blocks older DSH from opening the Session store.",
+      "fix": "Rename agent_id to agent, parse name/status/description, read owner instead of ownerId, set SubagentActivation.name, and upgrade every process that opens the Session store before creating subagents.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-alpha.3/subagent-names/guide.md"
+      ]
+    },
+    {
+      "id": "subagent-control-tools-split",
+      "package": "@deepseek-ai/dsh-tool-subagent",
+      "from": "0.2.1-rc.1",
+      "to": "*",
+      "kind": "config",
+      "severity": "P2",
+      "summary": "modelSelectionSettings is renamed modelSelection, list_subagent_models discovery requires modelDiscovery:true on one instance per scope, the /list-agents export is removed, and one tool-subagent-control row registers send_message, interrupt_agent, and list_agents together.",
+      "fix": "Rename the config key, enable modelDiscovery on one delegation instance per tool scope, replace /list-agents rows with a single tool-subagent-control row, and use tool restrictions to hide individual tools.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-rc.1/subagent-control-tools/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.1/subagent-control-tools/guide.md"
+      ]
+    },
+    {
+      "id": "subagent-service-methods-removed",
+      "package": "@deepseek-ai/dsh-subagent",
+      "from": "0.2.1-rc.2",
+      "to": "*",
+      "kind": "api",
+      "severity": "P2",
+      "summary": "ctx.subagents removes drainChildren, listChildren, and list; direct-child catalogs must be observed through ctx.sessionQuery, and provider names can no longer be enumerated.",
+      "fix": "Await the exact activation.dispose() to release an execution, use drainDescendants([root]) to close a tree, read observation.projections.values.subagentCatalog for direct children, and use getProvider(name) instead of list().",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-rc.2/subagent-service-methods/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/subagent-service-methods/guide.md"
+      ]
+    },
+    {
+      "id": "official-bundle-lists-moved",
+      "package": "@deepseek-ai/dsh-app-boot",
+      "from": "0.2.1-rc.2",
+      "to": "*",
+      "kind": "package",
+      "severity": "P1",
+      "summary": "PROFILE_TEMPLATES, ProfileTemplate, DEFAULT_PROFILE_BUNDLES, OPTIONAL_BUNDLES, ON_DEMAND_BUNDLES, OFFICIAL_ON_DEMAND_CATALOG, and OfficialBundleCatalogEntry moved from @deepseek-ai/dsh-app-boot to @deepseek-ai/dsh-official-bundles with unchanged values and types.",
+      "fix": "Add @deepseek-ai/dsh-official-bundles to each importing package, change only the moved imports, keep initProfile/loadProfile from dsh-app-boot, and run the type check or build.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-rc.2/official-bundle-lists/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/official-bundle-lists/guide.md"
+      ]
+    },
+    {
+      "id": "plugin-engines-dsh-first",
+      "package": "@deepseek-ai/dsh-plugin-manager",
+      "from": "0.2.1-alpha.3",
+      "to": "*",
+      "kind": "config",
+      "severity": "P2",
+      "summary": "Plugin compatibility now reads an own engines.dsh range first and only falls back to @deepseek-ai/dsh peer ranges when engines.dsh is absent; workspace: values are invalid in engines.dsh, and refusal records rename peers to requirements.",
+      "fix": "Make engines.dsh cover every supported DSH release (or remove it), replace workspace: values, and read requirements instead of peers from IncompatiblePlugin and PluginCompatibility.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.1-alpha.3/plugin-engines-dsh/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-alpha.3/plugin-engines-dsh/guide.md"
+      ]
+    },
+    {
+      "id": "plugin-update-method-renamed",
+      "package": "@deepseek-ai/dsh-plugin-manager",
+      "from": "0.2.2-rc.1",
+      "to": "*",
+      "kind": "api",
+      "severity": "P3",
+      "summary": "BundleInfo.updatable is replaced by the optional BundleInfo.update ('registry' or 'git'), and ManagementError adds the unexpected-package code.",
+      "fix": "Test bundle.update === 'registry' for listVersions, bundle.update !== undefined for updateBundle, and handle unexpected-package when switching exhaustively over ManagementError codes.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-rc.1/plugin-update-method/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.1/plugin-update-method/guide.md"
+      ]
+    },
+    {
+      "id": "package-export-cleanup",
+      "package": "@deepseek-ai/dsh-file-reference-local",
+      "from": "0.2.2-rc.2",
+      "to": "*",
+      "kind": "package",
+      "severity": "P2",
+      "summary": "Internal helper values are removed from the plugin roots of dsh-file-reference-local, dsh-llm-pi-ai, and dsh-lsp-stdio; brand constructors, package subpaths, and persisted Session formats are unchanged.",
+      "fix": "Stop importing the listed helpers from package roots, use the injected fileReferences/lsp services or documented subpaths (FILE_REFERENCE_PROMPT from dsh-file-reference, grammar from dsh-file-reference/grammar), and run tests under Node.",
+      "evidence": [
+        "docs/upgrade-guide/v0.2.2-rc.2/package-export-cleanup/guide.md",
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.2-rc.2/package-export-cleanup/guide.md"
+      ]
+    },
+    {
+      "id": "plugin-index-wording",
+      "package": "@deepseek-ai/dsh-plugin-market",
+      "from": "0.2.2-alpha.1",
+      "to": "*",
+      "kind": "ui",
+      "severity": "P3",
+      "summary": "The experimental bundle label and guide were renamed from 'Custom plugin markets' back to 'Custom plugin indexes' on 2026-10-22; the plugin_market tool and index JSON format are unchanged.",
+      "fix": "Update UI-label assertions, screenshots, and documentation that say 'plugin market'; no config or API migration is required.",
+      "evidence": [
+        "docs/user/guide/plugin-market.md",
+        "https://github.com/deepseek-ai/deepseek-harness/commit/d10f417f131356a94ebf4ae010930908b6073aec"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "cordis-testkit",
+  "version": "0.1.0",
+  "description": "Unofficial mock Cordis context and effect-leak assertions for plugin unit tests.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "exports": {
+    ".": "./src/core.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node --check src/core.js"
+  },
+  "keywords": [
+    "cordis",
+    "testkit",
+    "mock-context",
+    "effect",
+    "leak-detection",
+    "unit-testing"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/cordis-testkit"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/cordis-testkit#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}

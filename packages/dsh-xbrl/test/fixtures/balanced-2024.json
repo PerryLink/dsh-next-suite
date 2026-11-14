@@ -1,0 +1,12 @@
+{
+  "entity": "Example Manufacturing Co., Ltd.",
+  "period": "2024-12-31",
+  "facts": [
+    { "concept": "Assets", "value": 1250000, "unit": "CNY" },
+    { "concept": "Liabilities", "value": 450000, "unit": "CNY" },
+    { "concept": "Equity", "value": 800000, "unit": "CNY" },
+    { "concept": "Revenue", "value": 980000, "unit": "CNY" },
+    { "concept": "Expenses", "value": 860000, "unit": "CNY" },
+    { "concept": "NetIncome", "value": 120000, "unit": "CNY" }
+  ]
+}

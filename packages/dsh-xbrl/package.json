@@ -1,0 +1,47 @@
+{
+  "name": "dsh-xbrl",
+  "version": "0.1.0",
+  "description": "Offline XBRL-style financial fact reconciliation and restatement diff.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "dsh-xbrl": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/core.js",
+    "./cli": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "xbrl",
+    "financial-reporting",
+    "accounting",
+    "restatement",
+    "reconciliation",
+    "offline"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PerryLink/dsh-next-suite.git",
+    "directory": "packages/dsh-xbrl"
+  },
+  "homepage": "https://github.com/PerryLink/dsh-next-suite/tree/main/packages/dsh-xbrl#readme",
+  "bugs": {
+    "url": "https://github.com/PerryLink/dsh-next-suite/issues"
+  },
+  "author": "PerryLink",
+  "publishConfig": {
+    "access": "public"
+  }
+}
