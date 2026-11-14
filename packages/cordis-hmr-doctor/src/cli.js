@@ -12,7 +12,7 @@ import { readFile } from 'node:fs/promises'
 import { parseArgs } from 'node:util'
 import { buildReport, formatReport } from './core.js'
 
-const USAGE = `cordis-hmr-doctor 0.1.0 - explain Cordis HMR logs (unofficial)
+const USAGE = `cordis-hmr-doctor 0.1.2 - explain Cordis HMR logs (unofficial)
 
 Usage:
   cordis-hmr-doctor <log> [--json]
@@ -56,7 +56,7 @@ if (values.help) {
 }
 
 if (values.version) {
-  process.stdout.write('cordis-hmr-doctor 0.1.0\n')
+  process.stdout.write('cordis-hmr-doctor 0.1.2\n')
   process.exit(0)
 }
 

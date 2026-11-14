@@ -1,0 +1,14 @@
+{
+  "name": "dsh-dojo-lab-02-governance",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lab 2: offline trace, lease, and quota governance checks with mock data.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0"
+  },
+  "scripts": {
+    "test": "node --test check.mjs"
+  }
+}

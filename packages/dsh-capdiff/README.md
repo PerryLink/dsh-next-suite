@@ -1,7 +1,7 @@
 # dsh-capdiff
 
 > 社区项目，**与 DeepSeek（深度求索）及 DeepSeek Harness 官方无隶属关系、无赞助、无背书**。
-> Apache-2.0，版本 `0.1.1`，**已发布到 npm**。
+> Apache-2.0，版本 `0.1.2`，**已发布到 npm**。
 
 ## 是什么
 
@@ -25,7 +25,7 @@ DSH 插件 manifest 可以声明 `dsh.capabilities`，但声明是手写的，�
 
 ## 安装
 
-已发布到 npm：`npx dsh-capdiff@0.1.1 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
+已发布到 npm：`npx dsh-capdiff@0.1.2 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
 
 ```sh
 node packages/dsh-capdiff/src/cli.js <file-or-dir> [--manifest path] [--json|--sarif]

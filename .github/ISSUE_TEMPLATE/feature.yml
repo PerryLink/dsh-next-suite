@@ -1,0 +1,77 @@
+name: Feature request
+description: Propose a capability or improvement for a dsh-next-suite package.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [CONTRIBUTING.md](https://github.com/PerryLink/dsh-next-suite/blob/main/CONTRIBUTING.md) before proposing a new package or a public CLI contract change. Propose package names in the issue first.
+
+        Security issues must follow [SECURITY.md](https://github.com/PerryLink/dsh-next-suite/blob/main/SECURITY.md), not this form.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Target
+      description: Which package would this change?
+      multiple: false
+      options:
+        - dsh-capdiff
+        - testatum-attest
+        - dsh-supply-watch
+        - cordis-hmr-doctor
+        - cordis-migrate
+        - cordis-testkit
+        - dsh-xbrl
+        - dsh-upgrade-atlas
+        - New package
+        - Suite / repository (docs, tests, packaging)
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What gap or friction are you trying to solve? Describe the use case, not only the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should the tool do? Include the CLI flags, JSON shape, exit codes, and failure behavior if relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing tools, workarounds, or a smaller change that would also solve the problem.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and non-goals
+      description: What is explicitly out of scope? Note any compat, security, or data-retention impact. A heuristic must not be described as a scanner or an audit.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links, prior art, or a sketch. Do not include secrets or customer data.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I read the naming and CLI contract rules in CONTRIBUTING.md.
+          required: true
+        - label: I am willing to open a pull request for this change (optional).
+          required: false

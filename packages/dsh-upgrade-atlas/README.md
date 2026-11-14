@@ -12,10 +12,10 @@ Markdown migration sheet.
 > notes 为准。
 
 - **Package:** `dsh-upgrade-atlas`
-- **Version:** 0.1.1 (published on npm)
+- **Version:** 0.1.2 (published on npm)
 - **License:** Apache-2.0
 - **Runtime:** Node.js `^22.19.0 || >=24.9.0`
-- **Data:** 17 curated DSH 0.2.x breakpoints in [`data/atlas.json`](data/atlas.json)
+- **Data:** 50 curated DSH 0.1.7–0.2.2-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json)
 - **Dependencies:** none
 
 ## What it is
@@ -51,7 +51,7 @@ in traceable evidence and a stable query shape, not in exhaustive coverage.
 
 ## Install
 
-The package is published as `dsh-upgrade-atlas@0.1.1`. From npm:
+The package is published as `dsh-upgrade-atlas@0.1.2`. From npm:
 
 ```sh
 node packages/dsh-upgrade-atlas/src/cli.js --help
@@ -182,7 +182,10 @@ The comparison is semver-like and prerelease-aware:
 - A partial version is a full prefix: `--from 0.2 --to 0.2` covers every
   `0.2.x` release.
 - `*` is an open bound. In the data, a `to` of `*` means "still applies in the
-  latest release covered by this atlas", not "fixed".
+  latest release covered by this atlas", not "fixed". Every open-ended entry
+  says so in its `summary`; a concrete `to` names the last release in which the
+  old behavior or label applied (for example, the reverted plugin-market
+  wording).
 
 `package`, `severity`, and `kind` filters are prefixes. For example,
 `--package @deepseek-ai/dsh-office` matches the Office conversion entry filed
@@ -242,12 +245,18 @@ docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md
 https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.1-rc.2/node-24/guide.md
 ```
 
-The `plugin-index-wording` entry cites the upstream documentation and the
-commit that changed the label, because that wording change is not a separate
-upgrade-guide topic:
+The `plugin-index-wording` entry cites the upstream user guide and the two
+commits that introduced and reverted the label, because that wording change is
+not a separate upgrade-guide topic. The label was **Custom plugin markets** from
+`0.2.1-alpha.4` through `0.2.1-rc.5` and was presented as **Custom plugin indexes**
+again in `0.2.2-alpha.2`; no `0.2.2-alpha.1` release exists. The Session-format and job
+entries cite the dated persistence records, and the Windows Markdown-path entry
+cites the change commit and the implementation file:
 
 ```text
+https://github.com/deepseek-ai/deepseek-harness/commit/3de3a977e0cca074b17744f7372644bc57ee63bd
 https://github.com/deepseek-ai/deepseek-harness/commit/d10f417f131356a94ebf4ae010930908b6073aec
+https://github.com/deepseek-ai/deepseek-harness/commit/c262a09fd0b5491a40ac18bdf0ad9a8252691057
 ```
 
 The atlas is community-maintained. Corrections are welcome when they cite a
@@ -257,16 +266,21 @@ it is not generated from upstream release notes.
 
 ## Limitations
 
-- **Not exhaustive.** 17 entries cover the 0.2.x breakpoints that were
+- **Not exhaustive.** 50 entries cover the 0.1.7–0.2.2-rc.2 breakpoints that were
   documented and verified when this atlas was assembled. New releases add
   new breakpoints; run the upstream upgrade guides for the full text.
-- **Hand-curated version mapping.** `from` is the guide's release directory.
-  The `plugin-index-wording` entry has no upgrade-guide directory, so its
-  `0.2.2-alpha.1` boundary was checked with `git merge-base --is-ancestor`:
-  the rename commit is in the `0.2.2-alpha.1` release but not in
-  `0.2.1-rc.4`. Re-verify that boundary if you depend on it.
+- **Hand-curated version mapping.** For guide-backed entries, `from` is the
+  guide's release directory. Entries without a guide use the release tag that
+  first contains the cited persistence record or commit: `session-format-v4`
+  starts at `0.1.7-alpha.1`, `job-session-lifecycle` at `0.2.1-alpha.3`, and
+  `windows-markdown-path-backslashes` at `0.2.2-alpha.2`. The
+  `plugin-index-wording` boundary was checked with
+  `git show <tag>:docs/user/guide/plugin-market.md`: the market label shipped
+  in `0.2.1-alpha.4` through `0.2.1-rc.5`, and the index wording returned in
+  `0.2.2-alpha.2`. Re-verify these boundaries if you depend on them.
 - **`*` means current, not fixed.** A `to` of `*` says the breakpoint still
-  applies in the latest release covered by the atlas.
+  applies in the latest release covered by the atlas. Every open-ended summary
+  states this; a concrete `to` marks a reverted or superseded window.
 - **No project inspection.** The CLI does not read your `cordis.yml`, plugin
   manifests, or Session store. It cannot tell you which entries actually hit
   your setup.

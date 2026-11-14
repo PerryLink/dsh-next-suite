@@ -1,0 +1,10 @@
+{
+  "id": "01-pure-safe",
+  "category": "pure-safe",
+  "description": "Pure arithmetic helpers with no imports and no ambient authority.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Baseline clean sample: no imports, no process access, no dynamic code.",
+  "limitation": null
+}

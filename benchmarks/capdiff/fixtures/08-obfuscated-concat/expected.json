@@ -1,0 +1,14 @@
+{
+  "id": "08-obfuscated-concat",
+  "category": "obfuscated",
+  "description": "Builds the import specifier from concatenated strings; filesystem is actually used.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [],
+  "notes": "Deliberate false negative for a regex scanner. Because the manifest declares filesystem, the tool is expected to emit a false \"unused\" finding.",
+  "limitation": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner."
+}

@@ -1,0 +1,1376 @@
+{
+  "benchmark": "dsh-capdiff",
+  "description": "Declaration-vs-static-use benchmark over curated synthetic DSH-style plugin fixtures.",
+  "tool": {
+    "name": "dsh-capdiff",
+    "coreVersion": "0.1.1",
+    "packageVersion": "0.1.1"
+  },
+  "generatedAt": "2026-11-14T12:25:46.795Z",
+  "node": "v24.22.1",
+  "fixtureRoot": "benchmarks/capdiff/fixtures",
+  "fixtureCount": 17,
+  "totals": {
+    "detection": {
+      "tp": 12,
+      "fp": 1,
+      "fn": 3,
+      "precision": 0.923077,
+      "recall": 0.8,
+      "f1": 0.857143
+    },
+    "inScopeDetection": {
+      "tp": 12,
+      "fp": 1,
+      "fn": 0,
+      "precision": 0.923077,
+      "recall": 1,
+      "f1": 0.96
+    },
+    "undeclaredFindings": {
+      "tp": 4,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.8,
+      "recall": 0.8,
+      "f1": 0.8
+    },
+    "unusedFindings": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 0,
+      "precision": 0,
+      "recall": null,
+      "f1": null
+    },
+    "declarationFindings": {
+      "tp": 4,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.571429,
+      "recall": 0.8,
+      "f1": 0.666667
+    }
+  },
+  "fixtures": [
+    {
+      "id": "01-pure-safe",
+      "category": "pure-safe",
+      "description": "Pure arithmetic helpers with no imports and no ambient authority.",
+      "declared": [],
+      "expectedActual": [],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Baseline clean sample: no imports, no process access, no dynamic code.",
+      "limitation": null
+    },
+    {
+      "id": "02-fs-read",
+      "category": "filesystem",
+      "description": "Static import of node:fs/promises; manifest declares filesystem.",
+      "declared": [
+        "filesystem"
+      ],
+      "expectedActual": [
+        "filesystem"
+      ],
+      "expectedStaticVisible": [
+        "filesystem"
+      ],
+      "detected": [
+        "filesystem"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "filesystem"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Straightforward true positive: declaration matches a statically visible import.",
+      "limitation": null
+    },
+    {
+      "id": "03-net-https",
+      "category": "network",
+      "description": "Static import of node:https; manifest declares network.",
+      "declared": [
+        "network"
+      ],
+      "expectedActual": [
+        "network"
+      ],
+      "expectedStaticVisible": [
+        "network"
+      ],
+      "detected": [
+        "network"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "network"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Network capability through a builtin module import.",
+      "limitation": null
+    },
+    {
+      "id": "04-child-process",
+      "category": "process",
+      "description": "Spawns a child process while the manifest declares no capabilities.",
+      "declared": [],
+      "expectedActual": [
+        "process"
+      ],
+      "expectedStaticVisible": [
+        "process"
+      ],
+      "detected": [
+        "process"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [
+          "process"
+        ],
+        "unused": []
+      },
+      "toolFindings": [
+        {
+          "kind": "undeclared",
+          "capability": "process",
+          "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:1 but is not declared in dsh.capabilities.",
+          "file": "src/index.js",
+          "line": 1,
+          "evidence": "node:child_process"
+        }
+      ],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "ok": true,
+      "notes": "Ground truth says process is undeclared; the desired finding is undeclared=process.",
+      "limitation": null
+    },
+    {
+      "id": "05-env-config",
+      "category": "env",
+      "description": "Reads process.env through dot and bracket notation; env is declared.",
+      "declared": [
+        "env"
+      ],
+      "expectedActual": [
+        "env"
+      ],
+      "expectedStaticVisible": [
+        "env"
+      ],
+      "detected": [
+        "env"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "env"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Both process.env and process[\"env\"] must map to the same capability.",
+      "limitation": null
+    },
+    {
+      "id": "06-eval-function",
+      "category": "eval",
+      "description": "Uses new Function and direct eval; eval is declared.",
+      "declared": [
+        "eval"
+      ],
+      "expectedActual": [
+        "eval"
+      ],
+      "expectedStaticVisible": [
+        "eval"
+      ],
+      "detected": [
+        "eval"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "eval"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Language-level dynamic code evidence, not an import.",
+      "limitation": null
+    },
+    {
+      "id": "07-dynamic-import",
+      "category": "dynamic-import",
+      "description": "Uses import(\"node:fs/promises\") with a static string specifier.",
+      "declared": [
+        "filesystem"
+      ],
+      "expectedActual": [
+        "filesystem"
+      ],
+      "expectedStaticVisible": [
+        "filesystem"
+      ],
+      "detected": [
+        "filesystem"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "filesystem"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Dynamic import with a string literal is in scope and should be detected (kind=dynamic).",
+      "limitation": null
+    },
+    {
+      "id": "08-obfuscated-concat",
+      "category": "obfuscated",
+      "description": "Builds the import specifier from concatenated strings; filesystem is actually used.",
+      "declared": [
+        "filesystem"
+      ],
+      "expectedActual": [
+        "filesystem"
+      ],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": [
+          "filesystem"
+        ]
+      },
+      "toolFindings": [
+        {
+          "kind": "unused",
+          "capability": "filesystem",
+          "message": "Capability \"filesystem\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+          "file": "package.json"
+        }
+      ],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": false,
+      "notes": "Deliberate false negative for a regex scanner. Because the manifest declares filesystem, the tool is expected to emit a false \"unused\" finding.",
+      "limitation": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner."
+    },
+    {
+      "id": "09-obfuscated-eval",
+      "category": "obfuscated",
+      "description": "Reaches the global eval function through a computed property name.",
+      "declared": [
+        "eval"
+      ],
+      "expectedActual": [
+        "eval"
+      ],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": [
+          "eval"
+        ]
+      },
+      "toolFindings": [
+        {
+          "kind": "unused",
+          "capability": "eval",
+          "message": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+          "file": "package.json"
+        }
+      ],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": false,
+      "notes": "Deliberate false negative for a regex scanner. Because eval is declared, the tool is expected to emit a false \"unused\" finding.",
+      "limitation": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
+    },
+    {
+      "id": "10-fp-comments",
+      "category": "false-positive-trap",
+      "description": "Comments contain imports, process.env and eval, but no executable capability.",
+      "declared": [],
+      "expectedActual": [],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Trap expected to pass: commented-out code and prose must not be reported.",
+      "limitation": null
+    },
+    {
+      "id": "11-fp-strings",
+      "category": "false-positive-trap",
+      "description": "String and template literals contain import/require/process.env/eval text.",
+      "declared": [],
+      "expectedActual": [],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Trap expected to pass: literal samples in documentation strings must not be reported.",
+      "limitation": null
+    },
+    {
+      "id": "12-fp-properties",
+      "category": "false-positive-trap",
+      "description": "Uses an eval-named object property, an evaluate() helper and a machine.env field.",
+      "declared": [],
+      "expectedActual": [],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Trap expected to pass: property access must not be treated as global eval or process.env.",
+      "limitation": null
+    },
+    {
+      "id": "13-fp-unmapped-builtin",
+      "category": "false-positive-trap",
+      "description": "Imports node:path and a relative helper; neither grants an ambient capability.",
+      "declared": [],
+      "expectedActual": [],
+      "expectedStaticVisible": [],
+      "detected": [
+        "unknown"
+      ],
+      "scannedFiles": [
+        "src/helper.js",
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [
+          "unknown"
+        ],
+        "unused": []
+      },
+      "toolFindings": [
+        {
+          "kind": "undeclared",
+          "capability": "unknown",
+          "message": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
+          "file": "src/index.js",
+          "line": 1,
+          "evidence": "node:path"
+        }
+      ],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": false,
+      "notes": "Expected false positive: capdiff maps every unmapped import (node:path, ./helper.js) to the fallback capability \"unknown\", which then appears as undeclared. \"unknown\" is explicitly not a real capability per the tool README.",
+      "limitation": null
+    },
+    {
+      "id": "14-manifest-object",
+      "category": "declaration-format",
+      "description": "Manifest uses the object form of dsh.capabilities; filesystem is the only truthy entry.",
+      "declared": [
+        "filesystem"
+      ],
+      "expectedActual": [
+        "filesystem"
+      ],
+      "expectedStaticVisible": [
+        "filesystem"
+      ],
+      "detected": [
+        "filesystem"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "filesystem"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Checks parseDeclared({ filesystem: true, network: false }) -> [\"filesystem\"].",
+      "limitation": null
+    },
+    {
+      "id": "15-cjs-require",
+      "category": "require-cjs",
+      "description": "CommonJS file uses require(\"node:child_process\"); process is declared.",
+      "declared": [
+        "process"
+      ],
+      "expectedActual": [
+        "process"
+      ],
+      "expectedStaticVisible": [
+        "process"
+      ],
+      "detected": [
+        "process"
+      ],
+      "scannedFiles": [
+        "src/index.cjs"
+      ],
+      "diff": {
+        "matched": [
+          "process"
+        ],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        }
+      },
+      "ok": true,
+      "notes": "Checks the .cjs extension and the require() extraction path.",
+      "limitation": null
+    },
+    {
+      "id": "16-multi-undeclared",
+      "category": "multi-capability",
+      "description": "Declares filesystem but statically uses filesystem, network, process (re-export) and env.",
+      "declared": [
+        "filesystem"
+      ],
+      "expectedActual": [
+        "env",
+        "filesystem",
+        "network",
+        "process"
+      ],
+      "expectedStaticVisible": [
+        "env",
+        "filesystem",
+        "network",
+        "process"
+      ],
+      "detected": [
+        "env",
+        "filesystem",
+        "network",
+        "process"
+      ],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [
+          "filesystem"
+        ],
+        "undeclared": [
+          "env",
+          "network",
+          "process"
+        ],
+        "unused": []
+      },
+      "toolFindings": [
+        {
+          "kind": "undeclared",
+          "capability": "env",
+          "message": "Capability \"env\" is used in code (process.env) at src/index.js:7 but is not declared in dsh.capabilities.",
+          "file": "src/index.js",
+          "line": 7,
+          "evidence": "process.env"
+        },
+        {
+          "kind": "undeclared",
+          "capability": "network",
+          "message": "Capability \"network\" is used in code (node:https) at src/index.js:2 but is not declared in dsh.capabilities.",
+          "file": "src/index.js",
+          "line": 2,
+          "evidence": "node:https"
+        },
+        {
+          "kind": "undeclared",
+          "capability": "process",
+          "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:4 but is not declared in dsh.capabilities.",
+          "file": "src/index.js",
+          "line": 4,
+          "evidence": "node:child_process"
+        }
+      ],
+      "metrics": {
+        "detection": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "inScopeDetection": {
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "undeclaredFindings": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        }
+      },
+      "ok": true,
+      "notes": "Recall test for undeclared findings: network, process and env should each be reported.",
+      "limitation": null
+    },
+    {
+      "id": "17-global-fetch",
+      "category": "unsupported-construct",
+      "description": "Uses Node's global fetch() for network access.",
+      "declared": [],
+      "expectedActual": [
+        "network"
+      ],
+      "expectedStaticVisible": [],
+      "detected": [],
+      "scannedFiles": [
+        "src/index.js"
+      ],
+      "diff": {
+        "matched": [],
+        "undeclared": [],
+        "unused": []
+      },
+      "toolFindings": [],
+      "metrics": {
+        "detection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        },
+        "inScopeDetection": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "undeclaredFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        },
+        "unusedFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "precision": null,
+          "recall": null,
+          "f1": null
+        },
+        "declarationFindings": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": null,
+          "recall": 0,
+          "f1": null
+        }
+      },
+      "ok": false,
+      "notes": "Deliberate false negative: the README states that global fetch(...) calls are not scanned; only the import specifier \"fetch\" is mapped.",
+      "limitation": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
+    }
+  ],
+  "falsePositives": [
+    {
+      "layer": "declaration",
+      "fixture": "08-obfuscated-concat",
+      "kind": "unused",
+      "capability": "filesystem",
+      "detail": "Capability \"filesystem\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+      "file": "package.json",
+      "line": null
+    },
+    {
+      "layer": "declaration",
+      "fixture": "09-obfuscated-eval",
+      "kind": "unused",
+      "capability": "eval",
+      "detail": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+      "file": "package.json",
+      "line": null
+    },
+    {
+      "layer": "declaration",
+      "fixture": "13-fp-unmapped-builtin",
+      "kind": "undeclared",
+      "capability": "unknown",
+      "detail": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
+      "file": "src/index.js",
+      "line": 1
+    },
+    {
+      "layer": "detection",
+      "fixture": "13-fp-unmapped-builtin",
+      "capability": "unknown",
+      "detail": "not in the fixture's ground-truth actual set",
+      "evidence": {
+        "file": "src/index.js",
+        "line": 1,
+        "origin": "import",
+        "kind": "static",
+        "specifier": "node:path",
+        "evidence": "node:path"
+      }
+    }
+  ],
+  "falseNegatives": [
+    {
+      "layer": "detection",
+      "fixture": "08-obfuscated-concat",
+      "capability": "filesystem",
+      "detail": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner."
+    },
+    {
+      "layer": "detection",
+      "fixture": "09-obfuscated-eval",
+      "capability": "eval",
+      "detail": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
+    },
+    {
+      "layer": "declaration",
+      "fixture": "17-global-fetch",
+      "kind": "undeclared",
+      "capability": "network",
+      "detail": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
+    },
+    {
+      "layer": "detection",
+      "fixture": "17-global-fetch",
+      "capability": "network",
+      "detail": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
+    }
+  ],
+  "disclaimer": "Synthetic, curated fixtures only. These numbers describe this corpus, not all plugins or the wider npm ecosystem. A passing fixture is not evidence that a plugin is safe; the scanner reports statically visible evidence, never runtime capability."
+}

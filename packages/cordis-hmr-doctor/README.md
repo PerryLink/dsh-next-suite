@@ -4,7 +4,7 @@
 > project, `@cordisjs`, or DeepSeek. 本项目为非官方社区工具，与 Cordis / DeepSeek 无隶属关系。
 > 日志格式按启发式规则解析，不是 Cordis 官方诊断器。
 >
-> Status: **0.1.1, published on npm.** Apache-2.0.
+> Status: **0.1.2, published on npm.** Apache-2.0.
 
 Turn a Cordis HMR log into a short, explainable report: what settled, what aborted,
 what was skipped, which module each line belongs to, and what the likely cause is.

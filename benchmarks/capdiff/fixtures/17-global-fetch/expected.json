@@ -1,0 +1,12 @@
+{
+  "id": "17-global-fetch",
+  "category": "unsupported-construct",
+  "description": "Uses Node's global fetch() for network access.",
+  "declared": [],
+  "actual": [
+    "network"
+  ],
+  "staticVisible": [],
+  "notes": "Deliberate false negative: the README states that global fetch(...) calls are not scanned; only the import specifier \"fetch\" is mapped.",
+  "limitation": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
+}

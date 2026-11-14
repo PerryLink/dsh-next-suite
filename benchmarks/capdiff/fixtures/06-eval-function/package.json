@@ -1,0 +1,11 @@
+{
+  "name": "@bench/06-eval-function",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": [
+      "eval"
+    ]
+  }
+}

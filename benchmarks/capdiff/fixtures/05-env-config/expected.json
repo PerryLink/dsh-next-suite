@@ -1,0 +1,16 @@
+{
+  "id": "05-env-config",
+  "category": "env",
+  "description": "Reads process.env through dot and bracket notation; env is declared.",
+  "declared": [
+    "env"
+  ],
+  "actual": [
+    "env"
+  ],
+  "staticVisible": [
+    "env"
+  ],
+  "notes": "Both process.env and process[\"env\"] must map to the same capability.",
+  "limitation": null
+}

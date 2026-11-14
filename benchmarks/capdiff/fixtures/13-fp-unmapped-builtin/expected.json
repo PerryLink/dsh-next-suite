@@ -1,0 +1,10 @@
+{
+  "id": "13-fp-unmapped-builtin",
+  "category": "false-positive-trap",
+  "description": "Imports node:path and a relative helper; neither grants an ambient capability.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Expected false positive: capdiff maps every unmapped import (node:path, ./helper.js) to the fallback capability \"unknown\", which then appears as undeclared. \"unknown\" is explicitly not a real capability per the tool README.",
+  "limitation": null
+}

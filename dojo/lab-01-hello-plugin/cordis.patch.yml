@@ -1,0 +1,5 @@
+# Lab 1: mount this local starter into a DSH profile.
+# The row name must match the "name" field in package.json.
+- insert:
+    - id: hello
+      name: dsh-hello-plugin

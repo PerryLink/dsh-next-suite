@@ -1,0 +1,12 @@
+{
+  "name": "@bench/15-cjs-require",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "private": true,
+  "dsh": {
+    "capabilities": [
+      "process"
+    ]
+  },
+  "main": "src/index.cjs"
+}

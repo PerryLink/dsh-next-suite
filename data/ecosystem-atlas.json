@@ -1,0 +1,514 @@
+[
+  {
+    "id": "deepseek-ai/deepseek-harness",
+    "type": "official",
+    "url": "https://github.com/deepseek-ai/deepseek-harness",
+    "role": "DSH 官方 Agent Harness 主仓",
+    "first_seen": "2026-08-13",
+    "notes": "MIT；官方；v0.1 2026-08-13；Everything is a Plugin"
+  },
+  {
+    "id": "api-docs.deepseek.com",
+    "type": "official",
+    "url": "https://api-docs.deepseek.com/",
+    "role": "DeepSeek API 官方文档（V4 系列/接口）",
+    "first_seen": "2026-11-14",
+    "notes": "官方；V4-Pro/V4-Flash；1M 上下文；接口文档入口"
+  },
+  {
+    "id": "deepseek-v4-pro-ga",
+    "type": "official",
+    "url": "https://api-docs.deepseek.com/news/news260813/",
+    "role": "DeepSeek-V4-Pro 正式版公告",
+    "first_seen": "2026-11-14",
+    "notes": "官方；2026-08-13 GA；原生 OpenAI Responses API；模型名不变"
+  },
+  {
+    "id": "platform.deepseek.com",
+    "type": "official",
+    "url": "https://platform.deepseek.com/",
+    "role": "DeepSeek API 控制台（密钥/用量/充值）",
+    "first_seen": "2026-11-14",
+    "notes": "官方；公开入口；本网络 GET 返回 429，属限流非下线"
+  },
+  {
+    "id": "huggingface.co/deepseek-ai",
+    "type": "official",
+    "url": "https://huggingface.co/deepseek-ai",
+    "role": "DeepSeek 开放权重模型组织页",
+    "first_seen": "2026-11-14",
+    "notes": "官方；V4 系列开放权重（deepseek-v4 collection）；本网络直连超时"
+  },
+  {
+    "id": "deepseek-ai/DeepSeek-V3.2-Exp",
+    "type": "official",
+    "url": "https://github.com/deepseek-ai/DeepSeek-V3.2-Exp",
+    "role": "DeepSeek-V3.2-Exp 开放模型仓",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；2025-09-29 发布；V4 前代稀疏注意力实验版"
+  },
+  {
+    "id": "cordiverse/cordis",
+    "type": "framework",
+    "url": "https://github.com/cordiverse/cordis",
+    "role": "DSH 的微内核/可逆插件框架",
+    "first_seen": "2026-09-01",
+    "notes": "MIT；DSH 依赖 Cordis 4.x；DSH topics 含 cordis"
+  },
+  {
+    "id": "koishijs/koishi",
+    "type": "framework",
+    "url": "https://github.com/koishijs/koishi",
+    "role": "Cordis 起源生态（跨平台聊天机器人框架）",
+    "first_seen": "2026-09-01",
+    "notes": "MIT；与 Cordis 同作者生态；非 DSH 本体"
+  },
+  {
+    "id": "cordis.moe",
+    "type": "framework",
+    "url": "https://cordis.moe/",
+    "role": "Cordis 文档站",
+    "first_seen": "2026-11-14",
+    "notes": "框架文档/指南入口；与 GitHub 仓互链"
+  },
+  {
+    "id": "aaif.io",
+    "type": "standard",
+    "url": "https://aaif.io/",
+    "role": "Agentic AI Foundation：agent 标准中立治理",
+    "first_seen": "2026-11-01",
+    "notes": "Linux Foundation 下；托管 MCP/A2A/AGENTS.md/Agent Skills 等；2025-12 成立"
+  },
+  {
+    "id": "agent-plugins.org",
+    "type": "standard",
+    "url": "https://agent-plugins.org/",
+    "role": "Agent Plugins 开放打包标准（Skills + MCP）",
+    "first_seen": "2026-11-14",
+    "notes": "Spec 1.0.0 已发布、1.1.0 草案；独立治理，非 AAIF 项目"
+  },
+  {
+    "id": "modelcontextprotocol.io",
+    "type": "standard",
+    "url": "https://modelcontextprotocol.io/",
+    "role": "Model Context Protocol 规范/文档",
+    "first_seen": "2026-11-14",
+    "notes": "AAIF 托管；文档版本 2026-07-28；DSH 可接 MCP"
+  },
+  {
+    "id": "agents.md",
+    "type": "standard",
+    "url": "https://agents.md/",
+    "role": "AGENTS.md 开放指令格式",
+    "first_seen": "2026-11-14",
+    "notes": "AAIF 托管；DSH/Codex 等读取的仓库级指令文件"
+  },
+  {
+    "id": "a2a-protocol.org",
+    "type": "standard",
+    "url": "https://a2a-protocol.org/",
+    "role": "Agent2Agent 跨 agent 通信协议",
+    "first_seen": "2026-11-14",
+    "notes": "AAIF 托管；规范仓 Apache-2.0"
+  },
+  {
+    "id": "agentskills.io",
+    "type": "standard",
+    "url": "https://agentskills.io/",
+    "role": "Agent Skills 开放规范",
+    "first_seen": "2026-11-14",
+    "notes": "Anthropic 捐赠 AAIF；SKILL.md 目录格式"
+  },
+  {
+    "id": "PerryLink/dsh-standards",
+    "type": "standard",
+    "url": "https://github.com/PerryLink/dsh-standards",
+    "role": "DSH 插件 ENTRY/FLOW 一致性标准与检查器",
+    "first_seen": "2026-11-14",
+    "notes": "社区标准；非官方；含条款、检查器与证据规范"
+  },
+  {
+    "id": "dshmarket.com",
+    "type": "community",
+    "url": "https://dshmarket.com/",
+    "role": "装在 DSH 设置页内的插件市场",
+    "first_seen": "2026-08-01",
+    "notes": "第三方；浏览/搜索/一键安装；源码 dsh-market/dsh-market (MIT)"
+  },
+  {
+    "id": "dshfind.com",
+    "type": "community",
+    "url": "https://dshfind.com/",
+    "role": "DSH 学习站 + 插件目录与评级 API",
+    "first_seen": "2026-11-14",
+    "notes": "第三方；公开 REST/GraphQL 目录；源码 hikariming/dshfind"
+  },
+  {
+    "id": "dshbase.com",
+    "type": "community",
+    "url": "https://dshbase.com/",
+    "role": "DSH 安装教程 + 插件目录站",
+    "first_seen": "2026-11-14",
+    "notes": "第三方；面向安装/选型的目录站"
+  },
+  {
+    "id": "dshmarketplace.dev",
+    "type": "community",
+    "url": "https://dshmarketplace.dev/",
+    "role": "DSH 插件目录 + Python/CLI 客户端",
+    "first_seen": "2026-11-14",
+    "notes": "第三方；目录站；配套 PyPI dshmarketplace"
+  },
+  {
+    "id": "awesome-dsh-plugin/awesome-dsh-plugin",
+    "type": "community",
+    "url": "https://github.com/awesome-dsh-plugin/awesome-dsh-plugin",
+    "role": "社区插件清单（canonical awesome）",
+    "first_seen": "2026-08-01",
+    "notes": "CC0-1.0；第三方；收录型"
+  },
+  {
+    "id": "Dominic789654/awesome-deepseek-harness",
+    "type": "community",
+    "url": "https://github.com/Dominic789654/awesome-deepseek-harness",
+    "role": "插件/skill/MCP/profile 清单",
+    "first_seen": "2026-11-14",
+    "notes": "第三方；收录型；覆盖 orchestrator/UI 等形态"
+  },
+  {
+    "id": "imsai-sh/awesome-deepseek-harness-plugins",
+    "type": "community",
+    "url": "https://github.com/imsai-sh/awesome-deepseek-harness-plugins",
+    "role": "DSH 插件商店/目录",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；第三方；收录 + 检索"
+  },
+  {
+    "id": "libukai/awesome-deepseek-harness",
+    "type": "community",
+    "url": "https://github.com/libukai/awesome-deepseek-harness",
+    "role": "DSH 入门/资源/插件指南",
+    "first_seen": "2026-11-14",
+    "notes": "第三方；中文指南型"
+  },
+  {
+    "id": "beancookie/awesome-dsh-plugin",
+    "type": "community",
+    "url": "https://github.com/beancookie/awesome-dsh-plugin",
+    "role": "社区插件清单",
+    "first_seen": "2026-11-14",
+    "notes": "CC0-1.0；第三方；收录型"
+  },
+  {
+    "id": "AdamPlatin123/dsh-plugin-radar",
+    "type": "community",
+    "url": "https://github.com/AdamPlatin123/dsh-plugin-radar",
+    "role": "插件可用性/风险雷达（公开 JSON）",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；第三方；提供 latest.json/plugins-all.json"
+  },
+  {
+    "id": "realguan/dsh-plugin-market",
+    "type": "community",
+    "url": "https://github.com/realguan/dsh-plugin-market",
+    "role": "由 awesome 清单生成的插件索引",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；第三方；jsDelivr 分发；桌面端 Community Market 源之一"
+  },
+  {
+    "id": "vlln/plugin-registry",
+    "type": "community",
+    "url": "https://github.com/vlln/plugin-registry",
+    "role": "早期 DSH 插件注册/控制台 + 开发 skill",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；原 dsh-external/plugin-registry；console 2026-10-03 归档，skill 迁 vlln/dsh-skills"
+  },
+  {
+    "id": "PerryLink/dsh-os-suite",
+    "type": "distribution",
+    "url": "https://github.com/PerryLink/dsh-os-suite",
+    "role": "治理层六件套（trace/lease/quota/eval/catalog/registry）",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；六件套均发布 0.1.1；非官方"
+  },
+  {
+    "id": "PerryLink/dsh-next-suite",
+    "type": "distribution",
+    "url": "https://github.com/PerryLink/dsh-next-suite",
+    "role": "能力差异/证明/供应链/迁移等八件套",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；8 个包均发布 0.1.1；非官方；本 atlas 所在仓"
+  },
+  {
+    "id": "hikariming/dsh-ee",
+    "type": "distribution",
+    "url": "https://github.com/hikariming/dsh-ee",
+    "role": "DSH 自托管企业平台",
+    "first_seen": "2026-10-30",
+    "notes": "Apache-2.0；非官方；连接企业系统与知识库"
+  },
+  {
+    "id": "anywhere-labs/dsh-desktop",
+    "type": "distribution",
+    "url": "https://github.com/anywhere-labs/dsh-desktop",
+    "role": "DSH 开源桌面客户端",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；桌面端；Community Market 宿主；独立组织维护，非 DSH 主仓"
+  },
+  {
+    "id": "zhu1090093659/dsh-web",
+    "type": "distribution",
+    "url": "https://github.com/zhu1090093659/dsh-web",
+    "role": "DSH Web GUI 插件/主题全家桶",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；profile 挂载；非官方"
+  },
+  {
+    "id": "hust-open-atom-club/oh-dsh",
+    "type": "runtime",
+    "url": "https://github.com/hust-open-atom-club/oh-dsh",
+    "role": "社区 DSH runtime（Desktop/Web/TUI）",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；社区维护；非官方"
+  },
+  {
+    "id": "bowenliang123/dsh-context",
+    "type": "plugin",
+    "url": "https://www.npmjs.com/package/dsh-context",
+    "role": "上下文洞察/管理面板",
+    "first_seen": "2026-11-01",
+    "notes": "Apache-2.0；npm 0.84.x；dshfind featured；非官方"
+  },
+  {
+    "id": "omdsh-dev/dsh-mnemon",
+    "type": "plugin",
+    "url": "https://github.com/omdsh-dev/dsh-mnemon",
+    "role": "可组合、视图式上下文与分层记忆",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured；context/memory"
+  },
+  {
+    "id": "1692775560/dsh-Mimir-Academic-research",
+    "type": "plugin",
+    "url": "https://github.com/1692775560/dsh-Mimir-Academic-research",
+    "role": "科研工作台（LaTeX/arXiv/实验/GPU）",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；非官方"
+  },
+  {
+    "id": "Clearailhc/clearai-dsh",
+    "type": "plugin",
+    "url": "https://github.com/Clearailhc/clearai-dsh",
+    "role": "证据核验的研究本体 agent preset",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；以插件安装、作为 preset 使用；DSH 0.2.2 兼容；非官方"
+  },
+  {
+    "id": "liustack/modsearch",
+    "type": "plugin",
+    "url": "https://github.com/liustack/modsearch",
+    "role": "免费 Web 搜索插件",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured；非官方"
+  },
+  {
+    "id": "omdsh-dev/DSH-better-sidebar",
+    "type": "plugin",
+    "url": "https://github.com/omdsh-dev/DSH-better-sidebar",
+    "role": "可扩展侧边栏（文件/终端/Git/子代理）",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured"
+  },
+  {
+    "id": "hagen666/dsh-topic-graph",
+    "type": "plugin",
+    "url": "https://github.com/hagen666/dsh-topic-graph",
+    "role": "会话话题/阶段图谱",
+    "first_seen": "2026-11-14",
+    "notes": "Web UI 插件；中英双语；非官方"
+  },
+  {
+    "id": "ccch1mneyyy/dsh-TUI",
+    "type": "plugin",
+    "url": "https://github.com/ccch1mneyyy/dsh-TUI",
+    "role": "TUI 终端客户端插件",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured；非官方"
+  },
+  {
+    "id": "liustack/modlens",
+    "type": "plugin",
+    "url": "https://github.com/liustack/modlens",
+    "role": "给纯文本模型加视觉能力",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured"
+  },
+  {
+    "id": "xmanrui/dsh-im",
+    "type": "plugin",
+    "url": "https://github.com/xmanrui/dsh-im",
+    "role": "接入微信/飞书/Slack 等 IM 通道",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured"
+  },
+  {
+    "id": "NanmiCoder/dsh-agent-teams",
+    "type": "plugin",
+    "url": "https://github.com/NanmiCoder/dsh-agent-teams",
+    "role": "多 Agent 团队协作",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；dshfind featured"
+  },
+  {
+    "id": "dream-num/dsh-univer-office",
+    "type": "plugin",
+    "url": "https://github.com/dream-num/dsh-univer-office",
+    "role": "对话内 Office 环境（表格/文档/幻灯片）",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；dshfind featured"
+  },
+  {
+    "id": "shanliuling/dsh-image-gen",
+    "type": "plugin",
+    "url": "https://github.com/shanliuling/dsh-image-gen",
+    "role": "对话内图像生成/编辑工作流",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；dshfind featured"
+  },
+  {
+    "id": "shaobeichen/dsh-pocket",
+    "type": "plugin",
+    "url": "https://github.com/shaobeichen/dsh-pocket",
+    "role": "手机扫码访问本机 DSH",
+    "first_seen": "2026-11-14",
+    "notes": "GPL-2.0；dshfind featured"
+  },
+  {
+    "id": "Nagi-ovo/dsh-find-plugins",
+    "type": "plugin",
+    "url": "https://github.com/Nagi-ovo/dsh-find-plugins",
+    "role": "搜索/安装/验证插件的 DSH skill",
+    "first_seen": "2026-11-14",
+    "notes": "BSD-3-Clause；skill 形态"
+  },
+  {
+    "id": "vlln/dsh-skills",
+    "type": "plugin",
+    "url": "https://github.com/vlln/dsh-skills",
+    "role": "DSH 插件开发/维护 skills",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；skill 仓；非官方"
+  },
+  {
+    "id": "PerryLink/dsh-locator",
+    "type": "plugin",
+    "url": "https://github.com/PerryLink/dsh-locator",
+    "role": "全盘文件索引/搜索",
+    "first_seen": "2026-11-09",
+    "notes": "Apache-2.0；npm 0.16.x；跨平台 Go 引擎；非官方"
+  },
+  {
+    "id": "dsh-capdiff",
+    "type": "plugin",
+    "url": "https://www.npmjs.com/package/dsh-capdiff",
+    "role": "声明能力 vs 实际导入差异（SARIF）",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；dsh-next-suite 包；非官方"
+  },
+  {
+    "id": "testatum-attest",
+    "type": "plugin",
+    "url": "https://www.npmjs.com/package/testatum-attest",
+    "role": "插件工件信任卡/签名/撤销",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；dsh-next-suite 包；非官方"
+  },
+  {
+    "id": "Han-1413141/dsh-cost-meter",
+    "type": "plugin",
+    "url": "https://github.com/Han-1413141/dsh-cost-meter",
+    "role": "会话/模型成本统计",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；非官方"
+  },
+  {
+    "id": "claude-code",
+    "type": "adjacent",
+    "url": "https://claude.com/claude-code",
+    "role": "Anthropic 第一方 terminal coding agent",
+    "first_seen": "2026-11-01",
+    "notes": "对照系；非 DSH"
+  },
+  {
+    "id": "codex",
+    "type": "adjacent",
+    "url": "https://github.com/openai/codex",
+    "role": "OpenAI Codex 终端 coding agent",
+    "first_seen": "2026-11-01",
+    "notes": "Apache-2.0；对照系；产品页 openai.com/codex"
+  },
+  {
+    "id": "cursor",
+    "type": "adjacent",
+    "url": "https://cursor.com/",
+    "role": "AI-first IDE / coding agent",
+    "first_seen": "2026-11-14",
+    "notes": "对照系；闭源商业"
+  },
+  {
+    "id": "manus",
+    "type": "adjacent",
+    "url": "https://manus.im/",
+    "role": "通用 AI agent 产品",
+    "first_seen": "2026-11-14",
+    "notes": "对照系；闭源商业"
+  },
+  {
+    "id": "gemini-cli",
+    "type": "adjacent",
+    "url": "https://github.com/google-gemini/gemini-cli",
+    "role": "Google 开源终端 agent",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；对照系"
+  },
+  {
+    "id": "openhands",
+    "type": "adjacent",
+    "url": "https://github.com/OpenHands/OpenHands",
+    "role": "开源软件工程 agent 平台",
+    "first_seen": "2026-11-14",
+    "notes": "MIT；对照系"
+  },
+  {
+    "id": "aider",
+    "type": "adjacent",
+    "url": "https://github.com/Aider-AI/aider",
+    "role": "终端 pair-programming agent",
+    "first_seen": "2026-11-14",
+    "notes": "Apache-2.0；对照系"
+  },
+  {
+    "id": "cline",
+    "type": "adjacent",
+    "url": "https://cline.bot/",
+    "role": "开源 IDE agent",
+    "first_seen": "2026-11-14",
+    "notes": "对照系；开源"
+  },
+  {
+    "id": "windsurf",
+    "type": "adjacent",
+    "url": "https://windsurf.com/",
+    "role": "AI IDE / agent",
+    "first_seen": "2026-11-14",
+    "notes": "对照系；闭源商业"
+  },
+  {
+    "id": "devin",
+    "type": "adjacent",
+    "url": "https://devin.ai/",
+    "role": "自主软件工程 agent",
+    "first_seen": "2026-11-14",
+    "notes": "对照系；闭源商业"
+  }
+]

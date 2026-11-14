@@ -1,0 +1,105 @@
+{
+  "description": "Trusted baseline used for the offline typosquat benchmark. Ten real ecosystem names and ten synthetic names. No network or registry lookup is performed.",
+  "names": [
+    {
+      "name": "dsh-capdiff",
+      "origin": "real",
+      "note": "dsh-next-suite package (npm 0.1.1)"
+    },
+    {
+      "name": "testatum-attest",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-supply-watch",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-hmr-doctor",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-migrate",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-testkit",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-xbrl",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-upgrade-atlas",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis",
+      "origin": "real",
+      "note": "Cordis framework, deliberately short/generic"
+    },
+    {
+      "name": "@cordisjs/core",
+      "origin": "real",
+      "note": "Cordis scoped package name"
+    },
+    {
+      "name": "acme-widget",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "orbit-router",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "lumen-cache",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "quartz-logger",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "pixel-pipeline",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "harbor-config",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "signal-lens",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "maple-store",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "atlas-quant",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "fern-cli",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    }
+  ]
+}

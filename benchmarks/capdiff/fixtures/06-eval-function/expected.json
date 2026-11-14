@@ -1,0 +1,16 @@
+{
+  "id": "06-eval-function",
+  "category": "eval",
+  "description": "Uses new Function and direct eval; eval is declared.",
+  "declared": [
+    "eval"
+  ],
+  "actual": [
+    "eval"
+  ],
+  "staticVisible": [
+    "eval"
+  ],
+  "notes": "Language-level dynamic code evidence, not an import.",
+  "limitation": null
+}

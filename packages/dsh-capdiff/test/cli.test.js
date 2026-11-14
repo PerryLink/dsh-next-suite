@@ -1,10 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
 
 const CLI = fileURLToPath(new URL('../src/cli.js', import.meta.url))
 
@@ -83,7 +86,7 @@ test('CLI --help exits 0 and documents the flags and heuristic warning', async (
 test('CLI --version prints the package version', async () => {
   const result = await runCli(['--version'])
   assert.equal(result.code, 0)
-  assert.equal(result.stdout.trim(), 'dsh-capdiff 0.1.0')
+  assert.equal(result.stdout.trim(), `dsh-capdiff ${pkg.version}`)
 })
 
 test('CLI --json reports declared, actual and diff for a directory', async (t) => {
@@ -96,7 +99,7 @@ test('CLI --json reports declared, actual and diff for a directory', async (t) =
 
   const report = JSON.parse(result.stdout)
   assert.equal(report.tool, 'dsh-capdiff')
-  assert.equal(report.version, '0.1.0')
+  assert.equal(report.version, pkg.version)
   assert.equal(report.target, resolve(dir))
   assert.equal(report.manifest, resolve(manifest))
   assert.equal(report.filesScanned, 1)

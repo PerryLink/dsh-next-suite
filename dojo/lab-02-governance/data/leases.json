@@ -1,0 +1,36 @@
+{
+  "nowMs": 1700000000000,
+  "workspace": "ws-dojo",
+  "ttlMs": 60000,
+  "requests": [
+    {
+      "key": "a",
+      "owner": "agent-a",
+      "paths": ["src/app.js", "src/lib/util.js"]
+    },
+    {
+      "key": "b",
+      "owner": "agent-b",
+      "paths": ["src/app.js"]
+    },
+    {
+      "key": "c",
+      "owner": "agent-c",
+      "paths": ["docs/readme.md"]
+    }
+  ],
+  "patchset": {
+    "files": [
+      {
+        "path": "src/app.js",
+        "before": "export const version = 1\n",
+        "after": "export const version = 2\n"
+      },
+      {
+        "path": "src/lib/util.js",
+        "before": "export const util = false\n",
+        "after": "export const util = true\n"
+      }
+    ]
+  }
+}

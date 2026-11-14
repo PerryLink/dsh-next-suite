@@ -1,0 +1,36 @@
+{
+  "name": "dsh-hello-plugin",
+  "version": "0.1.0",
+  "description": "Lab 1 starter: a minimal DeepSeek Harness plugin that registers a greet tool.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.9.0",
+    "dsh": ">=0.2.2-rc.3 <0.3.0"
+  },
+  "scripts": {
+    "test": "node --test test/check.mjs"
+  },
+  "keywords": [
+    "deepseek",
+    "dsh",
+    "dsh-plugin",
+    "dojo",
+    "hello-world"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "09-obfuscated-eval",
+  "category": "obfuscated",
+  "description": "Reaches the global eval function through a computed property name.",
+  "declared": [
+    "eval"
+  ],
+  "actual": [
+    "eval"
+  ],
+  "staticVisible": [],
+  "notes": "Deliberate false negative for a regex scanner. Because eval is declared, the tool is expected to emit a false \"unused\" finding.",
+  "limitation": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
+}

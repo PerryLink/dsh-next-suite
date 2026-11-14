@@ -30,7 +30,7 @@ the guides: `summary` paraphrases, `fix` gives the migration action, and
 
 ### Goals
 
-1. A small, reviewable JSON corpus of real DSH 0.2.x breakpoints.
+1. A small, reviewable JSON corpus of real DSH 0.1.7–0.2.2-rc.2 breakpoints.
 2. Strict validation with useful error messages before data is rendered.
 3. Version-window queries that understand DSH prereleases.
 4. Deterministic Markdown for release notes and migration checklists.
@@ -275,12 +275,15 @@ This makes the data useful both offline (with a DSH checkout) and online.
 Evidence may be a string for simple entries; the core normalizes it to an
 array.
 
-The `plugin-index-wording` entry is the one non-guide case. It records a UI
-label rename from "Custom plugin markets" back to "Custom plugin indexes". Its
-evidence is the current user guide plus the commit that changed the label. Its
-`from` version `0.2.2-alpha.1` was checked with
-`git merge-base --is-ancestor`: the rename commit is in that release and not in
-`0.2.1-rc.4`. The README and the entry make that check visible.
+The bundled corpus is mostly guide-backed. Three kinds of non-guide evidence
+exist: dated persistence records (`session-format-v4`, `job-session-lifecycle`),
+a source implementation file plus a change commit for the Windows Markdown-path
+fix, and the two commits that introduced and reverted the
+`plugin-index-wording` label. The plugin label shipped as "Custom plugin
+markets" from `0.2.1-alpha.4` through `0.2.1-rc.5` and was presented as "Custom
+plugin indexes" again in `0.2.2-alpha.2`; no `0.2.2-alpha.1` release exists. Those
+boundaries were checked with `git show <tag>:<path>`, not with an assumed
+release directory. The README and the entries make those checks visible.
 
 The atlas does not copy long guide text. Summaries paraphrase; readers follow
 the evidence for exact wording, conditions, and exceptions.

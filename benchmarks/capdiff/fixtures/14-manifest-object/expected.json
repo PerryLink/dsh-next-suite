@@ -1,0 +1,16 @@
+{
+  "id": "14-manifest-object",
+  "category": "declaration-format",
+  "description": "Manifest uses the object form of dsh.capabilities; filesystem is the only truthy entry.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "Checks parseDeclared({ filesystem: true, network: false }) -> [\"filesystem\"].",
+  "limitation": null
+}

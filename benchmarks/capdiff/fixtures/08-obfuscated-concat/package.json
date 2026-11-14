@@ -1,0 +1,11 @@
+{
+  "name": "@bench/08-obfuscated-concat",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

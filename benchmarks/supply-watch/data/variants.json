@@ -1,0 +1,185 @@
+{
+  "description": "30 lookalike candidates. Each is a deliberate typo, separator variant, or namespace/brand-prefix variant of exactly one known name and is expected to be suspicious. Three prefix variants are out of the current heuristics' reach and are included on purpose.",
+  "variants": [
+    {
+      "name": "dsh-capdif",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "deletion of the final f"
+    },
+    {
+      "name": "dsh-capdfif",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "transposed i and f"
+    },
+    {
+      "name": "dsh-capdiff-js",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "extra language suffix"
+    },
+    {
+      "name": "dshcapdiff",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "glued namespace marker (missing separator)"
+    },
+    {
+      "name": "testatum-attestt",
+      "category": "typo",
+      "target": "testatum-attest",
+      "rationale": "doubled final t"
+    },
+    {
+      "name": "testatum-atest",
+      "category": "typo",
+      "target": "testatum-attest",
+      "rationale": "missing t"
+    },
+    {
+      "name": "cordis-migrat",
+      "category": "typo",
+      "target": "cordis-migrate",
+      "rationale": "truncated final e"
+    },
+    {
+      "name": "cordis-hmr-docter",
+      "category": "typo",
+      "target": "cordis-hmr-doctor",
+      "rationale": "single-character substitution o -> e"
+    },
+    {
+      "name": "dsh-xbrl2",
+      "category": "typo",
+      "target": "dsh-xbrl",
+      "rationale": "digit suffix"
+    },
+    {
+      "name": "dsh-upgrade-atlas-extra",
+      "category": "typo",
+      "target": "dsh-upgrade-atlas",
+      "rationale": "extra trailing segment"
+    },
+    {
+      "name": "dsh_capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "underscore instead of hyphen"
+    },
+    {
+      "name": "dsh.capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "dot instead of hyphen"
+    },
+    {
+      "name": "dsh__capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "doubled underscore separator"
+    },
+    {
+      "name": "testatum_attest",
+      "category": "separator",
+      "target": "testatum-attest",
+      "rationale": "underscore instead of hyphen"
+    },
+    {
+      "name": "cordis.hmr.doctor",
+      "category": "separator",
+      "target": "cordis-hmr-doctor",
+      "rationale": "dots instead of hyphens"
+    },
+    {
+      "name": "cordis_migrate",
+      "category": "separator",
+      "target": "cordis-migrate",
+      "rationale": "underscore instead of hyphen"
+    },
+    {
+      "name": "dsh-supply_watch",
+      "category": "separator",
+      "target": "dsh-supply-watch",
+      "rationale": "mixed hyphen and underscore"
+    },
+    {
+      "name": "dsh_xbrl",
+      "category": "separator",
+      "target": "dsh-xbrl",
+      "rationale": "underscore instead of hyphen"
+    },
+    {
+      "name": "dsh--upgrade--atlas",
+      "category": "separator",
+      "target": "dsh-upgrade-atlas",
+      "rationale": "doubled hyphens"
+    },
+    {
+      "name": "@cordisjs-core",
+      "category": "separator",
+      "target": "@cordisjs/core",
+      "rationale": "scope slash replaced by hyphen"
+    },
+    {
+      "name": "node-dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "node- prefix on a dsh- name"
+    },
+    {
+      "name": "deepseek-dsh-xbrl",
+      "category": "prefix",
+      "target": "dsh-xbrl",
+      "rationale": "deepseek- qualifier before dsh-"
+    },
+    {
+      "name": "official-dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "official- trust qualifier"
+    },
+    {
+      "name": "dsh-cordis-migrate",
+      "category": "prefix",
+      "target": "cordis-migrate",
+      "rationale": "adds a dsh- namespace prefix"
+    },
+    {
+      "name": "dsh-testatum-attest",
+      "category": "prefix",
+      "target": "testatum-attest",
+      "rationale": "adds a dsh- namespace prefix"
+    },
+    {
+      "name": "dshcordis-hmr-doctor",
+      "category": "prefix",
+      "target": "cordis-hmr-doctor",
+      "rationale": "glued dsh namespace prefix"
+    },
+    {
+      "name": "official-dsh-supply-watch",
+      "category": "prefix",
+      "target": "dsh-supply-watch",
+      "rationale": "official- trust qualifier"
+    },
+    {
+      "name": "@deepseek/dsh-xbrl",
+      "category": "prefix",
+      "target": "dsh-xbrl",
+      "rationale": "scope impersonation of the DeepSeek namespace; out of scope for the current heuristics"
+    },
+    {
+      "name": "@evil/dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "scope wrapping of a known name; out of scope for the current heuristics"
+    },
+    {
+      "name": "deepseek-harness-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "brand-name expansion of dsh; out of scope for the current heuristics"
+    }
+  ]
+}

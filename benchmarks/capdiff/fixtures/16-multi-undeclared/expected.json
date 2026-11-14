@@ -1,0 +1,22 @@
+{
+  "id": "16-multi-undeclared",
+  "category": "multi-capability",
+  "description": "Declares filesystem but statically uses filesystem, network, process (re-export) and env.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem",
+    "network",
+    "process",
+    "env"
+  ],
+  "staticVisible": [
+    "filesystem",
+    "network",
+    "process",
+    "env"
+  ],
+  "notes": "Recall test for undeclared findings: network, process and env should each be reported.",
+  "limitation": null
+}

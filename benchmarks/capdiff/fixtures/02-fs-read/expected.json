@@ -1,0 +1,16 @@
+{
+  "id": "02-fs-read",
+  "category": "filesystem",
+  "description": "Static import of node:fs/promises; manifest declares filesystem.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "Straightforward true positive: declaration matches a statically visible import.",
+  "limitation": null
+}

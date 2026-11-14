@@ -1,0 +1,13 @@
+{
+  "nowMs": 1700000000000,
+  "scope": "ws-dojo",
+  "softRatio": 0.8,
+  "limits": {
+    "tokens": 100
+  },
+  "requests": {
+    "first": { "tokens": 80 },
+    "second": { "tokens": 30 },
+    "consume": { "tokens": 30 }
+  }
+}

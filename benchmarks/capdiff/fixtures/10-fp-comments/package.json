@@ -1,0 +1,9 @@
+{
+  "name": "@bench/10-fp-comments",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": []
+  }
+}

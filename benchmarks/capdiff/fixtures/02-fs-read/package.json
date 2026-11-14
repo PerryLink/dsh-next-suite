@@ -1,0 +1,11 @@
+{
+  "name": "@bench/02-fs-read",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

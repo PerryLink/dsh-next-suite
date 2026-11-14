@@ -219,7 +219,7 @@ async function main() {
     return
   }
   if (values.version) {
-    console.log('cordis-migrate 0.1.0')
+    console.log('cordis-migrate 0.1.2')
     return
   }
   if (positionals.length === 0) {

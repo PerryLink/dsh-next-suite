@@ -1,0 +1,85 @@
+{
+  "description": "20 legitimate names that are not aliases of the known baseline and should not be reported as typosquats. Several are ecosystem-adjacent hard negatives. One (cordis-http-client) is a plausible official plugin name that the generic 'cordis' entry causes to be reported as a low-score extra segment.",
+  "legit": [
+    {
+      "name": "express",
+      "rationale": "unrelated widely used package"
+    },
+    {
+      "name": "lodash",
+      "rationale": "unrelated widely used package"
+    },
+    {
+      "name": "prettier",
+      "rationale": "unrelated widely used package"
+    },
+    {
+      "name": "vite",
+      "rationale": "unrelated widely used package"
+    },
+    {
+      "name": "@cordisjs/plugin-loader",
+      "rationale": "plausible scoped Cordis ecosystem package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-plugin-sdk",
+      "rationale": "plausible official-looking scoped package"
+    },
+    {
+      "name": "@acme/widget-kit",
+      "rationale": "scoped variant is a distinct package, not an alias"
+    },
+    {
+      "name": "nimbus-framework",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "tundra-cli",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "saffron-utils",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "pioneer-logger",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "meridian-types",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "basalt-test",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "cobalt-lint",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "willow-config",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "newton-math",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "polaris-ui",
+      "rationale": "unrelated synthetic package"
+    },
+    {
+      "name": "cascade-router",
+      "rationale": "same generic suffix as orbit-router, but a distinct package"
+    },
+    {
+      "name": "dsh-catalog",
+      "rationale": "plausible dsh- package whose core token is far from every known dsh- name"
+    },
+    {
+      "name": "cordis-http-client",
+      "rationale": "plausible Cordis ecosystem extension; hard negative that the extra-segment heuristic reports as low severity"
+    }
+  ]
+}

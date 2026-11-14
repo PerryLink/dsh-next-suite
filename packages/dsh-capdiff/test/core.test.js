@@ -1,5 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+
+const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
 
 import {
   CAPABILITY_MAP,
@@ -226,7 +229,7 @@ test('toSarif emits minimal SARIF 2.1.0 with rules and physical locations', () =
 
   const run = sarif.runs[0]
   assert.equal(run.tool.driver.name, 'dsh-capdiff')
-  assert.equal(run.tool.driver.version, '0.1.0')
+  assert.equal(run.tool.driver.version, pkg.version)
   assert.deepEqual(
     run.tool.driver.rules.map((rule) => rule.id),
     ['dsh-capdiff/undeclared', 'dsh-capdiff/unused'],

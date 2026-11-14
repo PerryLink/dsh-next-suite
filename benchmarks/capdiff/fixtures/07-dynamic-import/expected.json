@@ -1,0 +1,16 @@
+{
+  "id": "07-dynamic-import",
+  "category": "dynamic-import",
+  "description": "Uses import(\"node:fs/promises\") with a static string specifier.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "Dynamic import with a string literal is in scope and should be detected (kind=dynamic).",
+  "limitation": null
+}

@@ -1,0 +1,10 @@
+{
+  "id": "12-fp-properties",
+  "category": "false-positive-trap",
+  "description": "Uses an eval-named object property, an evaluate() helper and a machine.env field.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Trap expected to pass: property access must not be treated as global eval or process.env.",
+  "limitation": null
+}

@@ -10,7 +10,7 @@ import {
   parseFacts,
 } from './core.js'
 
-const USAGE = `dsh-xbrl 0.1.0 — offline XBRL fact reconciliation and restatement diff
+const USAGE = `dsh-xbrl 0.1.2 — offline XBRL fact reconciliation and restatement diff
 
 Usage:
   dsh-xbrl check <facts.json> [--json]
@@ -69,7 +69,7 @@ async function main(argv) {
     return 0
   }
   if (values.version) {
-    process.stdout.write('dsh-xbrl 0.1.0\n')
+    process.stdout.write('dsh-xbrl 0.1.2\n')
     return 0
   }
 

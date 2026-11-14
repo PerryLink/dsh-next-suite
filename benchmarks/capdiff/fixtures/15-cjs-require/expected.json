@@ -1,0 +1,16 @@
+{
+  "id": "15-cjs-require",
+  "category": "require-cjs",
+  "description": "CommonJS file uses require(\"node:child_process\"); process is declared.",
+  "declared": [
+    "process"
+  ],
+  "actual": [
+    "process"
+  ],
+  "staticVisible": [
+    "process"
+  ],
+  "notes": "Checks the .cjs extension and the require() extraction path.",
+  "limitation": null
+}

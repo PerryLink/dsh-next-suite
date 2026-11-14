@@ -1,0 +1,9 @@
+{
+  "name": "@bench/04-child-process",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": []
+  }
+}

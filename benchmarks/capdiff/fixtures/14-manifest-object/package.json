@@ -1,0 +1,12 @@
+{
+  "name": "@bench/14-manifest-object",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dsh": {
+    "capabilities": {
+      "filesystem": true,
+      "network": false
+    }
+  }
+}

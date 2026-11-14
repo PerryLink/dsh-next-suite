@@ -1,0 +1,93 @@
+# CI for dsh-next-suite.
+#
+# The suite supports Node ^22.19.0 || >=24.9.0, so both the lower bound and the
+# current Node 24 line are exercised. This repo intentionally has no
+# package-lock.json (the packages are dependency-free), so installs use
+# `npm install` and no dependency cache.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - '22.19.0'
+          - '24'
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies (npm install)
+        run: npm install --no-package-lock --ignore-scripts --no-audit --no-fund
+
+      - name: Test
+        run: npm test
+
+      - name: Syntax check every src/*.js
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(packages/*/src/*.js)
+          if ((${#files[@]} == 0)); then
+            echo "::error::No packages/*/src/*.js files found"
+            exit 1
+          fi
+          for file in "${files[@]}"; do
+            node --check "$file"
+          done
+          echo "node --check: ${#files[@]} file(s) OK"
+
+      - name: CLI smoke (--version / --help)
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          for manifest in packages/*/package.json; do
+            package_dir="$(dirname "$manifest")"
+            while IFS= read -r bin; do
+              [ -n "$bin" ] || continue
+              count=$((count + 1))
+              echo "::group::CLI smoke ${package_dir}/${bin}"
+              version="$(node "${package_dir}/${bin}" --version)"
+              if [ -z "$version" ]; then
+                echo "::error::${package_dir}/${bin} --version printed nothing"
+                exit 1
+              fi
+              printf 'version: %s\n' "$version"
+              node "${package_dir}/${bin}" --help >/dev/null
+              echo "::endgroup::"
+            done < <(node -p "const b = require('./${manifest}').bin; b ? (typeof b === 'string' ? [b] : Object.values(b)).join('\n') : ''")
+          done
+          if [ "$count" -eq 0 ]; then
+            echo "::error::No CLI entry points found; this suite is expected to expose several"
+            exit 1
+          fi
+          echo "CLI smoke: ${count} CLI(s) OK"
+
+      # Runs `npm pack --dry-run --json` for every package and asserts the
+      # required files (src/, README, DESIGN, LICENSE, package.json).
+      - name: Pack manifest smoke test
+        run: node scripts/smoke-pack.mjs

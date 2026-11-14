@@ -1,0 +1,10 @@
+{
+  "id": "10-fp-comments",
+  "category": "false-positive-trap",
+  "description": "Comments contain imports, process.env and eval, but no executable capability.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Trap expected to pass: commented-out code and prose must not be reported.",
+  "limitation": null
+}

@@ -1,0 +1,1169 @@
+{
+  "benchmark": "dsh-supply-watch",
+  "description": "Offline typosquat/lookalike benchmark over a curated known-name baseline, lookalike variants and legitimate names.",
+  "tool": {
+    "packageName": "dsh-supply-watch",
+    "packageVersion": "0.1.1"
+  },
+  "generatedAt": "2026-11-14T12:25:46.869Z",
+  "node": "v24.22.1",
+  "counts": {
+    "known": 20,
+    "knownReal": 10,
+    "knownSynthetic": 10,
+    "variants": 30,
+    "variantsByCategory": {
+      "typo": 10,
+      "separator": 10,
+      "prefix": 10
+    },
+    "legit": 20
+  },
+  "thresholds": [
+    {
+      "id": "any",
+      "label": "Any finding (score > 0)",
+      "meaning": "any typo/version finding emitted by the core",
+      "tp": 27,
+      "fp": 1,
+      "fn": 3,
+      "tn": 19,
+      "precision": 0.964286,
+      "recall": 0.9,
+      "f1": 0.931034,
+      "falsePositiveRate": 0.05,
+      "accuracy": 0.92,
+      "perCategory": {
+        "typo": {
+          "total": 10,
+          "detected": 10,
+          "recall": 1
+        },
+        "separator": {
+          "total": 10,
+          "detected": 10,
+          "recall": 1
+        },
+        "prefix": {
+          "total": 10,
+          "detected": 7,
+          "recall": 0.7
+        }
+      }
+    },
+    {
+      "id": "medium",
+      "label": "Medium or high (score >= 50)",
+      "meaning": "findings the core labels medium or high severity",
+      "tp": 25,
+      "fp": 0,
+      "fn": 5,
+      "tn": 20,
+      "precision": 1,
+      "recall": 0.833333,
+      "f1": 0.909091,
+      "falsePositiveRate": 0,
+      "accuracy": 0.9,
+      "perCategory": {
+        "typo": {
+          "total": 10,
+          "detected": 8,
+          "recall": 0.8
+        },
+        "separator": {
+          "total": 10,
+          "detected": 10,
+          "recall": 1
+        },
+        "prefix": {
+          "total": 10,
+          "detected": 7,
+          "recall": 0.7
+        }
+      }
+    },
+    {
+      "id": "high",
+      "label": "High only (score >= 80)",
+      "meaning": "findings the core labels high severity",
+      "tp": 17,
+      "fp": 0,
+      "fn": 13,
+      "tn": 20,
+      "precision": 1,
+      "recall": 0.566667,
+      "f1": 0.723404,
+      "falsePositiveRate": 0,
+      "accuracy": 0.74,
+      "perCategory": {
+        "typo": {
+          "total": 10,
+          "detected": 7,
+          "recall": 0.7
+        },
+        "separator": {
+          "total": 10,
+          "detected": 10,
+          "recall": 1
+        },
+        "prefix": {
+          "total": 10,
+          "detected": 0,
+          "recall": 0
+        }
+      }
+    }
+  ],
+  "known": [
+    {
+      "name": "dsh-capdiff",
+      "origin": "real",
+      "note": "dsh-next-suite package (npm 0.1.1)"
+    },
+    {
+      "name": "testatum-attest",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-supply-watch",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-hmr-doctor",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-migrate",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis-testkit",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-xbrl",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "dsh-upgrade-atlas",
+      "origin": "real",
+      "note": "dsh-next-suite package"
+    },
+    {
+      "name": "cordis",
+      "origin": "real",
+      "note": "Cordis framework, deliberately short/generic"
+    },
+    {
+      "name": "@cordisjs/core",
+      "origin": "real",
+      "note": "Cordis scoped package name"
+    },
+    {
+      "name": "acme-widget",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "orbit-router",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "lumen-cache",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "quartz-logger",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "pixel-pipeline",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "harbor-config",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "signal-lens",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "maple-store",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "atlas-quant",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    },
+    {
+      "name": "fern-cli",
+      "origin": "synthetic",
+      "note": "fictional package baseline"
+    }
+  ],
+  "variants": [
+    {
+      "kind": "variant",
+      "name": "dsh-capdif",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "deletion of the final f",
+      "score": 88,
+      "nearest": "dsh-capdiff",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-capdfif",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "transposed i and f",
+      "score": 68,
+      "nearest": "dsh-capdiff",
+      "distance": 2,
+      "severity": "medium",
+      "reason": "edit distance 2 from \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-capdiff-js",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "extra language suffix",
+      "score": 46,
+      "nearest": "dsh-capdiff",
+      "distance": 3,
+      "severity": "low",
+      "reason": "edit distance 3 from \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dshcapdiff",
+      "category": "typo",
+      "target": "dsh-capdiff",
+      "rationale": "glued namespace marker (missing separator)",
+      "score": 88,
+      "nearest": "dsh-capdiff",
+      "distance": 1,
+      "severity": "high",
+      "reason": "separator placement variant of \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "testatum-attestt",
+      "category": "typo",
+      "target": "testatum-attest",
+      "rationale": "doubled final t",
+      "score": 88,
+      "nearest": "testatum-attest",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"testatum-attest\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "testatum-atest",
+      "category": "typo",
+      "target": "testatum-attest",
+      "rationale": "missing t",
+      "score": 88,
+      "nearest": "testatum-attest",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"testatum-attest\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "cordis-migrat",
+      "category": "typo",
+      "target": "cordis-migrate",
+      "rationale": "truncated final e",
+      "score": 88,
+      "nearest": "cordis-migrate",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"cordis-migrate\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "cordis-hmr-docter",
+      "category": "typo",
+      "target": "cordis-hmr-doctor",
+      "rationale": "single-character substitution o -> e",
+      "score": 88,
+      "nearest": "cordis-hmr-doctor",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"cordis-hmr-doctor\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-xbrl2",
+      "category": "typo",
+      "target": "dsh-xbrl",
+      "rationale": "digit suffix",
+      "score": 88,
+      "nearest": "dsh-xbrl",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"dsh-xbrl\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-upgrade-atlas-extra",
+      "category": "typo",
+      "target": "dsh-upgrade-atlas",
+      "rationale": "extra trailing segment",
+      "score": 44,
+      "nearest": "dsh-upgrade-atlas",
+      "distance": 6,
+      "severity": "low",
+      "reason": "adds an extra segment (\"extra\") to \"dsh-upgrade-atlas\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh_capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "underscore instead of hyphen",
+      "score": 90,
+      "nearest": "dsh-capdiff",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh.capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "dot instead of hyphen",
+      "score": 90,
+      "nearest": "dsh-capdiff",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh__capdiff",
+      "category": "separator",
+      "target": "dsh-capdiff",
+      "rationale": "doubled underscore separator",
+      "score": 90,
+      "nearest": "dsh-capdiff",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "testatum_attest",
+      "category": "separator",
+      "target": "testatum-attest",
+      "rationale": "underscore instead of hyphen",
+      "score": 90,
+      "nearest": "testatum-attest",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"testatum-attest\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "cordis.hmr.doctor",
+      "category": "separator",
+      "target": "cordis-hmr-doctor",
+      "rationale": "dots instead of hyphens",
+      "score": 90,
+      "nearest": "cordis-hmr-doctor",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"cordis-hmr-doctor\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "cordis_migrate",
+      "category": "separator",
+      "target": "cordis-migrate",
+      "rationale": "underscore instead of hyphen",
+      "score": 90,
+      "nearest": "cordis-migrate",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"cordis-migrate\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-supply_watch",
+      "category": "separator",
+      "target": "dsh-supply-watch",
+      "rationale": "mixed hyphen and underscore",
+      "score": 90,
+      "nearest": "dsh-supply-watch",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-supply-watch\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh_xbrl",
+      "category": "separator",
+      "target": "dsh-xbrl",
+      "rationale": "underscore instead of hyphen",
+      "score": 90,
+      "nearest": "dsh-xbrl",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-xbrl\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh--upgrade--atlas",
+      "category": "separator",
+      "target": "dsh-upgrade-atlas",
+      "rationale": "doubled hyphens",
+      "score": 90,
+      "nearest": "dsh-upgrade-atlas",
+      "distance": 0,
+      "severity": "high",
+      "reason": "separator or punctuation variant of \"dsh-upgrade-atlas\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "@cordisjs-core",
+      "category": "separator",
+      "target": "@cordisjs/core",
+      "rationale": "scope slash replaced by hyphen",
+      "score": 88,
+      "nearest": "@cordisjs/core",
+      "distance": 1,
+      "severity": "high",
+      "reason": "edit distance 1 from \"@cordisjs/core\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": true
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "node-dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "node- prefix on a dsh- name",
+      "score": 74,
+      "nearest": "dsh-capdiff",
+      "distance": 5,
+      "severity": "medium",
+      "reason": "uses a different dsh- namespace prefix than \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "deepseek-dsh-xbrl",
+      "category": "prefix",
+      "target": "dsh-xbrl",
+      "rationale": "deepseek- qualifier before dsh-",
+      "score": 74,
+      "nearest": "dsh-xbrl",
+      "distance": 9,
+      "severity": "medium",
+      "reason": "uses a different dsh- namespace prefix than \"dsh-xbrl\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "official-dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "official- trust qualifier",
+      "score": 74,
+      "nearest": "dsh-capdiff",
+      "distance": 9,
+      "severity": "medium",
+      "reason": "uses a different dsh- namespace prefix than \"dsh-capdiff\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-cordis-migrate",
+      "category": "prefix",
+      "target": "cordis-migrate",
+      "rationale": "adds a dsh- namespace prefix",
+      "score": 74,
+      "nearest": "cordis-migrate",
+      "distance": 4,
+      "severity": "medium",
+      "reason": "adds a dsh- namespace prefix to \"cordis-migrate\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dsh-testatum-attest",
+      "category": "prefix",
+      "target": "testatum-attest",
+      "rationale": "adds a dsh- namespace prefix",
+      "score": 74,
+      "nearest": "testatum-attest",
+      "distance": 4,
+      "severity": "medium",
+      "reason": "adds a dsh- namespace prefix to \"testatum-attest\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "dshcordis-hmr-doctor",
+      "category": "prefix",
+      "target": "cordis-hmr-doctor",
+      "rationale": "glued dsh namespace prefix",
+      "score": 74,
+      "nearest": "cordis-hmr-doctor",
+      "distance": 3,
+      "severity": "medium",
+      "reason": "adds a dsh- namespace prefix to \"cordis-hmr-doctor\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "official-dsh-supply-watch",
+      "category": "prefix",
+      "target": "dsh-supply-watch",
+      "rationale": "official- trust qualifier",
+      "score": 74,
+      "nearest": "dsh-supply-watch",
+      "distance": 9,
+      "severity": "medium",
+      "reason": "uses a different dsh- namespace prefix than \"dsh-supply-watch\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": true,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "@deepseek/dsh-xbrl",
+      "category": "prefix",
+      "target": "dsh-xbrl",
+      "rationale": "scope impersonation of the DeepSeek namespace; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-xbrl",
+      "distance": 10,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "@evil/dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "scope wrapping of a known name; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-capdiff",
+      "distance": 6,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "deepseek-harness-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "brand-name expansion of dsh; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-capdiff",
+      "distance": 13,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    }
+  ],
+  "legit": [
+    {
+      "kind": "legit",
+      "name": "express",
+      "rationale": "unrelated widely used package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 5,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "lodash",
+      "rationale": "unrelated widely used package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 4,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "prettier",
+      "rationale": "unrelated widely used package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 7,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "vite",
+      "rationale": "unrelated widely used package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 6,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "@cordisjs/plugin-loader",
+      "rationale": "plausible scoped Cordis ecosystem package",
+      "score": 0,
+      "nearest": "@cordisjs/core",
+      "distance": 11,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "@deepseek-ai/dsh-plugin-sdk",
+      "rationale": "plausible official-looking scoped package",
+      "score": 0,
+      "nearest": "pixel-pipeline",
+      "distance": 20,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "@acme/widget-kit",
+      "rationale": "scoped variant is a distinct package, not an alias",
+      "score": 0,
+      "nearest": "acme-widget",
+      "distance": 6,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "nimbus-framework",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "orbit-router",
+      "distance": 12,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "tundra-cli",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "fern-cli",
+      "distance": 5,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "saffron-utils",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "fern-cli",
+      "distance": 8,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "pioneer-logger",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "quartz-logger",
+      "distance": 7,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "meridian-types",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 10,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "basalt-test",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "testatum-attest",
+      "distance": 8,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "cobalt-lint",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "signal-lens",
+      "distance": 7,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "willow-config",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "harbor-config",
+      "distance": 5,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "newton-math",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "lumen-cache",
+      "distance": 8,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "polaris-ui",
+      "rationale": "unrelated synthetic package",
+      "score": 0,
+      "nearest": "cordis",
+      "distance": 7,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "cascade-router",
+      "rationale": "same generic suffix as orbit-router, but a distinct package",
+      "score": 0,
+      "nearest": "orbit-router",
+      "distance": 7,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "dsh-catalog",
+      "rationale": "plausible dsh- package whose core token is far from every known dsh- name",
+      "score": 0,
+      "nearest": "dsh-capdiff",
+      "distance": 5,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "legit",
+      "name": "cordis-http-client",
+      "rationale": "plausible Cordis ecosystem extension; hard negative that the extra-segment heuristic reports as low severity",
+      "score": 44,
+      "nearest": "cordis",
+      "distance": 12,
+      "severity": "low",
+      "reason": "adds an extra segment (\"http-client\") to \"cordis\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": false,
+        "high": false
+      }
+    }
+  ],
+  "missed": [
+    {
+      "kind": "variant",
+      "name": "@deepseek/dsh-xbrl",
+      "category": "prefix",
+      "target": "dsh-xbrl",
+      "rationale": "scope impersonation of the DeepSeek namespace; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-xbrl",
+      "distance": 10,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "@evil/dsh-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "scope wrapping of a known name; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-capdiff",
+      "distance": 6,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    },
+    {
+      "kind": "variant",
+      "name": "deepseek-harness-capdiff",
+      "category": "prefix",
+      "target": "dsh-capdiff",
+      "rationale": "brand-name expansion of dsh; out of scope for the current heuristics",
+      "score": 0,
+      "nearest": "dsh-capdiff",
+      "distance": 13,
+      "severity": null,
+      "reason": "no close match among 20 known package name(s)",
+      "flagged": false,
+      "passes": {
+        "any": false,
+        "medium": false,
+        "high": false
+      }
+    }
+  ],
+  "falsePositives": [
+    {
+      "kind": "legit",
+      "name": "cordis-http-client",
+      "rationale": "plausible Cordis ecosystem extension; hard negative that the extra-segment heuristic reports as low severity",
+      "score": 44,
+      "nearest": "cordis",
+      "distance": 12,
+      "severity": "low",
+      "reason": "adds an extra segment (\"http-client\") to \"cordis\"",
+      "flagged": true,
+      "passes": {
+        "any": true,
+        "medium": false,
+        "high": false
+      }
+    }
+  ],
+  "knownSelfCheck": {
+    "count": 20,
+    "flagged": 0,
+    "ok": true,
+    "findings": []
+  },
+  "consistency": {
+    "ok": true,
+    "watchFindings": 28,
+    "directFindings": 28
+  },
+  "disclaimer": "Offline heuristics only. Findings are leads, not proof. This tool is not a substitute for software composition analysis, advisory data, registry ownership checks, or tarball inspection."
+}

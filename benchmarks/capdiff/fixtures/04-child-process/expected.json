@@ -1,0 +1,14 @@
+{
+  "id": "04-child-process",
+  "category": "process",
+  "description": "Spawns a child process while the manifest declares no capabilities.",
+  "declared": [],
+  "actual": [
+    "process"
+  ],
+  "staticVisible": [
+    "process"
+  ],
+  "notes": "Ground truth says process is undeclared; the desired finding is undeclared=process.",
+  "limitation": null
+}

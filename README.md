@@ -1,9 +1,11 @@
 # dsh-next-suite
 
+[Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
+
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
-> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.1.1` on npm (2026-11-14).
+> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.1.2` on npm (2026-11-14).
 
 This suite is deliberately **not** another set of governance packages. It targets the gaps left after [`dsh-os-suite`](../dsh-os-suite/): plugin trust, Cordis developer experience, and a domain-data check.
 
@@ -35,7 +37,7 @@ This suite is deliberately **not** another set of governance packages. It target
 
 - [`CREDENTIALS.md`](CREDENTIALS.md) — 90-day credential plan (DOI, OpenSSF badge, FSE'27, IETF/W3C, 职称). No fabricated results.
 - [`DOJO.md`](DOJO.md) — two hands-on labs: Hello Plugin and Governance Lab, with acceptance criteria.
-- [`ECOSYSTEM-ATLAS.md`](ECOSYSTEM-ATLAS.md) — seed entity atlas (12 entries), not an exhaustive directory.
+- [`ECOSYSTEM-ATLAS.md`](ECOSYSTEM-ATLAS.md) — 64-entity ecosystem atlas (JSON: [`data/ecosystem-atlas.json`](data/ecosystem-atlas.json)), not an exhaustive directory; validate with `npm run validate:atlas`.
 
 ## Status (2026-11-14)
 
@@ -43,7 +45,7 @@ This suite is deliberately **not** another set of governance packages. It target
 - **15 `src/*.js` files** pass `node --check`.
 - **8/8 names** are free on npm (`npm view` → E404) and no exact GitHub repo name exists.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md); contract fixes tracked in `CONTRACT-FIX.md`.
-- **Published**: all eight packages at `0.1.1` on npm (2026-11-14); GitHub repo and `v0.1.1` release.
+- **Published**: all eight packages at `0.1.2` on npm (2026-11-14); GitHub repo and `v0.1.2` release.
 
 ## Quick start
 

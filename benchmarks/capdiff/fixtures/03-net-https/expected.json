@@ -1,0 +1,16 @@
+{
+  "id": "03-net-https",
+  "category": "network",
+  "description": "Static import of node:https; manifest declares network.",
+  "declared": [
+    "network"
+  ],
+  "actual": [
+    "network"
+  ],
+  "staticVisible": [
+    "network"
+  ],
+  "notes": "Network capability through a builtin module import.",
+  "limitation": null
+}

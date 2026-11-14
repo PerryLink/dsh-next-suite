@@ -1,6 +1,6 @@
 {
   "name": "dsh-upgrade-atlas",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Community-maintained atlas of DeepSeek Harness (DSH) upgrade breakpoints: validate, query, and render Markdown.",
   "type": "module",
   "license": "Apache-2.0",

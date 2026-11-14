@@ -1,0 +1,44 @@
+{
+  "sessionId": "sess-dojo-001",
+  "spans": [
+    {
+      "id": "span-approval",
+      "kind": "approval",
+      "name": "approve:workspace_apply",
+      "startMs": 1700000000000,
+      "endMs": 1700000000100,
+      "status": "ok",
+      "attrs": {
+        "approvalId": "apr-001",
+        "decision": "allow",
+        "actor": "instructor"
+      }
+    },
+    {
+      "id": "span-tool",
+      "parentId": "span-approval",
+      "kind": "tool",
+      "name": "workspace_apply",
+      "startMs": 1700000000200,
+      "endMs": 1700000000400,
+      "status": "ok",
+      "attrs": {
+        "tool": "workspace_apply",
+        "leaseId": "lease-1"
+      }
+    },
+    {
+      "id": "span-write",
+      "parentId": "span-tool",
+      "kind": "tool",
+      "name": "write_file:src/app.js",
+      "startMs": 1700000000400,
+      "endMs": 1700000000500,
+      "status": "ok",
+      "attrs": {
+        "path": "src/app.js",
+        "bytes": 42
+      }
+    }
+  ]
+}

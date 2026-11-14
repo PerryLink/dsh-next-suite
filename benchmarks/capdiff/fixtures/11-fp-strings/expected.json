@@ -1,0 +1,10 @@
+{
+  "id": "11-fp-strings",
+  "category": "false-positive-trap",
+  "description": "String and template literals contain import/require/process.env/eval text.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Trap expected to pass: literal samples in documentation strings must not be reported.",
+  "limitation": null
+}
