@@ -20,6 +20,17 @@ This suite is deliberately **not** another set of governance packages. It target
 | [`dsh-xbrl`](packages/dsh-xbrl/) | CLI | Offline XBRL fact reconciliation and restatement diff. |
 | [`dsh-upgrade-atlas`](packages/dsh-upgrade-atlas/) | CLI/data | Curated DSH upgrade breakpoints: query and render Markdown. |
 
+## npm
+
+- [dsh-capdiff](https://www.npmjs.com/package/dsh-capdiff)
+- [testatum-attest](https://www.npmjs.com/package/testatum-attest)
+- [dsh-supply-watch](https://www.npmjs.com/package/dsh-supply-watch)
+- [cordis-hmr-doctor](https://www.npmjs.com/package/cordis-hmr-doctor)
+- [cordis-migrate](https://www.npmjs.com/package/cordis-migrate)
+- [cordis-testkit](https://www.npmjs.com/package/cordis-testkit)
+- [dsh-xbrl](https://www.npmjs.com/package/dsh-xbrl)
+- [dsh-upgrade-atlas](https://www.npmjs.com/package/dsh-upgrade-atlas)
+
 ## Non-code artifacts
 
 - [`CREDENTIALS.md`](CREDENTIALS.md) — 90-day credential plan (DOI, OpenSSF badge, FSE'27, IETF/W3C, 职称). No fabricated results.
@@ -32,7 +43,7 @@ This suite is deliberately **not** another set of governance packages. It target
 - **15 `src/*.js` files** pass `node --check`.
 - **8/8 names** are free on npm (`npm view` → E404) and no exact GitHub repo name exists.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md); contract fixes tracked in `CONTRACT-FIX.md`.
-- **Not published**. Next: contract fixes → isolated smoke → npm publish.
+- **Published**: all eight packages at `0.1.1` on npm (2026-11-14); GitHub repo and `v0.1.1` release.
 
 ## Quick start
 

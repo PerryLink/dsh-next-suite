@@ -402,3 +402,19 @@ CONTRACT 要求每个 README 覆盖“是什么 / 为什么 / 安装 / 用法 / 
 3. **README 结构未按统一模板**（“是什么/为什么/非官方声明”等章节在多个包缺失或改名），加上根 `npm test` 把 `_template` 算入（243 vs 242），套件级文档/测试边界不清晰。
 
 修复 F1、F2，并清理 F3 后，本套件在功能与合规层面具备发布条件。
+
+---
+
+## 修复与发布记录（2026-11-14 19:45 +08）
+
+| 审计项 | 修复 |
+|---|---|
+| **F1** 仓库/主页/Issues 404 | 已创建 `https://github.com/PerryLink/dsh-next-suite` 并推送 85 文件；homepage/bugs 均 200 |
+| **F2** CLI/README 契约 | 7 个 CLI 统一 `-h/--help`、`-V/--version`；退出码 0/1/2 统一；`--json` 统一对象 envelope；README 统一 7 章；testatum/supply 退出码表修正 |
+| **F3** `_template` 混入 | 已移到 `templates/_template`；根 `npm test` 242/242（8 包，不含模板） |
+| **F4** 文件权限 | `src/cli.js` 755，其余 644 |
+| 命名 | 8/8 npm E404、GitHub 精确名 0（发布前复核） |
+
+**发布**：8 包 `0.1.1` 已上 npm（2026-11-14）；GitHub 仓库 + release `v0.1.1`。
+- dsh-capdiff, testatum-attest, dsh-supply-watch, cordis-hmr-doctor, cordis-migrate, cordis-testkit, dsh-xbrl, dsh-upgrade-atlas
+- 0.1.0 首发 README 仍写“not published”；0.1.1 修正状态并补 npm 安装命令。
