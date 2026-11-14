@@ -41,9 +41,9 @@ This suite is deliberately **not** another set of governance packages. It target
 
 ## Status (2026-11-14)
 
-- **242/242 tests** across the eight packages (`npm test`; template is outside `packages/`).
+- **247/247 tests** across the eight packages (`npm test`; template is outside `packages/`).
 - **15 `src/*.js` files** pass `node --check`.
-- **8/8 names** are free on npm (`npm view` → E404) and no exact GitHub repo name exists.
+- **8/8 names** were verified free before publish (npm E404, GitHub 0); all are now published under this project.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md); contract fixes tracked in `CONTRACT-FIX.md`.
 - **Published**: all eight packages at `0.1.2` on npm (2026-11-14); GitHub repo and `v0.1.2` release.
 
