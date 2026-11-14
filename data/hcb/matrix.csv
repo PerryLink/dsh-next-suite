@@ -1,0 +1,7 @@
+package,version,host,node,install_ok,dump_config_ok,tests_pass,tests_total,license,repo,date
+dsh-os-trace,0.1.1,0.2.2-rc.3,24.22.1,true,true,11,11,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14
+dsh-os-lease,0.1.1,0.2.2-rc.3,24.22.1,true,true,12,12,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14
+dsh-os-quota,0.1.1,0.2.2-rc.3,24.22.1,true,true,22,22,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14
+dsh-os-eval,0.1.1,0.2.2-rc.3,24.22.1,true,true,17,17,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14
+dsh-os-catalog,0.1.1,0.2.2-rc.3,24.22.1,true,true,12,12,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14
+dsh-os-registry,0.1.1,0.2.2-rc.3,24.22.1,true,true,16,16,Apache-2.0,https://github.com/PerryLink/dsh-os-suite,2026-11-14

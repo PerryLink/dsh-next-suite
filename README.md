@@ -1,5 +1,8 @@
 # dsh-next-suite
 
+[![CI](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml)
+
+
 [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
@@ -38,6 +41,7 @@ This suite is deliberately **not** another set of governance packages. It target
 - [`CREDENTIALS.md`](CREDENTIALS.md) — 90-day credential plan (DOI, OpenSSF badge, FSE'27, IETF/W3C, 职称). No fabricated results.
 - [`DOJO.md`](DOJO.md) — two hands-on labs: Hello Plugin and Governance Lab, with acceptance criteria.
 - [`ECOSYSTEM-ATLAS.md`](ECOSYSTEM-ATLAS.md) — 64-entity ecosystem atlas (JSON: [`data/ecosystem-atlas.json`](data/ecosystem-atlas.json)), not an exhaustive directory; validate with `npm run validate:atlas`.
+- [`data/hcb/`](data/hcb/) — HCB v0 seed dataset (6 packages × DSH 0.2.2-rc.3), validate with `npm run validate:hcb`.
 
 ## Status (2026-11-14)
 

@@ -7,6 +7,9 @@
   ],
   "scripts": {
     "test": "node --test packages/*/test/*.test.js",
-    "validate:atlas": "node scripts/validate-atlas.mjs --check-md"
+    "validate:atlas": "node scripts/validate-atlas.mjs --check-md",
+    "validate:hcb": "node scripts/validate-hcb.mjs",
+    "dojo": "node dojo/run-all.mjs",
+    "bench": "node benchmarks/capdiff/run.mjs && node benchmarks/supply-watch/run.mjs"
   }
 }

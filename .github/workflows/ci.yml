@@ -45,6 +45,14 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Validate atlas and HCB seed data
+        run: |
+          npm run validate:atlas
+          npm run validate:hcb
+
+      - name: Run Dojo labs
+        run: npm run dojo
+
       - name: Syntax check every src/*.js
         shell: bash
         run: |
