@@ -13,7 +13,7 @@ Offline, zero-dependency heuristics for catching **npm name lookalikes** and
 > substitute for SCA, advisory data, registry ownership checks, or tarball
 > inspection.
 
-- Version: `0.1.0` (not published yet)
+- Version: `0.1.1` (published on npm)
 - License: Apache-2.0
 - Runtime: Node `^22.19.0 || >=24.9.0`, pure ESM, no dependencies
 

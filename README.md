@@ -3,7 +3,7 @@
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
-> Apache-2.0. No SLA, no warranty. Early MVP (0.1.0), not published yet.
+> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.1.1` on npm (2026-11-14).
 
 This suite is deliberately **not** another set of governance packages. It targets the gaps left after [`dsh-os-suite`](../dsh-os-suite/): plugin trust, Cordis developer experience, and a domain-data check.
 

@@ -42,7 +42,7 @@ policy or assure a filing.
 
 ## Install
 
-`dsh-xbrl` 0.1.0 is not yet published. Once it is published:
+`dsh-xbrl` 0.1.1 is published on npm:
 
 ```sh
 npm install dsh-xbrl

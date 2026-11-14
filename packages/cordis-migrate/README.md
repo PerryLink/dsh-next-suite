@@ -1,7 +1,7 @@
 # cordis-migrate
 
 > **非官方社区工具。** 与 Cordiverse / Cordis 项目、DeepSeek 均无隶属关系。
-> Apache-2.0，`0.1.0`，**未发布**。内置规则是**示例**，不是官方迁移表。
+> Apache-2.0，`0.1.1`，**已发布到 npm**。内置规则是**示例**，不是官方迁移表。
 
 Cordis 3 → 4 的**文本级迁移规则引擎**：扫描（scan）、生成计划（plan / dry-run）、显式写入（apply `--write`）。
 
@@ -44,7 +44,7 @@ Cordis 3 → 4 迁移中有一批重复、机械、但**不能盲改**的文本�
 
 ## 安装
 
-尚未发布到 npm。在仓库内直接运行：
+已发布到 npm：`npx cordis-migrate@0.1.1 --help`。也可在仓库内直接运行：
 
 ```sh
 cd packages/cordis-migrate

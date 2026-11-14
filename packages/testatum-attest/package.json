@@ -1,6 +1,6 @@
 {
   "name": "testatum-attest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Plugin trust cards: SHA-256 file manifests, HMAC signatures, revocation and offline verification (MVP).",
   "type": "module",
   "license": "Apache-2.0",
