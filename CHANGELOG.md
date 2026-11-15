@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.3] - 2026-11-15
+
+### Added
+- `testatum-attest`: `verify-sigstore` CLI (identity/issuer required; HMAC remains default).
+- HCB evidence for unavailable/incompatible host versions; atlas/migrate remaining unknowns documented.
+
 ## [0.2.2] - 2026-11-15
 
 ### Added
@@ -12,7 +18,9 @@
 
 ### Fixed
 - HCB: add `host_supported`; Node `22.19.0` install/dump cells are `unsupported` (not `not-tested`) because DSH `0.2.2-rc.3` requires Node `>=24.9.0`.
-- `dsh-upgrade-atlas`: pin `to` for `session-format-v4` (`0.1.7-alpha.1`) and `windows-markdown-path-backslashes` (`0.2.2-alpha.2`) from release notes; `job-session-lifecycle` stays `target unknown` (no guide topic or release note maps it).
+- HCB: probe `0.2.1` / `0.2.2-rc.1` hosts; no rows added (`0.2.1` is unpublished, `0.2.2-rc.1` rejects `dsh-os-*@0.2.1` via `engines.dsh >=0.2.2-rc.3`); evidence in `data/hcb/evidence/2026-11-15/`.
+- `dsh-upgrade-atlas`: pin `to` for `session-format-v4` (`0.1.7-alpha.1`) and `windows-markdown-path-backslashes` (`0.2.2-alpha.2`); re-check `job-session-lifecycle` against the 39 GitHub release entries and the upgrade-guide tree; no release mapping exists, so `to: "*"` stays and the README records why; correct the `0.2.1-alpha.3` start-version typo.
+- `cordis-migrate`: re-check the four experimental rules against the `cordis@4.0.0-rc.13` npm tarball; all four stay experimental (reasons in README).
 
 ## [0.2.1] - 2026-11-15
 
