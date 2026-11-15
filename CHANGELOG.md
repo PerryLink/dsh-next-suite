@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.2] - 2026-11-15
+
+### Added
+- `testatum-attest`: optional sigstore bundle verification (`sigstore` peer install; HMAC remains default).
+- `cordis-migrate`: 24 rules, 4 experimental (was 26/10); experimental rules audited against cordis 4.0.0-rc.13.
+- HCB: `host_supported` column; Node 22 rows marked unsupported (DSH requires >=24.9).
+- Upgrade atlas: 49/50 entries with a concrete `to` release.
+
+## [Unreleased]
+
+### Fixed
+- HCB: add `host_supported`; Node `22.19.0` install/dump cells are `unsupported` (not `not-tested`) because DSH `0.2.2-rc.3` requires Node `>=24.9.0`.
+- `dsh-upgrade-atlas`: pin `to` for `session-format-v4` (`0.1.7-alpha.1`) and `windows-markdown-path-backslashes` (`0.2.2-alpha.2`) from release notes; `job-session-lifecycle` stays `target unknown` (no guide topic or release note maps it).
+
 ## [0.2.1] - 2026-11-15
 
 ### Fixed
