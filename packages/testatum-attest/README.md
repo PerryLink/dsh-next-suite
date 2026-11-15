@@ -1,18 +1,25 @@
 # testatum-attest
 
-> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.1.3`，**已发布到 npm**。
+> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.2.0`，**已发布到 npm**。
 >
 > **HMAC 是 MVP 占位方案，不是 sigstore / npm provenance 的替代品。**
 > 它解决“离线核对一份文件清单有没有被改过、是不是我签的”，不解决身份、
 > 透明日志、公钥信任根、密钥托管这些供应链信任问题。详见
 > [限制](#限制) 与 [DESIGN.md](./DESIGN.md)。
+>
+> `verify-provenance` 只做 npm attestation 的**结构性匹配**（存在、
+> `predicateType`、subject 摘要、repo/commit），**不验 sigstore 签名包**。
+> 密码学验签请用 `sigstore` 或 `npm audit signatures`。
 
 `testatum-attest` 给插件产物做一张 **trust card（信任卡）**：
 
 - 把每个文件的 SHA-256 按路径排序，算出一个 `rootHash`；
 - 用调用方传入的共享密钥做 HMAC-SHA256 签名；
 - 支持撤销记录（revocation list）和离线验证；
-- 不依赖数据库、网络、第三方包，只用 Node 内置 `node:crypto`。
+- 可选地读取 npm provenance attestation，做**结构性**的 subject / repo / commit
+  匹配（**不做 sigstore 验签**）；
+- HMAC 部分不依赖数据库、网络、第三方包，只用 Node 内置 `node:crypto`；
+  provenance 检查需要访问 registry，`fetchImpl` 可注入。
 
 ## 是什么
 
@@ -68,7 +75,7 @@
 
 ## 安装
 
-已发布到 npm：`npx testatum-attest@0.1.3 --help`。也可在本仓库里直接运行：
+已发布到 npm：`npx testatum-attest@0.2.0 --help`。也可在本仓库里直接运行：
 
 ```sh
 cd packages/testatum-attest
@@ -145,8 +152,42 @@ if (!result.ok) {
 | `verifyFiles(card, entries)` | 对实际文件做 `hashFiles`，与卡片清单逐项比对（`file-mismatch` / `file-missing` / `file-extra`）。 |
 | `revokeCard(card, {reason, revokedAt})` | 生成撤销记录；要求卡片本身结构有效。 |
 | `isRevoked(card, list)` | 在撤销列表里按 `rootHash` 匹配（兼容按 name+version 的粗粒度记录）。 |
+| `fetchAttestation(name, version, {fetchImpl, registry})` | 从 npm registry 读 `dist.attestations` 再取其 JSON，选出 SLSA/provenance 条目；返回 `{present, url, predicateType, subject, predicate, tarballSha512, reason?}`。缺失时 `present:false`，网络/HTTP/JSON 失败抛 `ProvenanceError`。 |
+| `verifyProvenance(attestation, {repo, commit, tarballSha512})` | 结构性校验 `predicateType`、subject 的 `sha512`、repo/commit；返回 `{ok, reasons, warnings}`。**不验 sigstore 签名。** |
+| `verifyPackage(name, version, opts)` | `fetchAttestation` + `verifyProvenance` 的组合；返回 `{name, version, ok, reasons, warnings, attestation}`，fetch 失败向上抛出。 |
+| `normalizeSha512(value)` | 把 hex / base64 / `sha512-<base64>` SRI 统一成小写 hex；非法或非 SHA-512 返回 `null`。 |
 | `canonicalJson(value)` | 稳定键序 JSON 序列化。 |
 | `sha256Hex(data)` | 字符串按 UTF-8、字节数组按原字节计算 SHA-256 hex。 |
+
+provenance API 在子路径导出，避免把网络辅助函数混进纯离线的卡片 API：
+
+```js
+import { fetchAttestation, verifyPackage, verifyProvenance } from 'testatum-attest/provenance'
+
+const result = await verifyPackage('demo-plugin', '1.2.3', {
+  repo: 'PerryLink/demo-plugin',
+  commit: '<40-hex git commit>',
+  // 可选：由下载后的 tarball 本地计算，hex/base64/SRI 均可。
+  // 不传时退化为 registry 的 dist.integrity，并返回 tarball-digest-from-registry 警告。
+  tarballSha512: '<sha512>',
+})
+if (!result.ok) console.error('provenance rejected:', result.reasons)
+// result.attestation = { present, url, predicateType, subject, predicate, ... }
+// result.warnings    = ['tarball-digest-from-registry', 'repo-not-verified', ...]
+
+// 也可以分开调用；verifyProvenance 是纯函数，不访问网络。
+const attestation = await fetchAttestation('demo-plugin', '1.2.3')
+const verdict = verifyProvenance(attestation, {
+  repo: 'PerryLink/demo-plugin',
+  commit: '<40-hex git commit>',
+  tarballSha512: '<sha512>',
+})
+```
+
+`fetchAttestation` 接受 `{ fetchImpl, registry }`：`fetchImpl` 用于测试或自定义
+HTTP 客户端，`registry` 用于镜像（默认 `https://registry.npmjs.org`）。
+**`verifyProvenance` 不验 sigstore 签名包**：不校验 DSSE 签名、Fulcio 证书身份、
+Rekor 透明日志。详见 [限制 §6](#限制)。
 
 ### CLI
 
@@ -160,6 +201,13 @@ node src/cli.js verify signed.json --json
 
 node src/cli.js revoke signed.json --reason "signing key rotated" --out revoked.json
 node src/cli.js verify signed.json --revocations revoked.json --json
+
+# npm provenance：结构性匹配（不验 sigstore 签名）
+node src/cli.js verify-provenance demo-plugin@1.2.3 \
+  --repo PerryLink/demo-plugin --commit <40-hex-sha> --json
+# 独立摘要检查：先用下载的 tarball 本地算 sha512，再传进来
+node src/cli.js verify-provenance demo-plugin@1.2.3 \
+  --tarball-sha512 "sha512-$(openssl dgst -sha512 -binary demo-plugin-1.2.3.tgz | openssl base64 -A)"
 ```
 
 - `sign`：读取未签名 card，拒绝 `rootHash`/清单不一致的卡片，写出附带
@@ -168,18 +216,25 @@ node src/cli.js verify signed.json --revocations revoked.json --json
 - `revoke`：生成 `testatum/revocation/v1` 记录。给了 `--out` 就写文件，
   否则输出到 stdout。`TESTATUM_KEY` 存在时会先验证卡片签名；不存在时只检查
   卡片结构，并在 stderr 明确警告“撤销记录本身未认证”。
+- `verify-provenance`：读取 npm registry 的 attestation，比对
+  `predicateType`、tarball SHA-512、源码仓库（`--repo owner/repo`）与提交
+  （`--commit sha`）。`--tarball-sha512` 可给 hex / base64 / SRI；不给时使用
+  registry 的 `dist.integrity` 并警告。`--registry <url>` 可指向镜像。
+  **只做元数据匹配，不验证 sigstore 签名包。**
 - `--json`：结构化输出；每个命令输出一个对象，至少包含
-  `{ command, ok, ... }`（`sign` / `verify` / `revoke`）。
+  `{ command, ok, ... }`（`sign` / `verify` / `revoke` / `verify-provenance`）。
+  `verify-provenance` 的 JSON 额外包含 `cryptoVerified: false`、`boundary`、
+  `warnings`、`url`、`predicateType`、`subject`。
 - `--help` / `-h`：完整用法；`-V` / `--version`：输出
-  `testatum-attest 0.1.0` 并 exit 0。
+  `testatum-attest 0.2.0` 并 exit 0。
 
 退出码：
 
 | 码 | 含义 |
 |---|---|
 | `0` | 成功 / 验证通过 |
-| `1` | 业务否定：验证失败、签名不匹配、卡片无效、拒绝签名或拒绝撤销 |
-| `2` | 用法 / 输入 / IO 错误：无参数、未知命令、未知选项、`sign`/`verify` 缺少 `TESTATUM_KEY`、读文件 / 写文件 / JSON 解析错误 |
+| `1` | 业务否定：验证失败、签名不匹配、卡片无效、拒绝签名或拒绝撤销、provenance 不匹配或缺失 |
+| `2` | 用法 / 输入 / IO / 网络错误：无参数、未知命令、未知选项、`sign`/`verify` 缺少 `TESTATUM_KEY`、读文件 / 写文件 / JSON 解析错误、registry 不可达或返回非 2xx |
 
 环境变量：
 
@@ -218,6 +273,8 @@ node src/cli.js verify signed.json --revocations revoked.json --json
 - 签名被截获/密钥泄漏后，攻击者可以生成任意卡片；本工具没有在线密钥状态
   可以阻止这一点。
 - `keyId` 只是签名里的一个未认证提示，`verifyCard` 不校验它，也没有 keyring。
+- 本包另有 `verify-provenance`（见 §6）：它只匹配 npm attestation 元数据，
+  同样不做 sigstore 密码学验签，不能替代 sigstore / `npm audit signatures`。
 
 ### 2. 密钥管理限制
 
@@ -259,6 +316,41 @@ node src/cli.js verify signed.json --revocations revoked.json --json
 不是包注册表、不是沙箱、不是恶意软件扫描器、不是构建可复现性工具、不是
 法律意义上的签名/公证，也不提供任何形式的担保。
 
+### 6. npm provenance：只做结构性匹配，不做 sigstore 验签
+
+`fetchAttestation` / `verifyProvenance` / `verifyPackage` 与
+`verify-provenance` 命令做且只做四件事：
+
+1. registry 为该版本声明了 `dist.attestations`，且能取到 attestation JSON；
+2. 选中条目的 `predicateType` 含 `slsa` 或 `provenance`；
+3. 任一 `subject[].digest.sha512` 等于期望的 tarball SHA-512；
+4. `--repo` / `--commit` 与 predicate 中声明的源码仓库、git 提交一致
+   （commit 允许 ≥7 位十六进制缩写）。
+
+**明确不做**：
+
+- 不验证 DSSE / sigstore bundle 的签名；不验证 Fulcio 证书链、证书 SAN 里的
+  工作流身份；不查 Rekor 透明日志；不验证时间戳或证书有效期；
+- 不验证 subject 的 `name`、发布者身份、`buildType`、构建参数，也不验证
+  `resolvedDependencies` 的完整性；
+- 不做版本新鲜度或回滚检查。
+
+因此它**不能**证明“这个 tarball 确实由该仓库的 GitHub Actions 构建”，只能
+回答“registry 里这条 attestation 与我要的包、摘要、仓库、提交对得上吗”。
+能控制 registry 响应的人（或 MITM）可以伪造一份四项全过的 attestation。
+
+关于 tarball 摘要：
+
+- 推荐用 `--tarball-sha512` / `tarballSha512` 传入**下载后本地计算**的
+  SHA-512；未提供时回退到 registry 的 `dist.integrity`，这只证明两处
+  registry 记录互相一致，不是独立验证，结果会带 `tarball-digest-from-registry`
+  警告。
+- 本工具不下载 tarball、不解包、不比对文件内容。
+
+需要密码学验签时，用 `sigstore`（校验 bundle / 证书 / Rekor）或
+`npm audit signatures`（校验已安装包的 registry 签名与 attestation）。
+本包不重复实现它们，也不声称与之等价。
+
 ## 命名核验
 
 核验日期：**2026-11-14**。核验目的是避免与已发布包/项目重名，不是商标检索。
@@ -290,12 +382,13 @@ node src/cli.js verify signed.json --revocations revoked.json --json
 ```sh
 node --test test/*.test.js
 node --check src/core.js
+node --check src/provenance.js
 node --check src/cli.js
 node src/cli.js --help
 ```
 
-测试全部离线运行，不读取真实密钥，不访问网络；CLI 测试使用临时目录和注入的
-测试密钥。
+测试不读取真实密钥、不访问公网：卡片/CLI 测试使用临时目录和注入的测试密钥；
+provenance 测试使用注入的 mock `fetch` 与本机回环 HTTP 服务器。
 
 ## 许可证
 

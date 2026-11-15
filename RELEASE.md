@@ -120,13 +120,25 @@ users; the packaging gate will keep flagging the drift until then.
 ## What the workflows do
 
 `CI` (`.github/workflows/ci.yml`) runs on every push to `main`, every pull
-request, and on demand, with a Node `22.19.0` / `24` matrix:
+request, and on demand. The `test` job runs Node `24` on Linux, Windows and
+macOS, plus the Node `22.19.0` lower bound on Linux:
 
 1. `npm install --no-package-lock --ignore-scripts`.
 2. `npm test`.
-3. `node --check` for every `packages/*/src/*.js` (15 files today).
-4. CLI smoke: `<bin> --version` and `<bin> --help` for all seven CLIs.
-5. `node scripts/smoke-pack.mjs`.
+3. Coverage on Node 24: `node --test --experimental-test-coverage`, uploaded as
+   a `coverage-<os>-node-24` artifact. There is **no coverage threshold yet**;
+   the report is for observation only.
+4. `npm run validate:atlas` and `npm run validate:hcb`.
+5. `npm run dojo`.
+6. `node --check` for every `packages/*/src/*.js` (15 files today).
+7. CLI smoke from workspace sources: `<bin> --version` and `<bin> --help` for
+   all seven CLIs.
+8. `node scripts/smoke-pack.mjs`.
+
+The separate `cli-smoke` job (Linux only) packs all eight workspaces, installs
+the tarballs into a scratch consumer project, and runs `--version` for the seven
+CLIs plus `dsh-upgrade-atlas --help` against the installed files. The
+library-only `cordis-testkit` is verified by the installed package itself.
 
 `Release` (`.github/workflows/release.yml`) runs on tags matching `v*`:
 
@@ -170,13 +182,17 @@ Permissions are deliberately minimal: `contents: read` and `id-token: write`.
      npm view "$pkg@0.1.2" version
    done
    ```
-6. Run the installed CLIs once:
+6. Run every installed CLI once, and check the atlas help:
    ```sh
-   npx --yes dsh-xbrl@0.1.2 --version
-   npx --yes dsh-upgrade-atlas@0.1.2 --version
+   for pkg in cordis-hmr-doctor cordis-migrate dsh-capdiff dsh-supply-watch \
+              dsh-upgrade-atlas dsh-xbrl testatum-attest; do
+     npx --yes "$pkg@0.1.2" --version
+   done
+   npx --yes dsh-upgrade-atlas@0.1.2 --help
    ```
-   `cordis-testkit` is the only package without a CLI; `scripts/verify-tarballs.mjs`
-   covers it by importing the installed tarball.
+   `cordis-testkit` is the only package without a CLI; CI's `cli-smoke` job
+   checks it by installing the packed tarballs into a scratch consumer and
+   confirming all eight packages are present.
 
 ## Rollback
 

@@ -1,0 +1,20 @@
+{
+  "id": "real-13-os-quota-enforce",
+  "category": "real-pure",
+  "description": "Real tool-call enforcement adapter; the excerpt is pure JavaScript with no imports.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "False-positive check on a long comment- and error-heavy module that must not yield capabilities.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-quota",
+    "path": "packages/dsh-os-quota/src/enforce.js",
+    "lines": "1-117",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-quota/src/enforce.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

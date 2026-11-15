@@ -1,0 +1,20 @@
+{
+  "id": "real-14-os-registry-index",
+  "category": "real-pure",
+  "description": "Real plugin registration header: imports @deepseek-ai/dsh-tools and ./core.js and defines JSON schemas.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Both imports are unmapped (unknown); no canonical capability is present in the excerpt.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-registry",
+    "path": "packages/dsh-os-registry/src/index.js",
+    "lines": "1-88",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-registry/src/index.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

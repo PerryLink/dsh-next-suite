@@ -76,7 +76,41 @@ test('every open-ended entry explains why `to` stays `*`', () => {
       /still (current|applies)/i,
       `${entry.id}: an open-ended entry must say it is still current in its summary`,
     )
+    assert.match(
+      entry.summary,
+      /target unknown/i,
+      `${entry.id}: an open-ended entry must mark the target as unknown in its summary`,
+    )
   }
+})
+
+test('most entries pin a concrete target release', () => {
+  const concrete = entries.filter((entry) => entry.to !== '*')
+  assert.ok(
+    concrete.length >= 20,
+    `expected at least 20 entries with a concrete target release, got ${concrete.length}`,
+  )
+  for (const entry of concrete) {
+    assert.match(
+      entry.to,
+      /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/,
+      `${entry.id}: to must be a concrete DSH version, got ${JSON.stringify(entry.to)}`,
+    )
+  }
+})
+
+test('guide-backed entries pin the guide release as their target', () => {
+  const pinned = entries.filter((entry) => {
+    const source = Array.isArray(entry.evidence)
+      ? entry.evidence.join(' ')
+      : entry.evidence
+    const guide = source.match(/docs\/upgrade-guide\/v([0-9A-Za-z.-]+)\//)
+    return guide !== null && entry.to === guide[1]
+  })
+  assert.ok(
+    pinned.length >= 20,
+    `expected at least 20 guide-backed entries with to = guide release, got ${pinned.length}`,
+  )
 })
 
 test('bundled atlas validates and covers the documented breakpoint categories', () => {

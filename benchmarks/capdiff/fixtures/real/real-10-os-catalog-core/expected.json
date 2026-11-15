@@ -1,0 +1,20 @@
+{
+  "id": "real-10-os-catalog-core",
+  "category": "real-pure",
+  "description": "Pure catalog core: types, constants and CatalogError; no I/O and no imports.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Another real false-positive check: a long, type-heavy pure module.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-catalog",
+    "path": "packages/dsh-os-catalog/src/core.js",
+    "lines": "1-139",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-catalog/src/core.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

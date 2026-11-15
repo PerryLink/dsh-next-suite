@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-03-testkit-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Pure Cordis test-double core with no imports and no ambient authority.",
+  "dsh": {
+    "capabilities": [
+      "env"
+    ]
+  }
+}

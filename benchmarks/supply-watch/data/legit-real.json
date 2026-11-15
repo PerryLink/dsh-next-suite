@@ -1,0 +1,185 @@
+{
+  "description": "30 real npm package names used as legitimate-name negatives. Sources: packages in this workspace (dsh-os-suite), dependency names installed by dsh-os-suite, the one runtime dependency of dsh-next-suite, and official DSH package names referenced in deepseek-harness docs. Names are public identifiers only; no package code or tarball was downloaded. Frozen snapshot 2026-11-15.",
+  "legit": [
+    {
+      "name": "dsh-os-catalog",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "dsh-os-eval",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "dsh-os-lease",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "dsh-os-quota",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "dsh-os-registry",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "dsh-os-trace",
+      "origin": "real",
+      "source": "dsh-os-suite package",
+      "rationale": "workspace package that is not an alias of any known name"
+    },
+    {
+      "name": "@deepseek-ai/cordis",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (peer dependency)",
+      "rationale": "Cordis framework package"
+    },
+    {
+      "name": "@deepseek-ai/cosmokit",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "Cordis utility package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH agent package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-brand",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH branded-id helper package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-error",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH error taxonomy package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH LLM abstraction package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-scope",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH scope package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH session package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH session projection package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-system-prompt",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH system-prompt package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-timeout",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH timeout helper package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tools",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (peer dependency)",
+      "rationale": "DSH tool registry package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-protocol",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH typed-RPC protocol package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-approval",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH user-approval package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-crypto",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH crypto utility package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-util-values",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "DSH value utility package"
+    },
+    {
+      "name": "@deepseek-ai/schemastery",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "Schemastery schema package"
+    },
+    {
+      "name": "@standard-schema/spec",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "Standard Schema specification package"
+    },
+    {
+      "name": "zod",
+      "origin": "real",
+      "source": "dsh-os-suite/package-lock.json (installed dependency)",
+      "rationale": "widely used schema validation package"
+    },
+    {
+      "name": "acorn",
+      "origin": "real",
+      "source": "dsh-next-suite/package-lock.json (runtime dependency)",
+      "rationale": "JavaScript parser used by dsh-capdiff"
+    },
+    {
+      "name": "@deepseek-ai/dsh-base",
+      "origin": "real",
+      "source": "deepseek-harness docs (official DSH package name)",
+      "rationale": "official DSH base bundle"
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-loop",
+      "origin": "real",
+      "source": "deepseek-harness docs (official DSH package name)",
+      "rationale": "official DSH agent loop package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs",
+      "origin": "real",
+      "source": "deepseek-harness docs (official DSH package name)",
+      "rationale": "official DSH filesystem tool package"
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-web",
+      "origin": "real",
+      "source": "deepseek-harness docs (official DSH package name)",
+      "rationale": "official DSH web tool package"
+    }
+  ]
+}

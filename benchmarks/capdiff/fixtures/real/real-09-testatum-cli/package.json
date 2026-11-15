@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-09-testatum-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real trust-card CLI: reads/writes JSON and resolves the HMAC secret from process.env.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

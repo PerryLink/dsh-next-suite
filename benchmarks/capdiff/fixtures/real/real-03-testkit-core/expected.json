@@ -1,0 +1,23 @@
+{
+  "id": "real-03-testkit-core",
+  "category": "real-unused-declaration",
+  "description": "Pure Cordis test-double core with no imports and no ambient authority.",
+  "declared": [
+    "env"
+  ],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "Declares env although the excerpt never touches process.env; the expected finding is unused:env on real, side-effect-free code.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "cordis-testkit",
+    "path": "packages/cordis-testkit/src/core.js",
+    "lines": "1-146",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-testkit/src/core.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

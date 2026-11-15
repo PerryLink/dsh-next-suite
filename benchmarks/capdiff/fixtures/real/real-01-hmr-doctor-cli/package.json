@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-01-hmr-doctor-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real CLI entry point that reads an HMR log through node:fs/promises.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

@@ -12,10 +12,10 @@ Markdown migration sheet.
 > notes 为准。
 
 - **Package:** `dsh-upgrade-atlas`
-- **Version:** 0.1.3 (published on npm)
+- **Version:** 0.2.0 (published on npm)
 - **License:** Apache-2.0
 - **Runtime:** Node.js `^22.19.0 || >=24.9.0`
-- **Data:** 50 curated DSH 0.1.7–0.2.2-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json)
+- **Data:** 50 curated DSH 0.1.7–0.2.2-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json); 47 carry a concrete `to` release, 3 are `*` with `target unknown`
 - **Dependencies:** none
 
 ## What it is
@@ -51,7 +51,7 @@ in traceable evidence and a stable query shape, not in exhaustive coverage.
 
 ## Install
 
-The package is published as `dsh-upgrade-atlas@0.1.3`. From npm:
+The package is published as `dsh-upgrade-atlas@0.2.0`. From npm:
 
 ```sh
 node packages/dsh-upgrade-atlas/src/cli.js --help
@@ -152,7 +152,7 @@ Each entry has exactly these required fields:
 | `id` | string | Stable lowercase kebab-case identifier. Duplicate ids are rejected. |
 | `package` | string | Primary affected npm package. |
 | `from` | string | First DSH release that contains the breakpoint; must be concrete. |
-| `to` | string | Last affected release, inclusive; `*` means still current. |
+| `to` | string | Last release bounded by the entry's primary evidence. For a guide-backed entry this is the guide's release directory; `*` means no target release could be established. |
 | `kind` | string | Lowercase kebab-case category. Bundled data uses `runtime`, `package`, `api`, `config`, `protocol`, `tool`, `agent`, or `ui`; custom atlases may add categories. |
 | `severity` | `P0`..`P3` | Impact level; see below. |
 | `summary` | string | What changed, in one or two sentences. |
@@ -181,11 +181,20 @@ The comparison is semver-like and prerelease-aware:
   starts at `0.2.1-0`, and `--to 0.2.1` ends just before `0.2.2-0`.
 - A partial version is a full prefix: `--from 0.2 --to 0.2` covers every
   `0.2.x` release.
-- `*` is an open bound. In the data, a `to` of `*` means "still applies in the
-  latest release covered by this atlas", not "fixed". Every open-ended entry
-  says so in its `summary`; a concrete `to` names the last release in which the
-  old behavior or label applied (for example, the reverted plugin-market
-  wording).
+- `*` is an open upper bound. In the data, a `to` of `*` means "target unknown:
+  no upgrade-guide release directory maps this behavior to a release". Every
+  open-ended entry says `still current` and `target unknown` in its `summary`.
+  A concrete `to` is an evidence bound, not a claim that later releases are
+  unaffected: most guide-backed entries use the guide's release directory as
+  both `from` and `to`, while an entry that was superseded spans a longer
+  window (for example, `plugin-index-wording` from `0.2.1-alpha.4` through
+  `0.2.1-rc.5`). Read the summary's `still current` note for applicability
+  after `to`.
+
+Because guide-backed entries are pinned to their guide release, a query
+returns the breakpoints **targeted in** the window, not every breakpoint that
+still applies. For cumulative applicability, widen the query to the earliest
+release you care about and read each summary's `still current` note.
 
 `package`, `severity`, and `kind` filters are prefixes. For example,
 `--package @deepseek-ai/dsh-office` matches the Office conversion entry filed
@@ -269,18 +278,23 @@ it is not generated from upstream release notes.
 - **Not exhaustive.** 50 entries cover the 0.1.7–0.2.2-rc.2 breakpoints that were
   documented and verified when this atlas was assembled. New releases add
   new breakpoints; run the upstream upgrade guides for the full text.
-- **Hand-curated version mapping.** For guide-backed entries, `from` is the
-  guide's release directory. Entries without a guide use the release tag that
-  first contains the cited persistence record or commit: `session-format-v4`
-  starts at `0.1.7-alpha.1`, `job-session-lifecycle` at `0.2.1-alpha.3`, and
-  `windows-markdown-path-backslashes` at `0.2.2-alpha.2`. The
+- **Hand-curated version mapping.** For guide-backed entries, `from` and (after
+  the 2026-11-15 pass) `to` are the guide's release directory: the guide is
+  the release-scoped evidence for that breakpoint. Entries without a guide use
+  the release tag that first contains the cited persistence record or commit:
+  `session-format-v4` starts at `0.1.7-alpha.1`, `job-session-lifecycle` at
+  `0.2.1-alpha.3`, and `windows-markdown-path-backslashes` at
+  `0.2.2-alpha.2`. Those three keep `to: "*"` and say `target unknown`, because
+  no guide directory maps them to a target release. The
   `plugin-index-wording` boundary was checked with
   `git show <tag>:docs/user/guide/plugin-market.md`: the market label shipped
   in `0.2.1-alpha.4` through `0.2.1-rc.5`, and the index wording returned in
   `0.2.2-alpha.2`. Re-verify these boundaries if you depend on them.
-- **`*` means current, not fixed.** A `to` of `*` says the breakpoint still
-  applies in the latest release covered by the atlas. Every open-ended summary
-  states this; a concrete `to` marks a reverted or superseded window.
+- **`*` means target unknown.** A `to` of `*` means no release bound could be
+  established, not that the breakpoint is fixed. The three open-ended entries
+  still state `still current` in their summaries. A concrete `to` is the last
+  release covered by the entry's evidence; it does not assert that later
+  releases are unaffected.
 - **No project inspection.** The CLI does not read your `cordis.yml`, plugin
   manifests, or Session store. It cannot tell you which entries actually hit
   your setup.

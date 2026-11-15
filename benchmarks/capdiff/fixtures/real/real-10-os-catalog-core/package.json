@@ -1,0 +1,10 @@
+{
+  "name": "@bench/real-10-os-catalog-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Pure catalog core: types, constants and CatalogError; no I/O and no imports.",
+  "dsh": {
+    "capabilities": []
+  }
+}

@@ -92,7 +92,7 @@ leaves the atlas unchanged.
 | `id` | Non-empty lowercase kebab-case; unique within an atlas. |
 | `package` | Non-empty string. The primary affected npm package. |
 | `from` | Concrete semver-like DSH version. First release with the breakpoint. |
-| `to` | Concrete version or `*`. Inclusive last affected release. |
+| `to` | Concrete version or `*`. Last release bounded by the entry's primary evidence; for a guide-backed entry, the guide's release directory. `*` means the target release is unknown. |
 | `kind` | Lowercase kebab-case category. The eight documented kinds are the bundled set; custom atlases may add categories. |
 | `severity` | `P0`, `P1`, `P2`, or `P3`. |
 | `summary` | Non-empty, concise explanation. |
@@ -153,8 +153,13 @@ A leading `v` is accepted and ignored.
 
 ### Entry windows
 
-`from` and `to` define an inclusive affected range. `to: "*"` is an open upper
-bound meaning "still current in the latest release covered by this atlas".
+`from` and `to` define an inclusive evidence window. Most guide-backed bundled
+entries use the guide's release directory as both `from` and `to`: the guide is
+the release-scoped evidence for that breakpoint. An entry that was later
+superseded spans a longer window (for example, `plugin-index-wording` from
+`0.2.1-alpha.4` through `0.2.1-rc.5`). `to: "*"` is an open upper bound meaning
+"target unknown: no guide release directory maps this behavior to a release";
+the open-ended summaries still say `still current` separately.
 
 `from` must be concrete. A partial `from` such as `0.2` is accepted and
 expanded to the start of that prefix (`0.2.0-0`). A partial `to` is expanded to

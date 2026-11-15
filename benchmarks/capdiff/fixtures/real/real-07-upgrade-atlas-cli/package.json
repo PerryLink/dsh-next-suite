@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-07-upgrade-atlas-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real CLI with both node:fs and node:fs/promises imports, URL parsing and path resolution.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

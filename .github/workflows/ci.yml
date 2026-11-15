@@ -1,9 +1,13 @@
 # CI for dsh-next-suite.
 #
-# The suite supports Node ^22.19.0 || >=24.9.0, so both the lower bound and the
-# current Node 24 line are exercised. This repo intentionally has no
-# package-lock.json (the packages are dependency-free), so installs use
-# `npm install` and no dependency cache.
+# The suite supports Node ^22.19.0 || >=24.9.0. The test job exercises Node 24
+# on Linux, Windows and macOS, plus the Node 22 lower bound on Linux. Installs
+# use `npm install --no-package-lock` and no dependency cache, as before.
+#
+# `cli-smoke` packs all eight workspaces, installs those tarballs into a fresh
+# consumer project, and runs every CLI's `--version` (plus `dsh-upgrade-atlas
+# --help`) against the packed files rather than the workspace sources. It runs
+# on Linux only.
 name: CI
 
 on:
@@ -21,15 +25,17 @@ concurrency:
 
 jobs:
   test:
-    name: Node ${{ matrix.node }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    name: Test / Node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        node:
-          - '22.19.0'
-          - '24'
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['24']
+        include:
+          - os: ubuntu-latest
+            node: '22.19.0'
 
     steps:
       - uses: actions/checkout@v7
@@ -40,18 +46,47 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies (npm install)
-        run: npm install --no-package-lock --ignore-scripts --no-audit --no-fund
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-package-lock --ignore-scripts --no-audit --no-fund
 
       - name: Test
-        run: npm test
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm test
+
+      # Observation-only coverage: no threshold is enforced yet. Git Bash on
+      # Windows expands the glob, so the same command works on all three OSes.
+      - name: Coverage (Node 24, no threshold)
+        if: matrix.node == '24'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test --experimental-test-coverage packages/*/test/*.test.js 2>&1 | tee coverage.txt
+
+      - name: Upload coverage report
+        if: always() && matrix.node == '24'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.os }}-node-${{ matrix.node }}
+          path: coverage.txt
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Validate atlas and HCB seed data
+        shell: bash
         run: |
+          set -euo pipefail
           npm run validate:atlas
           npm run validate:hcb
 
       - name: Run Dojo labs
-        run: npm run dojo
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run dojo
 
       - name: Syntax check every src/*.js
         shell: bash
@@ -98,4 +133,104 @@ jobs:
       # Runs `npm pack --dry-run --json` for every package and asserts the
       # required files (src/, README, DESIGN, LICENSE, package.json).
       - name: Pack manifest smoke test
-        run: node scripts/smoke-pack.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/smoke-pack.mjs
+
+  # Installs the packed artifacts (not the workspace sources) so a missing file
+  # in `files`, a broken bin path, or a cross-package resolution bug fails CI.
+  cli-smoke:
+    name: Packed CLI smoke (Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Create smoke workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          smoke_dir="$RUNNER_TEMP/dsh-next-smoke"
+          mkdir -p "$smoke_dir/tarballs"
+          echo "SMOKE_DIR=$smoke_dir" >> "$GITHUB_ENV"
+
+      - name: npm pack the eight packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          for dir in packages/*; do
+            [ -f "$dir/package.json" ] || continue
+            ( cd "$dir" && npm pack --pack-destination "$SMOKE_DIR/tarballs" )
+          done
+          tarballs=("$SMOKE_DIR"/tarballs/*.tgz)
+          if [ "${#tarballs[@]}" -ne 8 ]; then
+            echo "::error::expected 8 tarballs, found ${#tarballs[@]}"
+            ls -l "$SMOKE_DIR/tarballs"
+            exit 1
+          fi
+          echo "packed ${#tarballs[@]} tarball(s)"
+
+      - name: Install the tarballs into a scratch consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SMOKE_DIR/consumer"
+          cd "$SMOKE_DIR/consumer"
+          npm init --yes >/dev/null
+          log="$SMOKE_DIR/install.log"
+          if ! npm install --no-audit --no-fund --ignore-scripts "$SMOKE_DIR"/tarballs/*.tgz >"$log" 2>&1; then
+            echo "::error::tarball install failed; log follows"
+            cat "$log"
+            exit 1
+          fi
+          cat "$log"
+          for pkg in cordis-hmr-doctor cordis-migrate cordis-testkit dsh-capdiff dsh-supply-watch dsh-upgrade-atlas dsh-xbrl testatum-attest; do
+            if [ ! -f "node_modules/${pkg}/package.json" ]; then
+              echo "::error::${pkg} is missing from the scratch consumer"
+              exit 1
+            fi
+          done
+
+      - name: Run every CLI --version and atlas --help
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$SMOKE_DIR/consumer"
+          bins=(cordis-hmr-doctor cordis-migrate dsh-capdiff dsh-supply-watch dsh-upgrade-atlas dsh-xbrl testatum-attest)
+          for bin in "${bins[@]}"; do
+            tool="./node_modules/.bin/${bin}"
+            if [ ! -x "$tool" ]; then
+              echo "::error::${bin} has no executable bin after install"
+              exit 1
+            fi
+            if ! output="$("$tool" --version 2>&1)"; then
+              echo "::error::${bin} --version failed; output follows"
+              printf '%s\n' "$output"
+              exit 1
+            fi
+            if [ -z "$output" ]; then
+              echo "::error::${bin} --version printed nothing"
+              exit 1
+            fi
+            printf '%s --version: %s\n' "$bin" "$output"
+          done
+
+          if ! atlas_help="$("./node_modules/.bin/dsh-upgrade-atlas" --help 2>&1)"; then
+            echo "::error::dsh-upgrade-atlas --help failed; output follows"
+            printf '%s\n' "$atlas_help"
+            exit 1
+          fi
+          case "$atlas_help" in
+            *Usage:*) echo "dsh-upgrade-atlas --help: ok" ;;
+            *)
+              echo "::error::dsh-upgrade-atlas --help printed no usage section"
+              printf '%s\n' "$atlas_help"
+              exit 1
+              ;;
+          esac

@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-06-supply-watch-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real CLI: reads a names file through node:fs/promises and parses arguments with node:util.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "real-17-docs-llm-adapter",
+  "category": "real-network",
+  "description": "DSH docs HTTP adapter skeleton: implements stream() with global fetch() and imports @deepseek-ai/dsh-llm.",
+  "declared": [
+    "network"
+  ],
+  "actual": [
+    "network"
+  ],
+  "staticVisible": [],
+  "notes": "Global fetch() is AST-visible but not visible to the legacy regex scope (staticVisible is empty by definition). The @deepseek-ai/dsh-llm import is unmapped (unknown). This fixture therefore shows one in-scope false positive while capability detection is correct.",
+  "limitation": null,
+  "source": {
+    "repo": "deepseek-harness",
+    "revision": "39163dd30f",
+    "package": "docs",
+    "path": "docs/user/develop/practice/llm-adapter.md",
+    "lines": "158-189",
+    "license": "MIT",
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/user/develop/practice/llm-adapter.md",
+    "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved; private parameter property expanded to an explicit field"
+  }
+}

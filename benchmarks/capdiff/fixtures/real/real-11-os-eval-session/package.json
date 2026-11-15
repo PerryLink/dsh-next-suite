@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-11-os-eval-session",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real session-log parser that imports readFileSync from node:fs and pairs tool calls with results.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

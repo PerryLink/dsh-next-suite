@@ -1,0 +1,10 @@
+{
+  "name": "@bench/real-02-migrate-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real CLI walker using node:fs/promises, node:path and node:util.",
+  "dsh": {
+    "capabilities": []
+  }
+}

@@ -1,620 +1,43 @@
 {
   "benchmark": "dsh-capdiff",
-  "description": "Declaration-vs-static-use benchmark over curated synthetic DSH-style plugin fixtures.",
+  "description": "Declaration-vs-static-use benchmark over 17 synthetic DSH-style plugin fixtures and 17 real code excerpts (14 workspace packages + 2 DSH docs examples).",
   "tool": {
     "name": "dsh-capdiff",
-    "coreVersion": "0.1.1",
-    "packageVersion": "0.1.1"
+    "coreVersion": "0.1.3",
+    "packageVersion": "0.1.3"
   },
-  "generatedAt": "2026-11-14T12:25:46.795Z",
+  "generatedAt": "2026-11-15T10:28:59.545Z",
   "node": "v24.22.1",
-  "fixtureRoot": "benchmarks/capdiff/fixtures",
-  "fixtureCount": 17,
-  "totals": {
-    "detection": {
-      "tp": 12,
-      "fp": 1,
-      "fn": 3,
-      "precision": 0.923077,
-      "recall": 0.8,
-      "f1": 0.857143
-    },
-    "inScopeDetection": {
-      "tp": 12,
-      "fp": 1,
-      "fn": 0,
-      "precision": 0.923077,
-      "recall": 1,
-      "f1": 0.96
-    },
-    "undeclaredFindings": {
-      "tp": 4,
-      "fp": 1,
-      "fn": 1,
-      "precision": 0.8,
-      "recall": 0.8,
-      "f1": 0.8
-    },
-    "unusedFindings": {
-      "tp": 0,
-      "fp": 2,
-      "fn": 0,
-      "precision": 0,
-      "recall": null,
-      "f1": null
-    },
-    "declarationFindings": {
-      "tp": 4,
-      "fp": 3,
-      "fn": 1,
-      "precision": 0.571429,
-      "recall": 0.8,
-      "f1": 0.666667
-    }
-  },
-  "fixtures": [
-    {
-      "id": "01-pure-safe",
-      "category": "pure-safe",
-      "description": "Pure arithmetic helpers with no imports and no ambient authority.",
-      "declared": [],
-      "expectedActual": [],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
+  "corpora": {
+    "synthetic": {
+      "corpus": "synthetic",
+      "fixtureRoot": "benchmarks/capdiff/fixtures",
+      "fixtureCount": 17,
+      "includeUnknown": true,
+      "totals": {
         "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Baseline clean sample: no imports, no process access, no dynamic code.",
-      "limitation": null
-    },
-    {
-      "id": "02-fs-read",
-      "category": "filesystem",
-      "description": "Static import of node:fs/promises; manifest declares filesystem.",
-      "declared": [
-        "filesystem"
-      ],
-      "expectedActual": [
-        "filesystem"
-      ],
-      "expectedStaticVisible": [
-        "filesystem"
-      ],
-      "detected": [
-        "filesystem"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "filesystem"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Straightforward true positive: declaration matches a statically visible import.",
-      "limitation": null
-    },
-    {
-      "id": "03-net-https",
-      "category": "network",
-      "description": "Static import of node:https; manifest declares network.",
-      "declared": [
-        "network"
-      ],
-      "expectedActual": [
-        "network"
-      ],
-      "expectedStaticVisible": [
-        "network"
-      ],
-      "detected": [
-        "network"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "network"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Network capability through a builtin module import.",
-      "limitation": null
-    },
-    {
-      "id": "04-child-process",
-      "category": "process",
-      "description": "Spawns a child process while the manifest declares no capabilities.",
-      "declared": [],
-      "expectedActual": [
-        "process"
-      ],
-      "expectedStaticVisible": [
-        "process"
-      ],
-      "detected": [
-        "process"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [
-          "process"
-        ],
-        "unused": []
-      },
-      "toolFindings": [
-        {
-          "kind": "undeclared",
-          "capability": "process",
-          "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:1 but is not declared in dsh.capabilities.",
-          "file": "src/index.js",
-          "line": 1,
-          "evidence": "node:child_process"
-        }
-      ],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        }
-      },
-      "ok": true,
-      "notes": "Ground truth says process is undeclared; the desired finding is undeclared=process.",
-      "limitation": null
-    },
-    {
-      "id": "05-env-config",
-      "category": "env",
-      "description": "Reads process.env through dot and bracket notation; env is declared.",
-      "declared": [
-        "env"
-      ],
-      "expectedActual": [
-        "env"
-      ],
-      "expectedStaticVisible": [
-        "env"
-      ],
-      "detected": [
-        "env"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "env"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Both process.env and process[\"env\"] must map to the same capability.",
-      "limitation": null
-    },
-    {
-      "id": "06-eval-function",
-      "category": "eval",
-      "description": "Uses new Function and direct eval; eval is declared.",
-      "declared": [
-        "eval"
-      ],
-      "expectedActual": [
-        "eval"
-      ],
-      "expectedStaticVisible": [
-        "eval"
-      ],
-      "detected": [
-        "eval"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "eval"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Language-level dynamic code evidence, not an import.",
-      "limitation": null
-    },
-    {
-      "id": "07-dynamic-import",
-      "category": "dynamic-import",
-      "description": "Uses import(\"node:fs/promises\") with a static string specifier.",
-      "declared": [
-        "filesystem"
-      ],
-      "expectedActual": [
-        "filesystem"
-      ],
-      "expectedStaticVisible": [
-        "filesystem"
-      ],
-      "detected": [
-        "filesystem"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "filesystem"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Dynamic import with a string literal is in scope and should be detected (kind=dynamic).",
-      "limitation": null
-    },
-    {
-      "id": "08-obfuscated-concat",
-      "category": "obfuscated",
-      "description": "Builds the import specifier from concatenated strings; filesystem is actually used.",
-      "declared": [
-        "filesystem"
-      ],
-      "expectedActual": [
-        "filesystem"
-      ],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": [
-          "filesystem"
-        ]
-      },
-      "toolFindings": [
-        {
-          "kind": "unused",
-          "capability": "filesystem",
-          "message": "Capability \"filesystem\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
-          "file": "package.json"
-        }
-      ],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
+          "tp": 14,
+          "fp": 1,
           "fn": 1,
-          "precision": null,
-          "recall": 0,
-          "f1": null
+          "precision": 0.933333,
+          "recall": 0.933333,
+          "f1": 0.933333
         },
         "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
+          "tp": 12,
+          "fp": 3,
           "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
+          "precision": 0.8,
+          "recall": 1,
+          "f1": 0.888889
         },
         "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
+          "tp": 5,
+          "fp": 1,
           "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
+          "precision": 0.833333,
+          "recall": 1,
+          "f1": 0.909091
         },
         "unusedFindings": {
           "tp": 0,
@@ -625,574 +48,1402 @@
           "f1": null
         },
         "declarationFindings": {
-          "tp": 0,
-          "fp": 1,
+          "tp": 5,
+          "fp": 2,
           "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
+          "precision": 0.714286,
+          "recall": 1,
+          "f1": 0.833333
         }
       },
-      "ok": false,
-      "notes": "Deliberate false negative for a regex scanner. Because the manifest declares filesystem, the tool is expected to emit a false \"unused\" finding.",
-      "limitation": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner."
-    },
-    {
-      "id": "09-obfuscated-eval",
-      "category": "obfuscated",
-      "description": "Reaches the global eval function through a computed property name.",
-      "declared": [
-        "eval"
-      ],
-      "expectedActual": [
-        "eval"
-      ],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": [
-          "eval"
-        ]
-      },
-      "toolFindings": [
+      "fixtures": [
         {
+          "id": "01-pure-safe",
+          "category": "pure-safe",
+          "description": "Pure arithmetic helpers with no imports and no ambient authority.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Baseline clean sample: no imports, no process access, no dynamic code.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "02-fs-read",
+          "category": "filesystem",
+          "description": "Static import of node:fs/promises; manifest declares filesystem.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Straightforward true positive: declaration matches a statically visible import.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "03-net-https",
+          "category": "network",
+          "description": "Static import of node:https; manifest declares network.",
+          "declared": [
+            "network"
+          ],
+          "expectedActual": [
+            "network"
+          ],
+          "expectedStaticVisible": [
+            "network"
+          ],
+          "detected": [
+            "network"
+          ],
+          "rawDetected": [
+            "network"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "network"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Network capability through a builtin module import.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "04-child-process",
+          "category": "process",
+          "description": "Spawns a child process while the manifest declares no capabilities.",
+          "declared": [],
+          "expectedActual": [
+            "process"
+          ],
+          "expectedStaticVisible": [
+            "process"
+          ],
+          "detected": [
+            "process"
+          ],
+          "rawDetected": [
+            "process"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [
+              "process"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "process",
+              "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:1 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 1,
+              "evidence": "node:child_process"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "Ground truth says process is undeclared; the desired finding is undeclared=process.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "05-env-config",
+          "category": "env",
+          "description": "Reads process.env through dot and bracket notation; env is declared.",
+          "declared": [
+            "env"
+          ],
+          "expectedActual": [
+            "env"
+          ],
+          "expectedStaticVisible": [
+            "env"
+          ],
+          "detected": [
+            "env"
+          ],
+          "rawDetected": [
+            "env"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "env"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Both process.env and process[\"env\"] must map to the same capability.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "06-eval-function",
+          "category": "eval",
+          "description": "Uses new Function and direct eval; eval is declared.",
+          "declared": [
+            "eval"
+          ],
+          "expectedActual": [
+            "eval"
+          ],
+          "expectedStaticVisible": [
+            "eval"
+          ],
+          "detected": [
+            "eval"
+          ],
+          "rawDetected": [
+            "eval"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "eval"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Language-level dynamic code evidence, not an import.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "07-dynamic-import",
+          "category": "dynamic-import",
+          "description": "Uses import(\"node:fs/promises\") with a static string specifier.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Dynamic import with a string literal is in scope and should be detected (kind=dynamic).",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "08-obfuscated-concat",
+          "category": "obfuscated",
+          "description": "Builds the import specifier from concatenated strings; filesystem is actually used.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Deliberate false negative for a regex scanner. Because the manifest declares filesystem, the tool is expected to emit a false \"unused\" finding.",
+          "limitation": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner.",
+          "source": null
+        },
+        {
+          "id": "09-obfuscated-eval",
+          "category": "obfuscated",
+          "description": "Reaches the global eval function through a computed property name.",
+          "declared": [
+            "eval"
+          ],
+          "expectedActual": [
+            "eval"
+          ],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": [
+              "eval"
+            ]
+          },
+          "toolFindings": [
+            {
+              "kind": "unused",
+              "capability": "eval",
+              "message": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+              "file": "package.json"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 1,
+              "precision": null,
+              "recall": 0,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": false,
+          "notes": "Deliberate false negative for a regex scanner. Because eval is declared, the tool is expected to emit a false \"unused\" finding.",
+          "limitation": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern.",
+          "source": null
+        },
+        {
+          "id": "10-fp-comments",
+          "category": "false-positive-trap",
+          "description": "Comments contain imports, process.env and eval, but no executable capability.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Trap expected to pass: commented-out code and prose must not be reported.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "11-fp-strings",
+          "category": "false-positive-trap",
+          "description": "String and template literals contain import/require/process.env/eval text.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Trap expected to pass: literal samples in documentation strings must not be reported.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "12-fp-properties",
+          "category": "false-positive-trap",
+          "description": "Uses an eval-named object property, an evaluate() helper and a machine.env field.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Trap expected to pass: property access must not be treated as global eval or process.env.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "13-fp-unmapped-builtin",
+          "category": "false-positive-trap",
+          "description": "Imports node:path and a relative helper; neither grants an ambient capability.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [
+            "unknown"
+          ],
+          "rawDetected": [
+            "unknown"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/helper.js",
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [
+              "unknown"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "unknown",
+              "message": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 1,
+              "evidence": "node:path"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": false,
+          "notes": "Expected false positive: capdiff maps every unmapped import (node:path, ./helper.js) to the fallback capability \"unknown\", which then appears as undeclared. \"unknown\" is explicitly not a real capability per the tool README.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "14-manifest-object",
+          "category": "declaration-format",
+          "description": "Manifest uses the object form of dsh.capabilities; filesystem is the only truthy entry.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Checks parseDeclared({ filesystem: true, network: false }) -> [\"filesystem\"].",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "15-cjs-require",
+          "category": "require-cjs",
+          "description": "CommonJS file uses require(\"node:child_process\"); process is declared.",
+          "declared": [
+            "process"
+          ],
+          "expectedActual": [
+            "process"
+          ],
+          "expectedStaticVisible": [
+            "process"
+          ],
+          "detected": [
+            "process"
+          ],
+          "rawDetected": [
+            "process"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.cjs"
+          ],
+          "diff": {
+            "matched": [
+              "process"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Checks the .cjs extension and the require() extraction path.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "16-multi-undeclared",
+          "category": "multi-capability",
+          "description": "Declares filesystem but statically uses filesystem, network, process (re-export) and env.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "env",
+            "filesystem",
+            "network",
+            "process"
+          ],
+          "expectedStaticVisible": [
+            "env",
+            "filesystem",
+            "network",
+            "process"
+          ],
+          "detected": [
+            "env",
+            "filesystem",
+            "network",
+            "process"
+          ],
+          "rawDetected": [
+            "env",
+            "filesystem",
+            "network",
+            "process"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [
+              "env",
+              "network",
+              "process"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "env",
+              "message": "Capability \"env\" is used in code (process.env) at src/index.js:7 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 7,
+              "evidence": "process.env"
+            },
+            {
+              "kind": "undeclared",
+              "capability": "network",
+              "message": "Capability \"network\" is used in code (node:https) at src/index.js:2 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 2,
+              "evidence": "node:https"
+            },
+            {
+              "kind": "undeclared",
+              "capability": "process",
+              "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:4 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 4,
+              "evidence": "node:child_process"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 4,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 4,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 3,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "Recall test for undeclared findings: network, process and env should each be reported.",
+          "limitation": null,
+          "source": null
+        },
+        {
+          "id": "17-global-fetch",
+          "category": "unsupported-construct",
+          "description": "Uses Node's global fetch() for network access.",
+          "declared": [],
+          "expectedActual": [
+            "network"
+          ],
+          "expectedStaticVisible": [],
+          "detected": [
+            "network"
+          ],
+          "rawDetected": [
+            "network"
+          ],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [
+              "network"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "network",
+              "message": "Capability \"network\" is used in code (fetch()) at src/index.js:2 but is not declared in dsh.capabilities.",
+              "file": "src/index.js",
+              "line": 2,
+              "evidence": "fetch()"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "Deliberate false negative: the README states that global fetch(...) calls are not scanned; only the import specifier \"fetch\" is mapped.",
+          "limitation": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list.",
+          "source": null
+        }
+      ],
+      "falsePositives": [
+        {
+          "layer": "declaration",
+          "fixture": "09-obfuscated-eval",
           "kind": "unused",
           "capability": "eval",
-          "message": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
-          "file": "package.json"
-        }
-      ],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 1,
-          "precision": null,
-          "recall": 0,
-          "f1": null
+          "detail": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+          "file": "package.json",
+          "line": null
         },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": false,
-      "notes": "Deliberate false negative for a regex scanner. Because eval is declared, the tool is expected to emit a false \"unused\" finding.",
-      "limitation": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
-    },
-    {
-      "id": "10-fp-comments",
-      "category": "false-positive-trap",
-      "description": "Comments contain imports, process.env and eval, but no executable capability.",
-      "declared": [],
-      "expectedActual": [],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Trap expected to pass: commented-out code and prose must not be reported.",
-      "limitation": null
-    },
-    {
-      "id": "11-fp-strings",
-      "category": "false-positive-trap",
-      "description": "String and template literals contain import/require/process.env/eval text.",
-      "declared": [],
-      "expectedActual": [],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Trap expected to pass: literal samples in documentation strings must not be reported.",
-      "limitation": null
-    },
-    {
-      "id": "12-fp-properties",
-      "category": "false-positive-trap",
-      "description": "Uses an eval-named object property, an evaluate() helper and a machine.env field.",
-      "declared": [],
-      "expectedActual": [],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Trap expected to pass: property access must not be treated as global eval or process.env.",
-      "limitation": null
-    },
-    {
-      "id": "13-fp-unmapped-builtin",
-      "category": "false-positive-trap",
-      "description": "Imports node:path and a relative helper; neither grants an ambient capability.",
-      "declared": [],
-      "expectedActual": [],
-      "expectedStaticVisible": [],
-      "detected": [
-        "unknown"
-      ],
-      "scannedFiles": [
-        "src/helper.js",
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [
-          "unknown"
-        ],
-        "unused": []
-      },
-      "toolFindings": [
         {
+          "layer": "declaration",
+          "fixture": "13-fp-unmapped-builtin",
           "kind": "undeclared",
           "capability": "unknown",
-          "message": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
+          "detail": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
           "file": "src/index.js",
-          "line": 1,
-          "evidence": "node:path"
-        }
-      ],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 1,
-          "fn": 0,
-          "precision": 0,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": false,
-      "notes": "Expected false positive: capdiff maps every unmapped import (node:path, ./helper.js) to the fallback capability \"unknown\", which then appears as undeclared. \"unknown\" is explicitly not a real capability per the tool README.",
-      "limitation": null
-    },
-    {
-      "id": "14-manifest-object",
-      "category": "declaration-format",
-      "description": "Manifest uses the object form of dsh.capabilities; filesystem is the only truthy entry.",
-      "declared": [
-        "filesystem"
-      ],
-      "expectedActual": [
-        "filesystem"
-      ],
-      "expectedStaticVisible": [
-        "filesystem"
-      ],
-      "detected": [
-        "filesystem"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "filesystem"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Checks parseDeclared({ filesystem: true, network: false }) -> [\"filesystem\"].",
-      "limitation": null
-    },
-    {
-      "id": "15-cjs-require",
-      "category": "require-cjs",
-      "description": "CommonJS file uses require(\"node:child_process\"); process is declared.",
-      "declared": [
-        "process"
-      ],
-      "expectedActual": [
-        "process"
-      ],
-      "expectedStaticVisible": [
-        "process"
-      ],
-      "detected": [
-        "process"
-      ],
-      "scannedFiles": [
-        "src/index.cjs"
-      ],
-      "diff": {
-        "matched": [
-          "process"
-        ],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "inScopeDetection": {
-          "tp": 1,
-          "fp": 0,
-          "fn": 0,
-          "precision": 1,
-          "recall": 1,
-          "f1": 1
-        },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
-        }
-      },
-      "ok": true,
-      "notes": "Checks the .cjs extension and the require() extraction path.",
-      "limitation": null
-    },
-    {
-      "id": "16-multi-undeclared",
-      "category": "multi-capability",
-      "description": "Declares filesystem but statically uses filesystem, network, process (re-export) and env.",
-      "declared": [
-        "filesystem"
-      ],
-      "expectedActual": [
-        "env",
-        "filesystem",
-        "network",
-        "process"
-      ],
-      "expectedStaticVisible": [
-        "env",
-        "filesystem",
-        "network",
-        "process"
-      ],
-      "detected": [
-        "env",
-        "filesystem",
-        "network",
-        "process"
-      ],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [
-          "filesystem"
-        ],
-        "undeclared": [
-          "env",
-          "network",
-          "process"
-        ],
-        "unused": []
-      },
-      "toolFindings": [
-        {
-          "kind": "undeclared",
-          "capability": "env",
-          "message": "Capability \"env\" is used in code (process.env) at src/index.js:7 but is not declared in dsh.capabilities.",
-          "file": "src/index.js",
-          "line": 7,
-          "evidence": "process.env"
+          "line": 1
         },
         {
-          "kind": "undeclared",
-          "capability": "network",
-          "message": "Capability \"network\" is used in code (node:https) at src/index.js:2 but is not declared in dsh.capabilities.",
-          "file": "src/index.js",
-          "line": 2,
-          "evidence": "node:https"
-        },
-        {
-          "kind": "undeclared",
-          "capability": "process",
-          "message": "Capability \"process\" is used in code (node:child_process) at src/index.js:4 but is not declared in dsh.capabilities.",
-          "file": "src/index.js",
-          "line": 4,
-          "evidence": "node:child_process"
+          "layer": "detection",
+          "fixture": "13-fp-unmapped-builtin",
+          "capability": "unknown",
+          "detail": "not in the fixture's ground-truth actual set",
+          "evidence": {
+            "file": "src/index.js",
+            "line": 1,
+            "origin": "import",
+            "kind": "static",
+            "specifier": "node:path",
+            "evidence": "node:path"
+          }
         }
       ],
-      "metrics": {
+      "falseNegatives": [
+        {
+          "layer": "detection",
+          "fixture": "09-obfuscated-eval",
+          "capability": "eval",
+          "detail": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
+        }
+      ],
+      "disclaimer": "Synthetic, curated fixtures only. These numbers describe this corpus, not all plugins or the wider npm ecosystem. A passing fixture is not evidence that a plugin is safe; the scanner reports statically visible evidence, never runtime capability."
+    },
+    "real": {
+      "corpus": "real",
+      "fixtureRoot": "benchmarks/capdiff/fixtures/real",
+      "fixtureCount": 17,
+      "includeUnknown": false,
+      "totals": {
         "detection": {
-          "tp": 4,
+          "tp": 15,
           "fp": 0,
           "fn": 0,
           "precision": 1,
@@ -1200,12 +1451,12 @@
           "f1": 1
         },
         "inScopeDetection": {
-          "tp": 4,
-          "fp": 0,
+          "tp": 14,
+          "fp": 1,
           "fn": 0,
-          "precision": 1,
+          "precision": 0.933333,
           "recall": 1,
-          "f1": 1
+          "f1": 0.965517
         },
         "undeclaredFindings": {
           "tp": 3,
@@ -1216,15 +1467,15 @@
           "f1": 1
         },
         "unusedFindings": {
-          "tp": 0,
+          "tp": 1,
           "fp": 0,
           "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
         },
         "declarationFindings": {
-          "tp": 3,
+          "tp": 4,
           "fp": 0,
           "fn": 0,
           "precision": 1,
@@ -1232,145 +1483,2093 @@
           "f1": 1
         }
       },
-      "ok": true,
-      "notes": "Recall test for undeclared findings: network, process and env should each be reported.",
-      "limitation": null
-    },
-    {
-      "id": "17-global-fetch",
-      "category": "unsupported-construct",
-      "description": "Uses Node's global fetch() for network access.",
-      "declared": [],
-      "expectedActual": [
-        "network"
-      ],
-      "expectedStaticVisible": [],
-      "detected": [],
-      "scannedFiles": [
-        "src/index.js"
-      ],
-      "diff": {
-        "matched": [],
-        "undeclared": [],
-        "unused": []
-      },
-      "toolFindings": [],
-      "metrics": {
-        "detection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 1,
-          "precision": null,
-          "recall": 0,
-          "f1": null
+      "fixtures": [
+        {
+          "id": "real-01-hmr-doctor-cli",
+          "category": "real-filesystem",
+          "description": "Real CLI entry point that reads an HMR log through node:fs/promises.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 17,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "node:util and ./core.js are unmapped imports (unknown), reported but not scored in the real corpus.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-hmr-doctor",
+            "path": "packages/cordis-hmr-doctor/src/cli.js",
+            "lines": "1-100",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-hmr-doctor/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
         },
-        "inScopeDetection": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
+        {
+          "id": "real-02-migrate-cli",
+          "category": "real-undeclared-filesystem",
+          "description": "Real CLI walker using node:fs/promises, node:path and node:util.",
+          "declared": [],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 20,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [
+              "filesystem"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "filesystem",
+              "message": "Capability \"filesystem\" is used in code (node:fs/promises) at src/cli.js:19 but is not declared in dsh.capabilities.",
+              "file": "src/cli.js",
+              "line": 19,
+              "evidence": "node:fs/promises"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "The fixture manifest intentionally declares nothing, mirroring the real package manifest; filesystem must be reported as undeclared.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-migrate",
+            "path": "packages/cordis-migrate/src/cli.js",
+            "lines": "1-125",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-migrate/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
         },
-        "undeclaredFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 1,
-          "precision": null,
-          "recall": 0,
-          "f1": null
+        {
+          "id": "real-03-testkit-core",
+          "category": "real-unused-declaration",
+          "description": "Pure Cordis test-double core with no imports and no ambient authority.",
+          "declared": [
+            "env"
+          ],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/core.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": [
+              "env"
+            ]
+          },
+          "toolFindings": [
+            {
+              "kind": "unused",
+              "capability": "env",
+              "message": "Capability \"env\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
+              "file": "package.json"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "Declares env although the excerpt never touches process.env; the expected finding is unused:env on real, side-effect-free code.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-testkit",
+            "path": "packages/cordis-testkit/src/core.js",
+            "lines": "1-146",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-testkit/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
         },
-        "unusedFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 0,
-          "precision": null,
-          "recall": null,
-          "f1": null
+        {
+          "id": "real-04-capdiff-core",
+          "category": "real-filesystem",
+          "description": "Real scanner core header: filesystem imports plus the alias table used by parseDeclared.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/core.js",
+                "line": 20,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/core.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "node:path, ./ast.js and ./capability.js are unmapped imports (unknown).",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-capdiff",
+            "path": "packages/dsh-capdiff/src/core.js",
+            "lines": "1-95",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-capdiff/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
         },
-        "declarationFindings": {
-          "tp": 0,
-          "fp": 0,
-          "fn": 1,
-          "precision": null,
-          "recall": 0,
-          "f1": null
+        {
+          "id": "real-05-capdiff-capability",
+          "category": "real-pure",
+          "description": "Real capability map: strings such as node:fs, process.env and eval appear as keys, not code.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/capability.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "False-positive trap on real code: the map is data, so nothing may be reported as a capability.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-capdiff",
+            "path": "packages/dsh-capdiff/src/capability.js",
+            "lines": "1-66",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-capdiff/src/capability.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
+        },
+        {
+          "id": "real-06-supply-watch-cli",
+          "category": "real-filesystem",
+          "description": "Real CLI: reads a names file through node:fs/promises and parses arguments with node:util.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 14,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "node:util and ./core.js are unmapped imports (unknown).",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-supply-watch",
+            "path": "packages/dsh-supply-watch/src/cli.js",
+            "lines": "1-133",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-supply-watch/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
+        },
+        {
+          "id": "real-07-upgrade-atlas-cli",
+          "category": "real-filesystem",
+          "description": "Real CLI with both node:fs and node:fs/promises imports, URL parsing and path resolution.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 16,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "node:path, node:url, node:util and ./core.js are unmapped imports (unknown).",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-upgrade-atlas",
+            "path": "packages/dsh-upgrade-atlas/src/cli.js",
+            "lines": "1-148",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-upgrade-atlas/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
+        },
+        {
+          "id": "real-08-xbrl-cli",
+          "category": "real-filesystem",
+          "description": "Real CLI for offline XBRL reconciliation; reads fact files through node:fs/promises.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 8,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "node:util and ./core.js are unmapped imports (unknown).",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-xbrl",
+            "path": "packages/dsh-xbrl/src/cli.js",
+            "lines": "1-96",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-xbrl/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
+        },
+        {
+          "id": "real-09-testatum-cli",
+          "category": "real-undeclared-env",
+          "description": "Real trust-card CLI: reads/writes JSON and resolves the HMAC secret from process.env.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "env",
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "env",
+            "filesystem"
+          ],
+          "detected": [
+            "env",
+            "filesystem"
+          ],
+          "rawDetected": [
+            "env",
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/cli.js",
+                "line": 15,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/cli.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [
+              "env"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "env",
+              "message": "Capability \"env\" is used in code (process.env) at src/cli.js:116 but is not declared in dsh.capabilities.",
+              "file": "src/cli.js",
+              "line": 116,
+              "evidence": "process.env"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "env is used through process.env.TESTATUM_KEY and process.env.TESTATUM_KEY_ID but the fixture manifest declares only filesystem; expected undeclared:env.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "testatum-attest",
+            "path": "packages/testatum-attest/src/cli.js",
+            "lines": "1-128",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/testatum-attest/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          }
+        },
+        {
+          "id": "real-10-os-catalog-core",
+          "category": "real-pure",
+          "description": "Pure catalog core: types, constants and CatalogError; no I/O and no imports.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/core.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Another real false-positive check: a long, type-heavy pure module.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-catalog",
+            "path": "packages/dsh-os-catalog/src/core.js",
+            "lines": "1-139",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-catalog/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-11-os-eval-session",
+          "category": "real-filesystem",
+          "description": "Real session-log parser that imports readFileSync from node:fs and pairs tool calls with results.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/session.js",
+                "line": 21,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "./core.js",
+                "evidence": "./core.js"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/session.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "The excerpt is 154 lines. ./core.js is an unmapped import (unknown).",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-eval",
+            "path": "packages/dsh-os-eval/src/session.js",
+            "lines": "1-154",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-eval/src/session.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-12-os-lease-apply",
+          "category": "real-mixed",
+          "description": "Real transactional applier: node:crypto hashing plus node:fs/promises and node:path IO helpers.",
+          "declared": [
+            "crypto",
+            "filesystem"
+          ],
+          "expectedActual": [
+            "crypto",
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "crypto",
+            "filesystem"
+          ],
+          "detected": [
+            "crypto",
+            "filesystem"
+          ],
+          "rawDetected": [
+            "crypto",
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/apply.js",
+                "line": 36,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/apply.js"
+          ],
+          "diff": {
+            "matched": [
+              "crypto",
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "path is an unmapped import (unknown). Both canonical capabilities are declared, so the expected declaration diff is empty.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-lease",
+            "path": "packages/dsh-os-lease/src/apply.js",
+            "lines": "1-126",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-lease/src/apply.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-13-os-quota-enforce",
+          "category": "real-pure",
+          "description": "Real tool-call enforcement adapter; the excerpt is pure JavaScript with no imports.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [],
+          "unmapped": [],
+          "scannedFiles": [
+            "src/enforce.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "False-positive check on a long comment- and error-heavy module that must not yield capabilities.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-quota",
+            "path": "packages/dsh-os-quota/src/enforce.js",
+            "lines": "1-117",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-quota/src/enforce.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-14-os-registry-index",
+          "category": "real-pure",
+          "description": "Real plugin registration header: imports @deepseek-ai/dsh-tools and ./core.js and defines JSON schemas.",
+          "declared": [],
+          "expectedActual": [],
+          "expectedStaticVisible": [],
+          "detected": [],
+          "rawDetected": [
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/index.js",
+                "line": 6,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-tools",
+                "evidence": "@deepseek-ai/dsh-tools"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/index.js"
+          ],
+          "diff": {
+            "matched": [],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Both imports are unmapped (unknown); no canonical capability is present in the excerpt.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-registry",
+            "path": "packages/dsh-os-registry/src/index.js",
+            "lines": "1-88",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-registry/src/index.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-15-os-trace-sign",
+          "category": "real-undeclared-env",
+          "description": "Real HMAC signing helpers: node:crypto plus a TESTATUM_KEY environment lookup.",
+          "declared": [
+            "crypto"
+          ],
+          "expectedActual": [
+            "crypto",
+            "env"
+          ],
+          "expectedStaticVisible": [
+            "crypto",
+            "env"
+          ],
+          "detected": [
+            "crypto",
+            "env"
+          ],
+          "rawDetected": [
+            "crypto",
+            "env",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/sign.js",
+                "line": 27,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "./core.js",
+                "evidence": "./core.js"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/sign.js"
+          ],
+          "diff": {
+            "matched": [
+              "crypto"
+            ],
+            "undeclared": [
+              "env"
+            ],
+            "unused": []
+          },
+          "toolFindings": [
+            {
+              "kind": "undeclared",
+              "capability": "env",
+              "message": "Capability \"env\" is used in code (process.env) at src/sign.js:108 but is not declared in dsh.capabilities.",
+              "file": "src/sign.js",
+              "line": 108,
+              "evidence": "process.env"
+            }
+          ],
+          "metrics": {
+            "detection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 2,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            }
+          },
+          "ok": true,
+          "notes": "env is used via process.env?.[SECRET_ENV] but the fixture manifest declares only crypto; expected undeclared:env.",
+          "limitation": null,
+          "source": {
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-trace",
+            "path": "packages/dsh-os-trace/src/sign.js",
+            "lines": "1-148",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-trace/src/sign.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-16-docs-tool",
+          "category": "real-filesystem",
+          "description": "DSH docs example for a minimal tool plugin: reads a file through node:fs/promises and registers with @deepseek-ai/dsh-tools.",
+          "declared": [
+            "filesystem"
+          ],
+          "expectedActual": [
+            "filesystem"
+          ],
+          "expectedStaticVisible": [
+            "filesystem"
+          ],
+          "detected": [
+            "filesystem"
+          ],
+          "rawDetected": [
+            "filesystem",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/adding-a-tool.js",
+                "line": 7,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-tools",
+                "evidence": "@deepseek-ai/dsh-tools"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/adding-a-tool.js"
+          ],
+          "diff": {
+            "matched": [
+              "filesystem"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "The @deepseek-ai/dsh-tools import is unmapped (unknown). The TypeScript context type import was removed; runtime imports and calls are unchanged.",
+          "limitation": null,
+          "source": {
+            "repo": "deepseek-harness",
+            "revision": "39163dd30f",
+            "package": "docs",
+            "path": "docs/cookbook/adding-a-tool.md",
+            "lines": "9-37",
+            "license": "MIT",
+            "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/cookbook/adding-a-tool.md",
+            "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved"
+          }
+        },
+        {
+          "id": "real-17-docs-llm-adapter",
+          "category": "real-network",
+          "description": "DSH docs HTTP adapter skeleton: implements stream() with global fetch() and imports @deepseek-ai/dsh-llm.",
+          "declared": [
+            "network"
+          ],
+          "expectedActual": [
+            "network"
+          ],
+          "expectedStaticVisible": [],
+          "detected": [
+            "network"
+          ],
+          "rawDetected": [
+            "network",
+            "unknown"
+          ],
+          "unmapped": [
+            {
+              "capability": "unknown",
+              "evidence": {
+                "file": "src/llm-adapter.js",
+                "line": 7,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-llm",
+                "evidence": "@deepseek-ai/dsh-llm"
+              }
+            }
+          ],
+          "scannedFiles": [
+            "src/llm-adapter.js"
+          ],
+          "diff": {
+            "matched": [
+              "network"
+            ],
+            "undeclared": [],
+            "unused": []
+          },
+          "toolFindings": [],
+          "metrics": {
+            "detection": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "precision": 1,
+              "recall": 1,
+              "f1": 1
+            },
+            "inScopeDetection": {
+              "tp": 0,
+              "fp": 1,
+              "fn": 0,
+              "precision": 0,
+              "recall": null,
+              "f1": null
+            },
+            "undeclaredFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "unusedFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            },
+            "declarationFindings": {
+              "tp": 0,
+              "fp": 0,
+              "fn": 0,
+              "precision": null,
+              "recall": null,
+              "f1": null
+            }
+          },
+          "ok": true,
+          "notes": "Global fetch() is AST-visible but not visible to the legacy regex scope (staticVisible is empty by definition). The @deepseek-ai/dsh-llm import is unmapped (unknown). This fixture therefore shows one in-scope false positive while capability detection is correct.",
+          "limitation": null,
+          "source": {
+            "repo": "deepseek-harness",
+            "revision": "39163dd30f",
+            "package": "docs",
+            "path": "docs/user/develop/practice/llm-adapter.md",
+            "lines": "158-189",
+            "license": "MIT",
+            "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/user/develop/practice/llm-adapter.md",
+            "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved; private parameter property expanded to an explicit field"
+          }
         }
+      ],
+      "falsePositives": [],
+      "falseNegatives": [],
+      "disclaimer": "Real code excerpts, but a small hand-selected corpus. The excerpts are verbatim (trimmed at statement boundaries) except for two docs examples whose TypeScript annotations were stripped. The capability declarations in the fixture manifests are authored for the benchmark: the upstream packages do not declare dsh.capabilities. Rates describe this corpus only; a match is not a safety verdict.",
+      "unmapped": {
+        "fixtureCount": 13,
+        "totalFixtures": 17,
+        "fixtures": [
+          {
+            "fixture": "real-01-hmr-doctor-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 17,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            ]
+          },
+          {
+            "fixture": "real-02-migrate-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 20,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            ]
+          },
+          {
+            "fixture": "real-04-capdiff-core",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/core.js",
+                "line": 20,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            ]
+          },
+          {
+            "fixture": "real-06-supply-watch-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 14,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            ]
+          },
+          {
+            "fixture": "real-07-upgrade-atlas-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 16,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            ]
+          },
+          {
+            "fixture": "real-08-xbrl-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 8,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            ]
+          },
+          {
+            "fixture": "real-09-testatum-cli",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/cli.js",
+                "line": 15,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:util",
+                "evidence": "node:util"
+              }
+            ]
+          },
+          {
+            "fixture": "real-11-os-eval-session",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/session.js",
+                "line": 21,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "./core.js",
+                "evidence": "./core.js"
+              }
+            ]
+          },
+          {
+            "fixture": "real-12-os-lease-apply",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/apply.js",
+                "line": 36,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "node:path",
+                "evidence": "node:path"
+              }
+            ]
+          },
+          {
+            "fixture": "real-14-os-registry-index",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/index.js",
+                "line": 6,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-tools",
+                "evidence": "@deepseek-ai/dsh-tools"
+              }
+            ]
+          },
+          {
+            "fixture": "real-15-os-trace-sign",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/sign.js",
+                "line": 27,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "./core.js",
+                "evidence": "./core.js"
+              }
+            ]
+          },
+          {
+            "fixture": "real-16-docs-tool",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/adding-a-tool.js",
+                "line": 7,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-tools",
+                "evidence": "@deepseek-ai/dsh-tools"
+              }
+            ]
+          },
+          {
+            "fixture": "real-17-docs-llm-adapter",
+            "capabilities": [
+              "unknown"
+            ],
+            "evidence": [
+              {
+                "file": "src/llm-adapter.js",
+                "line": 7,
+                "origin": "import",
+                "kind": "static",
+                "specifier": "@deepseek-ai/dsh-llm",
+                "evidence": "@deepseek-ai/dsh-llm"
+              }
+            ]
+          }
+        ]
       },
-      "ok": false,
-      "notes": "Deliberate false negative: the README states that global fetch(...) calls are not scanned; only the import specifier \"fetch\" is mapped.",
-      "limitation": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
-    }
-  ],
-  "falsePositives": [
-    {
-      "layer": "declaration",
-      "fixture": "08-obfuscated-concat",
-      "kind": "unused",
-      "capability": "filesystem",
-      "detail": "Capability \"filesystem\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
-      "file": "package.json",
-      "line": null
-    },
-    {
-      "layer": "declaration",
-      "fixture": "09-obfuscated-eval",
-      "kind": "unused",
-      "capability": "eval",
-      "detail": "Capability \"eval\" is declared in dsh.capabilities but is not statically visible in the scanned files.",
-      "file": "package.json",
-      "line": null
-    },
-    {
-      "layer": "declaration",
-      "fixture": "13-fp-unmapped-builtin",
-      "kind": "undeclared",
-      "capability": "unknown",
-      "detail": "Capability \"unknown\" is used in code (node:path) at src/index.js:1 but is not declared in dsh.capabilities.",
-      "file": "src/index.js",
-      "line": 1
-    },
-    {
-      "layer": "detection",
-      "fixture": "13-fp-unmapped-builtin",
-      "capability": "unknown",
-      "detail": "not in the fixture's ground-truth actual set",
-      "evidence": {
-        "file": "src/index.js",
-        "line": 1,
-        "origin": "import",
-        "kind": "static",
-        "specifier": "node:path",
-        "evidence": "node:path"
+      "unknownAsFalsePositive": {
+        "tp": 15,
+        "fp": 13,
+        "fn": 0,
+        "precision": 0.535714,
+        "recall": 1,
+        "f1": 0.697674
+      },
+      "sources": {
+        "byRepo": {
+          "dsh-next-suite": 9,
+          "dsh-os-suite": 6,
+          "deepseek-harness": 2
+        },
+        "byLicense": {
+          "Apache-2.0": 15,
+          "MIT": 2
+        },
+        "fixtures": [
+          {
+            "id": "real-01-hmr-doctor-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-hmr-doctor",
+            "path": "packages/cordis-hmr-doctor/src/cli.js",
+            "lines": "1-100",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-hmr-doctor/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-02-migrate-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-migrate",
+            "path": "packages/cordis-migrate/src/cli.js",
+            "lines": "1-125",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-migrate/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-03-testkit-core",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "cordis-testkit",
+            "path": "packages/cordis-testkit/src/core.js",
+            "lines": "1-146",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-testkit/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-04-capdiff-core",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-capdiff",
+            "path": "packages/dsh-capdiff/src/core.js",
+            "lines": "1-95",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-capdiff/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-05-capdiff-capability",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-capdiff",
+            "path": "packages/dsh-capdiff/src/capability.js",
+            "lines": "1-66",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-capdiff/src/capability.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-06-supply-watch-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-supply-watch",
+            "path": "packages/dsh-supply-watch/src/cli.js",
+            "lines": "1-133",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-supply-watch/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-07-upgrade-atlas-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-upgrade-atlas",
+            "path": "packages/dsh-upgrade-atlas/src/cli.js",
+            "lines": "1-148",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-upgrade-atlas/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-08-xbrl-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "dsh-xbrl",
+            "path": "packages/dsh-xbrl/src/cli.js",
+            "lines": "1-96",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-xbrl/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-09-testatum-cli",
+            "repo": "dsh-next-suite",
+            "revision": "main",
+            "package": "testatum-attest",
+            "path": "packages/testatum-attest/src/cli.js",
+            "lines": "1-128",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/testatum-attest/src/cli.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+            "snapshot": "2026-11-15"
+          },
+          {
+            "id": "real-10-os-catalog-core",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-catalog",
+            "path": "packages/dsh-os-catalog/src/core.js",
+            "lines": "1-139",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-catalog/src/core.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-11-os-eval-session",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-eval",
+            "path": "packages/dsh-os-eval/src/session.js",
+            "lines": "1-154",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-eval/src/session.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-12-os-lease-apply",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-lease",
+            "path": "packages/dsh-os-lease/src/apply.js",
+            "lines": "1-126",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-lease/src/apply.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-13-os-quota-enforce",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-quota",
+            "path": "packages/dsh-os-quota/src/enforce.js",
+            "lines": "1-117",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-quota/src/enforce.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-14-os-registry-index",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-registry",
+            "path": "packages/dsh-os-registry/src/index.js",
+            "lines": "1-88",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-registry/src/index.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-15-os-trace-sign",
+            "repo": "dsh-os-suite",
+            "revision": "cb1baa8",
+            "package": "dsh-os-trace",
+            "path": "packages/dsh-os-trace/src/sign.js",
+            "lines": "1-148",
+            "license": "Apache-2.0",
+            "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-trace/src/sign.js",
+            "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+          },
+          {
+            "id": "real-16-docs-tool",
+            "repo": "deepseek-harness",
+            "revision": "39163dd30f",
+            "package": "docs",
+            "path": "docs/cookbook/adding-a-tool.md",
+            "lines": "9-37",
+            "license": "MIT",
+            "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/cookbook/adding-a-tool.md",
+            "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved"
+          },
+          {
+            "id": "real-17-docs-llm-adapter",
+            "repo": "deepseek-harness",
+            "revision": "39163dd30f",
+            "package": "docs",
+            "path": "docs/user/develop/practice/llm-adapter.md",
+            "lines": "158-189",
+            "license": "MIT",
+            "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/user/develop/practice/llm-adapter.md",
+            "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved; private parameter property expanded to an explicit field"
+          }
+        ]
       }
     }
-  ],
-  "falseNegatives": [
-    {
-      "layer": "detection",
-      "fixture": "08-obfuscated-concat",
-      "capability": "filesystem",
-      "detail": "Computed import specifier (MODULE_PREFIX + MODULE_NAME) is invisible to the regex scanner."
-    },
-    {
-      "layer": "detection",
-      "fixture": "09-obfuscated-eval",
-      "capability": "eval",
-      "detail": "Computed global property access GLOBAL[\"ev\" + \"al\"] is not matched by the eval(...) pattern."
-    },
-    {
-      "layer": "declaration",
-      "fixture": "17-global-fetch",
-      "kind": "undeclared",
-      "capability": "network",
-      "detail": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
-    },
-    {
-      "layer": "detection",
-      "fixture": "17-global-fetch",
-      "capability": "network",
-      "detail": "Global fetch(url) has network capability but is not a module import and is not in the code-pattern list."
-    }
-  ],
-  "disclaimer": "Synthetic, curated fixtures only. These numbers describe this corpus, not all plugins or the wider npm ecosystem. A passing fixture is not evidence that a plugin is safe; the scanner reports statically visible evidence, never runtime capability."
+  },
+  "disclaimer": "Two curated corpora: 17 synthetic fixtures and 17 real excerpts. These numbers describe these corpora, not all plugins or the wider npm ecosystem. A passing fixture is not evidence that a plugin is safe; the scanner reports statically visible evidence, never runtime capability."
 }

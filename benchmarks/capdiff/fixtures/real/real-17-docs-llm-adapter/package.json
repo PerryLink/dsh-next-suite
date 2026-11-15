@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-17-docs-llm-adapter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: DSH docs HTTP LLM adapter using global fetch().",
+  "dsh": {
+    "capabilities": [
+      "network"
+    ]
+  }
+}

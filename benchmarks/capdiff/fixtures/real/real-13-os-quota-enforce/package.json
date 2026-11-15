@@ -1,0 +1,10 @@
+{
+  "name": "@bench/real-13-os-quota-enforce",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real tool-call enforcement adapter; the excerpt is pure JavaScript with no imports.",
+  "dsh": {
+    "capabilities": []
+  }
+}

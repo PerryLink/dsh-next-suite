@@ -2,7 +2,7 @@
 
 > 非官方社区工具。与 Cordiverse / Cordis / DeepSeek 无隶属关系。Apache-2.0。
 >
-> **核心立场：内置规则是示例，不是官方迁移表；工具只生成候选改动，语义正确性由人负责。**
+> **核心立场：内置规则是社区整理，不是官方迁移表；标 `experimental` 的规则尤其只是线索；工具只生成候选改动，语义正确性由人负责。**
 
 ## 1. 目标与非目标
 
@@ -18,7 +18,7 @@
 
 - **不是**官方迁移工具，不提供权威迁移表，不判断业务语义。
 - **不是** AST codemod：不解析 TS/JS，不处理作用域、别名、类型、跨行结构。
-- 不安装依赖、不改 `package.json`、不跑测试、不提交/推送。
+- 不安装依赖、不解析依赖树、不跑测试、不提交/推送。`package` 类规则可能在 `package.json` 的**文本**中命中并改写；这不是语义化的依赖管理。
 - 不自动向上游 `cordiverse/cordis` 或任何官方仓库发起改写/PR。
 - 不提供回滚/备份；版本控制是使用者的责任。
 
@@ -39,13 +39,16 @@ Cordis 4 仍在 RC（`4.0.0-rc.13`），迁移细节随版本变化，且真实�
 ## 3. 架构
 
 ```
-src/core.js          纯函数：RULES / scanSource / plan / applySource / formatPlan
-src/cli.js           参数解析 + 目录遍历 + fs 读写 + 输出
+src/rules.js         纯数据：RULES / RULE_SOURCES / RULES_NOTICE / formatRules
+src/core.js          纯函数：scanSource / plan / applySource / formatPlan（从 rules.js 导入 RULES）
+src/cli.js           参数解析 + 目录遍历 + fs 读写 + 输出（scan / apply / rules）
+test/fixtures.js     每条规则的正例/反例/期望输出；聚合 fixture
+test/rules.test.js   规则契约、逐条正反例与幂等、formatRules
 test/core.test.js    纯核心单测（不碰磁盘）
-test/cli.test.js     spawn CLI，用 %TEMP% 下的临时目录验证 dry-run/--write/二进制跳过
+test/cli.test.js     spawn CLI，用 %TEMP% 下的临时目录验证 dry-run/--write/二进制跳过/rules
 ```
 
-依赖方向单向：`cli.js -> core.js`，`core.js` 不 import 任何 Node API 或第三方包（`TextDecoder` 是 Node 22+ / 现代浏览器提供的全局对象）。因此 core 可直接在浏览器/其它运行时复用。
+依赖方向单向：`cli.js -> core.js -> rules.js`。`core.js` 与 `rules.js` 不 import 任何 Node API 或第三方包（`TextDecoder` 是 Node 22+ / 现代浏览器提供的全局对象）。因此核心规则与引擎可直接在浏览器/其它运行时复用。
 
 CLI 只使用内置 `RULES`；库调用者可以传入自定义规则数组，这是有意保留的扩展点。
 
@@ -54,13 +57,15 @@ CLI 只使用内置 `RULES`；库调用者可以传入自定义规则数组，�
 ### Rule
 
 ```js
-{ id, kind, pattern, replacement, description, severity }
+{ id, kind, pattern, replacement, description, severity, evidence?, experimental? }
 ```
 
 - `pattern`：`RegExp`（推荐带 `g`）或字符串（内部按 `g` 编译），按行匹配。
 - `replacement`：字符串（支持 `$1`/`$&`）或 `(match, ...captures) => string`。
 - `id` 在结果与输出中标识规则；内置规则彼此唯一。
-- 六个字段在 `scanSource`/`plan` 入口统一校验，缺字段立即 `TypeError`，避免“空计划看起来成功”。
+- `evidence`：内置规则必填的一行证据（版本/声明/发布说明）；自定义规则可省略。
+- `experimental`：可选布尔；为 `true` 表示改写是“尽力而为”，必须人工复核。
+- 五个必填字段在 `scanSource`/`plan` 入口统一校验，缺字段立即 `TypeError`；`evidence`/`experimental` 若存在也校验类型，避免“空计划看起来成功”。
 
 ### Match
 
@@ -134,27 +139,26 @@ BOM 会作为 U+FEFF 参与第 1 行文本，因而使该行列号 +1；这是�
 
 - **默认 dry-run**：迁移工具的默认行为应是“展示”，不是“修改”。`--write` 必须显式出现。
 - **扫描/写入互斥语义**：`scan --write`、`apply --write --dry-run` 直接报错，而不是选一个“更安全”的。
+- **`rules` 只读**：列出 26 条规则及其 `kind`/`severity`/`experimental`/`evidence`；`rules --json` 额外输出来源清单。它不接受目标路径或 `--write`。
 - **遍历**：递归、排序、跳过 symlink；忽略 VCS/构建/依赖目录与 lockfile、`*.min.js`、`*.map`，减少噪音和误写风险。
 - **路径展示**：相对目标路径，统一 `/` 分隔符，便于跨平台 JSON 对比；实际写入使用绝对路径。
 - **输出**：文本报告逐条列出 `line:column ruleId before -> after`；`--json` 输出单一 JSON 对象，`--write --json` 追加 `write.{written,unchanged,failures}`。
-- **退出码**：`scan` 有匹配也返回 0（把判定留给调用方/CI 解析 JSON）；参数错误、目标不可读、写入失败返回 1。
+- **退出码**：`scan` 有匹配也返回 0（把判定留给调用方/CI 解析 JSON）；参数错误、目标不可读、写入失败返回 2。
 - **读写时机**：先把所有候选文件读入内存再 plan；MVP 不做流式/大仓库优化。
 - **不跟随 symlink**：避免扫描越界与写穿到目标目录之外。
 
-## 9. 规则为什么是示例
+## 9. 规则为什么是社区整理
 
-5 条内置规则覆盖 import 说明符、`Context` 类型导入、`ctx.on('dispose')`、`ctx.plugin`、配置字段；写法参考了 2026-11-14 查看的已发布类型声明：
+26 条内置规则覆盖 import 子路径、`Context` 字段、`ctx.on` 事件名、`ctx.plugin`/`ctx.inject`、service 注册、dispose/effect、config schema、HMR 与 package 字段。每条都带一行 `evidence`，指向 2026-11-15 核对的 v3/v4 类型声明、export map 或 release notes；完整清单见 `src/rules.js` 顶部与 `RULE_SOURCES`。
 
-- `cordis@3.18.1` 的 `cordis/loader` 子路径；
-- `cordis@4.0.0-rc.13` 的 `registry.d.ts` 把 `ctx.plugin` 标为 deprecated、`context.d.ts` 用 `baseUrl`、`fiber.d.ts` 提供 `effect`；
-- 这些只是**表面证据**，不是官方迁移文档，也没有覆盖版本差异和边界语义。
+目标版本是 npm 上游 `cordis@4.0.0-rc.13`。DeepSeek Harness vendor 的 `@deepseek-ai/cordis@4.1.0` 在个别 API 上不同（例如仍以 `ctx.plugin` 为主、没有 rc.13 的 `ctx.use`），以 vendored 版本为目标时需重新核对。
 
-因此 README、`RULES_NOTICE`、CLI help、plan 输出都重复同一句话：示例规则，人工确认。新增规则前应：
+这些是**表面证据**，不是官方迁移文档：Cordis 4 仍在 RC，API 可能继续变化；规则也没有覆盖别名、re-export、作用域、类型与多行结构。因此 README、`RULES_NOTICE`、CLI help、plan 输出都重复同一句话：社区整理，人工确认；标 `experimental` 的规则尤其只是线索。新增规则前应：
 
 1. 找到目标版本的**一手**变更说明/类型声明；
 2. 写出“误匹配会怎样”的例子；
 3. 决定是否值得自动改写，还是只应作为提示；
-4. 为规则加至少一个正例与一个反例测试；
+4. 为规则加至少一个正例与一个反例测试，并验证输出不再匹配自身；
 5. 不让替换把旧文本重新引入（保持幂等）。
 
 ## 10. 安全边界：不自动改官方仓
@@ -163,26 +167,19 @@ BOM 会作为 U+FEFF 参与第 1 行文本，因而使该行列号 +1；这是�
 
 - 不执行 git、不创建分支/commit/PR；
 - 不访问网络、不读取 registry；
-- 不修改 `package.json`/lockfile；
+- 不解析/安装依赖，不做语义化的 `package.json` 编辑（文本规则仍可能命中并改写 `package.json`，dry-run 会列出）；
 - 不清理、不删除文件；
 - 不对官方仓库做任何自动提交。
 
-即使把 `--write` 指向 Cordis 官方 checkout，工具也只是按本包示例规则改文本；README 明确要求不要这样做。向上游提议变更应遵循该仓库自己的贡献流程，并由人审阅。
+即使把 `--write` 指向 Cordis 官方 checkout，工具也只是按本包社区规则改文本；README 明确要求不要这样做。向上游提议变更应遵循该仓库自己的贡献流程，并由人审阅。
 
 ## 11. 测试策略
 
-`node --test packages/cordis-migrate/test/*.test.js`，当前 26 个测试，全部离线：
+`node --test packages/cordis-migrate/test/*.test.js`，当前 65 个测试，全部离线：
 
-- 规则完整性（≥5 条、字段齐全、kind 覆盖、说明含“示例”）；
-- 五类规则的正例、双引号、CRLF、行/列精确值；
-- 已迁移代码无匹配；
-- 捕获组替换、函数替换；
-- `applySource` 应用后重扫为空、重复应用 no-op、陈旧匹配跳过；
-- 同行多匹配、重叠匹配最左优先；
-- CRLF/LF/混合行尾、无末尾换行；
-- `plan` 的 changes/skipped/summary、Buffer 输入、BOM、非法 UTF-8、无效文件输入；
-- `formatPlan` 文本/JSON 可序列化、notice、空计划；
-- CLI：`--help`、无参数、未知命令、scan JSON/文本、单文件、默认 dry-run、显式 `--dry-run`、`--write` 写盘、二次写入幂等、二进制不被改动、`--write --json`、冲突参数、缺失目标、apply --help。
+- `test/rules.test.js`（34）：规则完整性（≥20 条、字段齐全、id 唯一、evidence 非空、experimental 类型）、每个 kind 覆盖、**每条规则一个正例 + 一个反例 + 幂等固定点**、别名/默认导入/类型导入/引号/JSON/YAML 变体、26 条规则聚合一次迁移、`formatRules` 文本/JSON 可序列化、来源清单。
+- `test/core.test.js`（16）：scan/apply/plan/formatPlan 的引擎行为、CRLF/LF/混合行尾、重叠最左优先、陈旧匹配、二进制/非法 UTF-8 跳过、BOM、自定义规则校验、内置规则默认值。
+- `test/cli.test.js`（15）：`rules` 文本/JSON/只读拒绝、scan JSON/文本、单文件、默认 dry-run、显式 `--dry-run`、`--write` 写盘、二次写入幂等、二进制不被改动、`--write --json`、冲突参数、缺失目标、`--help`/`--version`。**全部规则的 dry-run 测试断言文件字节不变；`--write` 测试断言迁移结果并再次运行确认幂等。**
 
 CLI 测试用 `mkdtemp` 在系统临时目录创建隔离目录，`t.after` 清理；不触碰用户目录或真实仓库。
 
@@ -200,8 +197,8 @@ CLI 测试用 `mkdtemp` 在系统临时目录创建隔离目录，`t.after` 清�
 
 - `npm view cordis-migrate version` 在 2026-11-14 返回 E404（npm 上未注册）；GitHub 仓库名搜索 0 结果。
 - npm 的 `cordis` 包由 Cordiverse 维护；本包不是其官方工具，README 已声明非隶属。
-- 名称可用性会变化，发布前需重新核验；本包 `0.1.0`，未发布。
-- `package.json` 已配置 `bin`、`exports`、`files`、`engines`、`publishConfig.access=public`；发布前应跑 `npm pack --dry-run` 检查包内容。
+- 名称可用性会变化，发布前需重新核验；本仓库版本 `0.2.0`，未声明已发布。
+- `package.json` 已配置 `bin`、`exports`（`.`、`./rules`、`./cli`）、`files`、`engines`、`publishConfig.access=public`；发布前应跑 `npm pack --dry-run` 检查包内容。
 
 ## 14. 许可
 

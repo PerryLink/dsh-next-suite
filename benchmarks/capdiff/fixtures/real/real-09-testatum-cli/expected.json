@@ -1,0 +1,29 @@
+{
+  "id": "real-09-testatum-cli",
+  "category": "real-undeclared-env",
+  "description": "Real trust-card CLI: reads/writes JSON and resolves the HMAC secret from process.env.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem",
+    "env"
+  ],
+  "staticVisible": [
+    "filesystem",
+    "env"
+  ],
+  "notes": "env is used through process.env.TESTATUM_KEY and process.env.TESTATUM_KEY_ID but the fixture manifest declares only filesystem; expected undeclared:env.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "testatum-attest",
+    "path": "packages/testatum-attest/src/cli.js",
+    "lines": "1-128",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/testatum-attest/src/cli.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-08-xbrl-cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real CLI for offline XBRL reconciliation; reads fact files through node:fs/promises.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

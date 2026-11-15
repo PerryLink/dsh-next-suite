@@ -1,0 +1,28 @@
+{
+  "id": "real-15-os-trace-sign",
+  "category": "real-undeclared-env",
+  "description": "Real HMAC signing helpers: node:crypto plus a TESTATUM_KEY environment lookup.",
+  "declared": [
+    "crypto"
+  ],
+  "actual": [
+    "crypto",
+    "env"
+  ],
+  "staticVisible": [
+    "crypto",
+    "env"
+  ],
+  "notes": "env is used via process.env?.[SECRET_ENV] but the fixture manifest declares only crypto; expected undeclared:env.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-trace",
+    "path": "packages/dsh-os-trace/src/sign.js",
+    "lines": "1-148",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-trace/src/sign.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

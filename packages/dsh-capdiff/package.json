@@ -1,6 +1,6 @@
 {
   "name": "dsh-capdiff",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Static capability diff scanner for DSH plugin manifests: declared dsh.capabilities vs imports and eval/env use found in code, with JSON and SARIF output.",
   "type": "module",
   "license": "Apache-2.0",
@@ -9,6 +9,7 @@
   },
   "exports": {
     ".": "./src/core.js",
+    "./ast": "./src/ast.js",
     "./cli": "./src/cli.js"
   },
   "files": [
@@ -19,6 +20,9 @@
   ],
   "engines": {
     "node": "^22.19.0 || >=24.9.0"
+  },
+  "dependencies": {
+    "acorn": "^8.15.0"
   },
   "scripts": {
     "test": "node --test test/*.test.js"

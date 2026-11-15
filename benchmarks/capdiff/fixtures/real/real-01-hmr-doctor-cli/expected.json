@@ -1,0 +1,27 @@
+{
+  "id": "real-01-hmr-doctor-cli",
+  "category": "real-filesystem",
+  "description": "Real CLI entry point that reads an HMR log through node:fs/promises.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "node:util and ./core.js are unmapped imports (unknown), reported but not scored in the real corpus.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "cordis-hmr-doctor",
+    "path": "packages/cordis-hmr-doctor/src/cli.js",
+    "lines": "1-100",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/cordis-hmr-doctor/src/cli.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

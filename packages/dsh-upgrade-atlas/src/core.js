@@ -34,7 +34,7 @@ export const KINDS = Object.freeze([
   'ui',
 ])
 
-/** A `to` value of `*` means "still applies in the latest covered release". */
+/** A `to` value of `*` means "target release unknown: no release bound was established". */
 export const OPEN_VERSION = '*'
 
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -779,7 +779,7 @@ export function renderMarkdown(entries) {
     '',
     '> Community-maintained and unofficial. Verify each breakpoint against the cited DSH source.',
     '',
-    'The `to` value `*` means the breakpoint still applies in the latest release covered by this atlas.',
+    'The `to` value `*` means the target release is unknown; read the summary for whether the breakpoint is still current.',
     '',
   ]
 

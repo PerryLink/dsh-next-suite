@@ -1,0 +1,13 @@
+{
+  "name": "@bench/real-12-os-lease-apply",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real transactional applier: node:crypto hashing plus node:fs/promises and node:path IO helpers.",
+  "dsh": {
+    "capabilities": [
+      "crypto",
+      "filesystem"
+    ]
+  }
+}

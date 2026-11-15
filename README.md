@@ -8,7 +8,7 @@
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
-> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.1.3` on npm (2026-11-14).
+> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.0` on npm (2026-11-15).
 
 This suite is deliberately **not** another set of governance packages. It targets the gaps left after [`dsh-os-suite`](../dsh-os-suite/): plugin trust, Cordis developer experience, and a domain-data check.
 
@@ -41,15 +41,16 @@ This suite is deliberately **not** another set of governance packages. It target
 - [`CREDENTIALS.md`](CREDENTIALS.md) — 90-day credential plan (DOI, OpenSSF badge, FSE'27, IETF/W3C, 职称). No fabricated results.
 - [`DOJO.md`](DOJO.md) — two hands-on labs: Hello Plugin and Governance Lab, with acceptance criteria.
 - [`ECOSYSTEM-ATLAS.md`](ECOSYSTEM-ATLAS.md) — 64-entity ecosystem atlas (JSON: [`data/ecosystem-atlas.json`](data/ecosystem-atlas.json)), not an exhaustive directory; validate with `npm run validate:atlas`.
-- [`data/hcb/`](data/hcb/) — HCB v0 seed dataset (6 packages × DSH 0.2.2-rc.3), validate with `npm run validate:hcb`.
+- [`data/hcb/`](data/hcb/) — HCB v0 seed dataset, **24 rows** (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`); `not-tested` marks checks without evidence. Validate with `npm run validate:hcb`.
 
-## Status (2026-11-14)
+## Status (2026-11-15)
 
-- **247/247 tests** across the eight packages (`npm test`; template is outside `packages/`).
-- **15 `src/*.js` files** pass `node --check`.
+- **319/319 tests** across the eight packages (`npm test`; template is outside `packages/`).
+- **19 `src/*.js` files** pass `node --check`.
+- **Data**: HCB has **24 rows** (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`; Node 22 install/dump are `not-tested`); the upgrade atlas has **50 entries**, **47** with a concrete `to` release and **3** marked `target unknown`.
 - **8/8 names** were verified free before publish (npm E404, GitHub 0); all are now published under this project.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md); contract fixes tracked in `CONTRACT-FIX.md`.
-- **Published**: all eight packages at `0.1.3` on npm (2026-11-14); GitHub repo and `v0.1.3` release.
+- **Published**: all eight packages at `0.2.0` on npm (2026-11-15); GitHub repo and `v0.2.0` release.
 
 ## Quick start
 

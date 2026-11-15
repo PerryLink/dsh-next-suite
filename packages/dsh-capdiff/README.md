@@ -1,7 +1,7 @@
 # dsh-capdiff
 
 > 社区项目，**与 DeepSeek（深度求索）及 DeepSeek Harness 官方无隶属关系、无赞助、无背书**。
-> Apache-2.0，版本 `0.1.3`，**已发布到 npm**。
+> Apache-2.0，版本 `0.2.0`，**已发布到 npm**。
 
 ## 是什么
 
@@ -17,7 +17,7 @@
 
 ## 为什么
 
-DSH 插件 manifest 可以声明 `dsh.capabilities`，但声明是手写的，代码里实际 import 了什么往往没人对照。`dsh-capdiff` 用零依赖的正则启发式做第一道低成本检查：
+DSH 插件 manifest 可以声明 `dsh.capabilities`，但声明是手写的，代码里实际 import 了什么往往没人对照。`dsh-capdiff` 用 acorn AST（优先）+ 正则（回退）做第一道低成本检查：
 
 - PR / 发版前看一眼「声明和 import 是否对得上」；
 - 把差异转成 SARIF，接进代码扫描面板；
@@ -25,7 +25,7 @@ DSH 插件 manifest 可以声明 `dsh.capabilities`，但声明是手写的，�
 
 ## 安装
 
-已发布到 npm：`npx dsh-capdiff@0.1.3 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
+已发布到 npm：`npx dsh-capdiff@0.2.0 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
 
 ```sh
 node packages/dsh-capdiff/src/cli.js <file-or-dir> [--manifest path] [--json|--sarif]
@@ -54,7 +54,7 @@ dsh-capdiff <file-or-dir> [options]
   --json             输出机器可读 JSON
   --sarif            输出 SARIF 2.1.0
   -h, --help         帮助
-  -V, --version      版本（输出 `dsh-capdiff 0.1.0` 并 exit 0）
+  -V, --version      版本（输出 `dsh-capdiff 0.2.0` 并 exit 0）
 ```
 
 - 目标是目录时递归扫描 `.js` / `.mjs` / `.cjs`，跳过任意层级的 `node_modules` 与 `.git`，不跟随 symlink。
@@ -104,22 +104,32 @@ dsh-capdiff <file-or-dir> [options]
 
 | capability | 静态触发示例 |
 |---|---|
-| `filesystem` | `import fs from 'node:fs'`、`require('fs/promises')` |
-| `network` | `node:net`、`node:http`、`node:https`、`node:http2`、`node:tls`、`node:dgram`；`fetch` 仅作为 import specifier 映射，全局 `fetch(...)` 调用目前不扫描 |
-| `process` | `node:child_process` |
-| `env` | `process.env`、`process['env']` |
-| `eval` | `eval(...)`、`new Function(...)` |
+| `filesystem` | `import fs from 'node:fs'`、`require('fs/promises')`、`fs.readFileSync(...)`（AST） |
+| `network` | `node:net`、`node:http`、`node:https`、`node:http2`、`node:tls`、`node:dgram`；`fetch(...)`、`http.request(...)`、`https.request(...)`（AST） |
+| `process` | `node:child_process`、`child_process.exec(...)`（AST） |
+| `env` | `process.env`、`process['env']`（含模板 `${process.env.X}` 中的用法，AST） |
+| `eval` | `eval(...)`、`new Function(...)`（AST 不会把 `obj.eval(...)` 当作全局 eval） |
 | `crypto` | `node:crypto` |
 | `unknown` | 映射表之外的 import（含相对路径、第三方包、其他内建模块） |
 
 声明侧会做有限规范化（大小写、`_`/空格、常见别名），例如 `fs` → `filesystem`、`http` → `network`、`child_process` → `process`、`environment_variables` → `env`。`unknown` 是兜底类别，不是真实能力；相对路径 import 也会落到 `unknown`，通常应结合上下文判断，或显式声明 `unknown`。
+
+### 分析路径（AST 与正则回退）
+
+默认路径用 [acorn](https://github.com/acornjs/acorn) 解析：
+
+- `sourceType: 'module'`、`ecmaVersion: 'latest'`、`allowHashBang`；模块解析失败时会再按 `script` 重试一次，以覆盖常见 CommonJS 文件。
+- 遍历 `ImportDeclaration` / `ExportNamedDeclaration` / `ExportAllDeclaration` / `ImportExpression`、`require(...)`、`process.env`、`fs.*` / `child_process.*`、`eval(...)` / `new Function(...)`、`fetch(...)` / `http(s).request(...)`。
+- 只把**字面量** specifier 记入 `imports`；`import(name)` / `require(name)` 这类计算值不猜，AST 结果里的 `dynamic` 会置为 `true`（任何 `import(...)` 也算运行时加载），提示静态解析可能不完整。
+
+解析失败（TypeScript、JSX、语法错误）或 acorn 未安装时，`analyzeSource` 自动回退到原有正则扫描器，返回结构不变。程序化调用可直接使用 `dsh-capdiff/ast` 的 `analyzeAst(code, { filename })`；它返回 `{ imports, capabilities, dynamic, observations }`，失败时额外带 `parseError`。
 
 ### 输出
 
 人类可读摘要（默认）：
 
 ```text
-dsh-capdiff 0.1.0 - static capability diff (heuristic)
+dsh-capdiff 0.2.0 - static capability diff (heuristic)
 Target:   examples/my-plugin
 Manifest: examples/my-plugin/plugin.json
 Files:    2 source file(s) scanned
@@ -141,7 +151,7 @@ Note: static heuristic only - "matched" and zero findings are not proof of safet
   "command": "scan",
   "ok": true,
   "tool": "dsh-capdiff",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "target": "/abs/path/my-plugin",
   "manifest": "/abs/path/my-plugin/plugin.json",
   "filesScanned": 2,
@@ -169,18 +179,16 @@ Note: static heuristic only - "matched" and zero findings are not proof of safet
 
 ## 限制
 
-**这是静态启发式，不是解析器、不是沙箱、不是审计。**
+**这是静态启发式，不是完整语义分析器、不是沙箱、不是审计。**
 
-- **只报「静态可见」**。以下都可能完全看不到：
-  - 计算出的 specifier：`import(name)`、`require(name)`；
-  - `createRequire()`、`node:vm`、native addon、子进程里再 require；
-  - `globalThis['process']['env']`、`const { env } = process`、`process['e' + 'nv']`；
-  - 配置驱动 / 插件加载器在运行时加载的模块；
-  - 传递依赖里的能力（本工具只扫描目标目录内的源码）。
+- **AST 覆盖常见语法，不覆盖 TypeScript / JSX / 混淆代码**。默认用 acorn（ESM，失败后按 CJS script 重试）解析常见 `.js` / `.mjs` / `.cjs`；遇到 `.ts` / `.tsx` / `.jsx`、语法扩展或畸形源码时解析失败，会自动回退到正则扫描器，能力集合可能因此不完整。
+- **AST 不做作用域/绑定解析**。按名字匹配 `fs.*`、`child_process.*`、`fetch(...)`、`http(s).request(...)`，同名局部变量可能造成误报；反过来，别名导入（`import { readFile as read }`、`const fsx = require('node:fs')`）的成员调用不会被识别。
+- **动态变量仍然漏报**。`import(name)`、`require(name)` 只把 `dynamic` 置为 `true`，不会猜 specifier；`process[envName]`、`process['e' + 'nv']`、`globalThis['process']['env']`、`const { env } = process`、`globalThis['ev' + 'al']`、`(0, eval)(...)`、不带 `new` 的 `Function(...)` 同样看不到。
+- **运行时加载看不到**：`createRequire()`、`node:vm`、native addon、子进程里再 require、配置/插件加载器在运行时加载的模块，以及传递依赖里的能力（本工具只扫描目标目录内的源码）。
 - **`unused` 不是死代码证明**：能力可能通过动态方式使用，或只在未扫描的分支/文件中使用。
 - **`matched` / 0 findings 不是安全证明**：manifest 本身可能漏声明、错声明或不可信；本工具不验证 manifest 的签名/来源，也不验证能力使用是否安全。
-- **误报**：正则不解析 AST；对象方法 `eval() {}`、类方法、注释/字符串边界、正则字面量等场景可能产生误报。代码中的注释与字符串内容会被遮蔽，但模板字面量整体被遮蔽，`${process.env.X}` 这类用法会漏报；正则字面量中的引号也可能干扰遮蔽。
-- **范围**：只扫描 `.js` / `.mjs` / `.cjs`；不扫描 `.ts` / `.jsx` / `.json` / native 文件；跳过 `node_modules`/`.git`，不跟随 symlink；不读取 `package.json` 的 `imports`/`exports` 语义。
+- **正则回退有已知误报/漏报**：回退路径不解析 AST，对象/类方法 `eval() {}`、正则字面量中的引号等可能干扰遮蔽；模板字面量整体被遮蔽，`${process.env.X}` 会漏报。默认 AST 路径没有这两个问题，但回退时仍存在。
+- **范围**：只扫描 `.js` / `.mjs` / `.cjs`；不扫描 `.ts` / `.tsx` / `.jsx` / `.json` / native 文件；跳过 `node_modules`/`.git`，不跟随 symlink；不读取 `package.json` 的 `imports`/`exports` 语义。
 - **声明规范化是有限的**：未知的自定义能力名会保留（小写、空白/下划线折叠），不会自动变成某个已知类别。
 
 因此：**「没有差异」只能说明「这两个集合在当前启发式下一致」，不能说明插件安全。**

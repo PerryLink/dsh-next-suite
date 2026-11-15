@@ -1,0 +1,29 @@
+{
+  "id": "real-12-os-lease-apply",
+  "category": "real-mixed",
+  "description": "Real transactional applier: node:crypto hashing plus node:fs/promises and node:path IO helpers.",
+  "declared": [
+    "crypto",
+    "filesystem"
+  ],
+  "actual": [
+    "crypto",
+    "filesystem"
+  ],
+  "staticVisible": [
+    "crypto",
+    "filesystem"
+  ],
+  "notes": "path is an unmapped import (unknown). Both canonical capabilities are declared, so the expected declaration diff is empty.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-lease",
+    "path": "packages/dsh-os-lease/src/apply.js",
+    "lines": "1-126",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-lease/src/apply.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

@@ -1,6 +1,6 @@
 # DESIGN — dsh-capdiff
 
-> 状态：MVP `0.1.0`，未发布。实现只用 Node 内建模块，无第三方依赖。
+> 状态：0.1.x。默认使用 acorn AST（可选依赖），解析失败或依赖缺失时回退到 Node 内建正则扫描器。
 > 本文说明「为什么这样实现」，以及它**故意不做**什么。
 
 ## 1. 目标
@@ -16,7 +16,7 @@
 ## 2. 非目标
 
 - 不做运行时沙箱、不执行插件代码、不发起网络请求。
-- 不做完整 JavaScript 解析器 / AST 类型检查。
+- 不做完整语义分析 / 类型检查；AST 只做语法级匹配，不做作用域与绑定解析。
 - 不验证 manifest 的真实性、签名或来源；manifest 在本工具眼里只是不可信输入。
 - 不证明插件安全，不输出「checked / safe」结论。
 - 不做依赖树分析（不递归 `node_modules`，也不分析传递依赖）。
@@ -32,9 +32,11 @@ core (src/core.js)
   scanTarget(target)
     ├─ collectSourceFiles()      递归收集 .js/.mjs/.cjs
     ├─ analyzeSource(code)
-    │    ├─ extractImports()     正则 + 注释/字符串遮蔽
-    │    ├─ collectCapabilityEvidence()
-    │    └─ mapCapabilities()    去重、保持首次出现顺序
+    │    ├─ analyzeAst()         acorn AST（优先）
+    │    ├─ analyzeSourceRegex() 解析失败 / 无 acorn 时回退
+    │    │    ├─ extractImports()     正则 + 注释/字符串遮蔽
+    │    │    └─ collectCapabilityEvidence()
+    │    └─ capabilities        去重、保持首次出现顺序
     └─ 聚合跨文件的 capabilities + firstEvidence
   parseDeclared(manifest)
   diffCapabilities(declared, actual)
@@ -42,7 +44,7 @@ core (src/core.js)
   toSarif(findings)
 ```
 
-`src/core.js` 只 import `node:fs/promises` 与 `node:path`，无第三方包；`src/cli.js` 只做参数解析、文件读取与输出，业务逻辑都在 core。因此 `node --test` 可离线运行。
+`ast.js` 通过 `createRequire` **同步**加载 acorn：`analyzeSource()` 保持同步 API，未安装 acorn 时也只是回退到正则，不会让包在 import 阶段直接崩溃。`capability.js` 存放两侧共用的映射表，避免 AST 与 core 循环依赖；core 继续 re-export `CAPABILITY_MAP` / `capabilityForSpecifier`。`src/cli.js` 只做参数解析、文件读取与输出，业务逻辑都在 core。因此 `node --test` 可离线运行。
 
 ## 4. 数据模型
 
@@ -76,7 +78,24 @@ core (src/core.js)
 
 所有数组都保持确定性顺序：import/能力证据按源码偏移，`matched`/`unused` 按声明顺序，`undeclared` 按实际检测顺序。重复能力折叠为一项。
 
-## 5. 静态提取（extractImports）
+## 5. 静态提取（AST 优先，正则回退）
+
+`analyzeAst()` 用 acorn 解析（`sourceType: 'module'`、`ecmaVersion: 'latest'`、`allowHashBang`；失败后按 `script` 重试以覆盖常见 CJS），然后遍历节点：
+
+| AST 节点 | 结果 |
+|---|---|
+| `ImportDeclaration` | `static` import |
+| `ExportNamedDeclaration` / `ExportAllDeclaration`（有 source） | `re-export` |
+| `ImportExpression` | `dynamic` import：任何 `import(...)` 都把 `dynamic` 置 `true`；字符串字面量 specifier 入 `imports`，计算值不猜 |
+| `CallExpression` 且 callee 为 `require` | `require`；字面量 specifier 入 `imports` |
+| `MemberExpression` `process.env` / `process['env']` | capability `env` |
+| `MemberExpression` `fs.*` / `child_process.*` | `filesystem` / `process` |
+| `CallExpression` `eval(...)` / `new Function(...)` | `eval` |
+| `CallExpression` `fetch(...)` / `http(s).request(...)` | `network` |
+
+`imports` 的 kind 与旧版一致：`static` / `dynamic` / `require` / `re-export`。
+
+正则路径只作为回退，覆盖同样四类 kind：
 
 | kind | 正则覆盖 |
 |---|---|
@@ -85,7 +104,7 @@ core (src/core.js)
 | `require` | `require('m')`（字符串字面量） |
 | `re-export` | `export {a} from 'm'`、`export * from 'm'`、`export * as n from 'm'` |
 
-实现细节：
+回退实现细节：
 
 - 关键字前用 `(?<![\w$.])`，避免把 `foo.import(...)` / `foo.require(...)` 当作模块加载。
 - `import` 子句字符集限制为标识符、空白、`{}`、`,`、`*`，避免在畸形源码里 `[\s\S]*?` 跨行吞掉无关文本。
@@ -93,7 +112,7 @@ core (src/core.js)
 - `maskNonCode()` 把注释、字符串、模板字面量内容替换成空格，**长度与换行不变**。所有 match 再检查起始字符在原文与遮蔽文本中是否一致，从而跳过注释/字符串里的假 import 与假 `eval`。
 - `index` 是语句关键字在源码中的 UTF-16 偏移；行号由 `lineOfIndex()` 换算（1-based）。
 
-已知盲区：计算出的 specifier、`createRequire`、正则字面量、模板 `${...}` 中的代码（整段模板被遮蔽）、TypeScript/JSX。详见 §10。
+已知盲区：计算出的 specifier（`import(name)` / `require(name)`）、TypeScript/JSX（会触发回退）、混淆代码、作用域/绑定解析（同名局部变量、别名导入）、`createRequire`、正则字面量与模板 `${...}`（仅回退路径存在此盲区）。详见 §10。
 
 ## 6. 能力映射
 
@@ -107,7 +126,7 @@ core (src/core.js)
 
 查找顺序：精确匹配 → 去掉 `node:` 再匹配 → 取 specifier 第一段匹配（因此 `node:fs/promises` 继承 `fs`）→ 否则 `unknown`。`unknown` 是有意保留的兜底：它既覆盖第三方包，也覆盖相对路径 import，提醒复核而不是假装不存在。
 
-语言级检测对 `process.env`、`process['env']`、`eval(...)`、`new Function(...)` 生效；`eval` 用 lookbehind 排除 `obj.eval(...)`。这仍是正则，不处理 `(0, eval)`、`globalThis.eval`、`const { env } = process` 等变体。
+语言级检测在 AST 路径上覆盖 `process.env` / `process['env']`（含模板 `${...}` 内的用法）、`fs.*` / `child_process.*` 成员访问、`eval(...)`、`new Function(...)`、`fetch(...)`、`http(s).request(...)`；`obj.eval(...)` / `obj.fetch(...)` 不会被误判为全局调用。正则回退只覆盖 `process.env`、`process['env']`、`eval(...)`、`new Function(...)`，且用 lookbehind 排除 `obj.eval(...)`；两条路径都不处理 `(0, eval)`、`globalThis.eval`、`const { env } = process`、`process['e'+'nv']` 等变体。AST 不做作用域解析，因此局部同名 `fs` / `fetch` 可能误报，别名导入的成员调用可能漏报。
 
 ## 7. 声明解析与规范化
 
@@ -158,13 +177,16 @@ core (src/core.js)
 
 | 类型 | 例子 | 结果 |
 |---|---|---|
-| 误报 | 对象/类方法 `eval() {}` 被当作 `eval` 调用 | 多报 `undeclared eval` |
+| 误报 | 同名局部变量/对象：`const fs = ...`、`const fetch = ...` | AST 不做绑定解析，可能多报 |
+| 误报 | 正则回退时的对象/类方法 `eval() {}`、正则字面量边界 | 可能多报；AST 路径不会 |
 | 误报 | 类型/死代码中的 import、仅测试用的 `node:fs` | 多报 |
 | 误报 | manifest 用未收录的自定义名声明已知能力 | 可能出现 `undeclared` + `unused` 并存 |
-| 漏报 | `import(name)`、`require(name)`、`createRequire()` | 看不到 |
-| 漏报 | 模板中的 `${process.env.X}`（整段模板被遮蔽） | 看不到 `env` |
+| 漏报 | `import(name)`、`require(name)`、`createRequire()` | specifier 不可知；AST 仅置 `dynamic=true` |
+| 漏报 | 别名导入的成员调用（`const fsx = require('node:fs'); fsx.readFile(...)`） | 看不到 `filesystem` |
+| 漏报 | TypeScript / JSX / 混淆代码 | AST 解析失败后回退正则，覆盖不完整 |
+| 漏报 | 模板中的 `${process.env.X}`（仅回退路径） | 正则整段遮蔽模板；AST 能看到 |
 | 漏报 | `globalThis.process.env`、`const { env } = process`、`process['e'+'nv']` | 看不到 |
-| 漏报 | `eval` 别名、`Function(...)`（不带 `new`）、`node:vm`、native addon | 看不到 |
+| 漏报 | `eval` 别名、`(0, eval)`、`Function(...)`（不带 `new`）、`node:vm`、native addon | 看不到 |
 | 漏报 | 运行时从配置/网络加载的模块 | 看不到 |
 
 因此 `matched` 只表示「声明与静态可见集合一致」；0 findings 只表示「当前启发式没发现差异」。两者都**不是**安全结论，也不覆盖「声明了但实际滥用」的情形。
@@ -177,9 +199,10 @@ core (src/core.js)
 
 ## 12. 测试
 
-`test/` 共 26 个 `node:test` 用例：
+`test/` 共 39 个 `node:test` 用例：
 
 - `core.test.js`：静态/动态/require/re-export 提取、注释与字符串过滤、映射表、别名、`env`/`eval`、声明解析、diff、行号、SARIF、findings。
+- `ast.test.js`：AST 静态/动态/require/re-export、`process.env`、`fs.*` / `child_process.*`、`eval` / `new Function`、`fetch` / `http(s).request`、属性误报、hashbang/CJS、解析失败回退、无 acorn 回退、与正则结果对比、benchmark fixtures 解析。
 - `scan.test.js`：临时目录递归、扩展名过滤、`node_modules`/`.git` 跳过、跨文件证据聚合、空目录。
 - `cli.test.js`：`--help`/`--version`、目录 + `--json`、`--sarif`、非法 manifest、互斥参数。
 
@@ -192,10 +215,11 @@ node --test test/*.test.js
 node src/cli.js --help
 ```
 
-## 13. 未来工作（不阻塞 0.1.0）
+## 13. 未来工作（不阻塞 0.1.x）
 
-- 可选 AST 解析器（仍保持默认零依赖）以降低误报/漏报。
+- 作用域/绑定解析：消除同名局部变量误报，识别别名导入的成员调用。
+- TypeScript / JSX 解析器（或先剥离类型再交给 acorn），降低回退到正则的比例。
 - 可配置 ignore glob、测试目录排除、baseline 与 SARIF fingerprints。
-- 扩展语言级模式：`globalThis.process.env`、解构、`node:vm`、全局 `fetch`。
+- 扩展语言级模式：`globalThis.process.env`、解构、`node:vm`、`globalThis.fetch`。
 - 校验 manifest schema / 版本，报告未知声明名。
 - 与 attestation 工具联动：把 manifest 签名状态带进报告。

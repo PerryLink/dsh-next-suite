@@ -11,13 +11,16 @@
 1. 把产物文件映射为一份稳定的 SHA-256 清单；
 2. 对清单和卡片元数据做 HMAC-SHA256 签名；
 3. 验证时重算 `rootHash`、检查签名、可选检查撤销列表和实际文件；
-4. 用普通 JSON 保存，便于附带在 release 附件、CI artifact 或仓库中。
+4. 用普通 JSON 保存，便于附带在 release 附件、CI artifact 或仓库中；
+5. 可选读取 npm provenance attestation，结构性地比对 subject 摘要与
+   repo/commit（不做 sigstore 验签；见 README「限制 §6」）。
 
-范围仅限上述四项。它不解决包管理、依赖解析、构建可复现性或发布身份。
+范围仅限上述五项。它不解决包管理、依赖解析、构建可复现性或发布身份。
 
 ## 2. 非目标
 
-- 不是 sigstore/cosign、npm provenance、SLSA、in-toto 的实现或替代；
+- 不是 sigstore/cosign、npm provenance、SLSA、in-toto 的实现或替代
+  （`verify-provenance` 只做 attestation 元数据匹配，不做密码学验签）；
 - 不是公钥基础设施、证书链、透明日志、时间戳服务；
 - 不是沙箱、杀毒软件、依赖漏洞扫描器；
 - 不是包注册表或签名服务；
@@ -211,6 +214,8 @@ rootHash     = sha256_hex(canonicalJson(files_sorted))
 2. **sigstore/cosign**：OIDC 身份、Fulcio 证书、Rekor 透明日志；与本工具的
    JSON 卡片可以对接到外部签名/证明，但本仓库不实现这些服务。
 3. **npm provenance / SLSA**：绑定构建系统和源码；同样需要外部基础设施。
+   当前只有 `verify-provenance` 的结构性匹配（存在性、predicateType、
+   subject 摘要、repo/commit），见 README「限制 §6」；不做 sigstore 验签。
 4. **撤销基础设施**：签名撤销记录、版本化列表、新鲜度证明、可信分发。
 
 在完成这些之前，README 和本文件都把 HMAC 明确标为 **MVP 占位**。
@@ -228,7 +233,7 @@ rootHash     = sha256_hex(canonicalJson(files_sorted))
 
 ## 11. 测试矩阵
 
-`node --test test/*.test.js` 覆盖（当前 25 个测试）：
+`node --test test/*.test.js` 覆盖（当前 43 个测试）：
 
 - 哈希：已知 SHA-256、路径排序、输入顺序无关、重复路径、空文件、空清单、
   Unicode/字节精确性、预计算清单；
@@ -242,9 +247,15 @@ rootHash     = sha256_hex(canonicalJson(files_sorted))
   verify 返回 `revoked`；
 - CLI：`--help`、sign→verify 往返、`--json`、缺密钥、错误参数、篡改、
   坏 JSON、撤销列表、无密钥撤销的警告、拒绝签名/撤销无效卡片，以及
-  **输出不泄漏测试 secret**。
+  **输出不泄漏测试 secret**；
+- provenance：真实 npm 形状的 mock（多 attestation 选 SLSA、无 attestations、
+  错 repo/commit/digest）、scoped 包名、hex/base64/SRI 摘要、网络/HTTP/JSON
+  错误码、`verifyPackage` 组合；
+- provenance CLI：本机回环 registry 的成功/失败/缺 attestation、
+  `--tarball-sha512`、网络/HTTP/坏 JSON 的退出码 2、包 spec 校验与帮助文本。
 
-测试不访问网络、不读取真实 `TESTATUM_KEY`、临时目录在结束后清理。
+测试不访问公网、不读取真实 `TESTATUM_KEY`、临时目录在结束后清理；
+provenance 测试使用注入的 mock `fetch` 与本机回环 HTTP 服务器。
 
 ## 12. 命名、非官方与许可
 

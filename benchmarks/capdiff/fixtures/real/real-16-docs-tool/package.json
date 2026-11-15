@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-16-docs-tool",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: DSH docs minimal tool plugin using node:fs/promises.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

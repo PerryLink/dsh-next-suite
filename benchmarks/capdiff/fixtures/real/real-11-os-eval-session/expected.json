@@ -1,0 +1,26 @@
+{
+  "id": "real-11-os-eval-session",
+  "category": "real-filesystem",
+  "description": "Real session-log parser that imports readFileSync from node:fs and pairs tool calls with results.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "The excerpt is 154 lines. ./core.js is an unmapped import (unknown).",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-os-suite",
+    "revision": "cb1baa8",
+    "package": "dsh-os-eval",
+    "path": "packages/dsh-os-eval/src/session.js",
+    "lines": "1-154",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-os-suite/blob/cb1baa8/packages/dsh-os-eval/src/session.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved"
+  }
+}

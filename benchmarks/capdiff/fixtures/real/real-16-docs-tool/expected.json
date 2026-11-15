@@ -1,0 +1,26 @@
+{
+  "id": "real-16-docs-tool",
+  "category": "real-filesystem",
+  "description": "DSH docs example for a minimal tool plugin: reads a file through node:fs/promises and registers with @deepseek-ai/dsh-tools.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "The @deepseek-ai/dsh-tools import is unmapped (unknown). The TypeScript context type import was removed; runtime imports and calls are unchanged.",
+  "limitation": null,
+  "source": {
+    "repo": "deepseek-harness",
+    "revision": "39163dd30f",
+    "package": "docs",
+    "path": "docs/cookbook/adding-a-tool.md",
+    "lines": "9-37",
+    "license": "MIT",
+    "url": "https://github.com/deepseek-ai/deepseek-harness/blob/39163dd30f/docs/cookbook/adding-a-tool.md",
+    "transformation": "TypeScript annotations stripped to JavaScript; imports and calls preserved"
+  }
+}

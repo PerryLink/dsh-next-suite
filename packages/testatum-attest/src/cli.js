@@ -3,8 +3,8 @@
  * testatum-attest CLI.
  *
  * This file owns argument parsing, file IO and exit codes. Trust decisions are
- * delegated to `./core.js`. The secret is read from `TESTATUM_KEY` only and is
- * never printed, logged or written into an artifact.
+ * delegated to `./core.js` and `./provenance.js`. The secret is read from
+ * `TESTATUM_KEY` only and is never printed, logged or written into an artifact.
  */
 import { readFile, writeFile } from 'node:fs/promises'
 import { parseArgs } from 'node:util'
@@ -15,8 +15,9 @@ import {
   verifyCard,
   verifyCardIntegrity,
 } from './core.js'
+import { VERIFICATION_BOUNDARY, verifyPackage } from './provenance.js'
 
-const VERSION = '0.1.3'
+const VERSION = '0.2.0'
 
 const USAGE = `testatum-attest ${VERSION} - HMAC-signed trust cards for plugin artifacts
 
@@ -24,11 +25,13 @@ Usage:
   testatum-attest sign <card.json> --out <signed.json> [--key-id <id>]
   testatum-attest verify <signed.json> [--revocations <list.json>] [--json]
   testatum-attest revoke <signed.json> --reason <text> [--out <record.json>] [--revoked-at <iso>]
+  testatum-attest verify-provenance <name>@<version> [--repo <owner/repo>] [--commit <sha>] [--json]
 
 Commands:
   sign    Add an HMAC-SHA256 signature; refuses a card whose hash manifest is invalid.
   verify  Recompute the root hash, verify the signature, and optionally check revocations.
   revoke  Emit a revocation record (stdout unless --out is given).
+  verify-provenance  Check the npm provenance attestation for a published package.
 
 Options:
   -h, --help             Show this help.
@@ -39,6 +42,10 @@ Options:
       --revocations <file>  JSON array or { "revocations": [...] } for verify.
       --key-id <id>      Optional key id recorded in the signature (sign only).
       --revoked-at <iso> Override the revocation timestamp (revoke only).
+      --repo <owner/repo>    Expected source repository (verify-provenance only).
+      --commit <sha>         Expected source commit (verify-provenance only).
+      --tarball-sha512 <v>   Expected tarball SHA-512, hex/base64/SRI (verify-provenance only).
+      --registry <url>       npm registry base URL (default https://registry.npmjs.org).
 
 Environment:
   TESTATUM_KEY       Shared HMAC secret. Required for sign and verify; never printed.
@@ -47,6 +54,9 @@ Environment:
 Security:
   HMAC is an MVP shared-secret placeholder, not sigstore or npm provenance.
   Use a high-entropy key, keep it out of shell history, and read DESIGN.md.
+  verify-provenance matches attestation metadata only (existence, predicate
+  type, subject digest, repository/commit). It does NOT verify the sigstore
+  bundle; use sigstore or 'npm audit signatures' for that.
 `
 
 /**
@@ -283,6 +293,91 @@ async function runRevoke(values, positionals) {
 }
 
 /**
+ * Split `name@version`, keeping a scope's leading `@` intact.
+ *
+ * @param {string} spec
+ * @returns {{ name: string, version: string }}
+ */
+function parsePackageSpec(spec) {
+  const at = spec.lastIndexOf('@')
+  if (at <= 0) fail(`expected <name>@<version>, got ${spec}`)
+  const name = spec.slice(0, at)
+  const version = spec.slice(at + 1)
+  if (name.trim().length === 0 || version.trim().length === 0) {
+    fail(`expected <name>@<version> with a non-empty name and version, got ${spec}`)
+  }
+  return { name, version }
+}
+
+/**
+ * Structural npm provenance check. Registry/network failures exit 2; a
+ * negative provenance verdict exits 1.
+ *
+ * @param {Record<string, unknown>} values
+ * @param {string[]} positionals
+ * @returns {Promise<void>}
+ */
+async function runVerifyProvenance(values, positionals) {
+  if (positionals.length === 0) {
+    fail('verify-provenance requires a <name>@<version> argument')
+  }
+  if (positionals.length > 1) {
+    fail(`verify-provenance: unexpected argument ${positionals[1]}`)
+  }
+  const { name, version } = parsePackageSpec(positionals[0])
+
+  /** @type {{ registry?: string, repo?: string, commit?: string, tarballSha512?: string }} */
+  const options = {}
+  if (typeof values.registry === 'string') options.registry = values.registry
+  if (typeof values.repo === 'string') options.repo = values.repo
+  if (typeof values.commit === 'string') options.commit = values.commit
+  if (typeof values['tarball-sha512'] === 'string') {
+    options.tarballSha512 = values['tarball-sha512']
+  }
+
+  /** @type {Awaited<ReturnType<typeof verifyPackage>>} */
+  let result
+  try {
+    result = await verifyPackage(name, version, options)
+  } catch (error) {
+    fail(`provenance check failed: ${error.message}`, 2)
+  }
+
+  const summary = {
+    command: 'verify-provenance',
+    ok: result.ok,
+    name,
+    version,
+    reasons: result.reasons,
+    warnings: result.warnings,
+    cryptoVerified: false,
+    boundary: VERIFICATION_BOUNDARY,
+    url: result.attestation.url ?? null,
+    predicateType: result.attestation.predicateType ?? null,
+    subject: result.attestation.subject,
+    tarballSha512: result.attestation.tarballSha512 ?? null,
+    repo: options.repo ?? null,
+    commit: options.commit ?? null,
+  }
+
+  for (const warning of result.warnings) {
+    console.error(`warning: ${warning}`)
+  }
+
+  if (values.json) {
+    console.log(JSON.stringify(summary, null, 2))
+  } else if (result.ok) {
+    console.log(
+      `OK provenance ${name}@${version} (${summary.predicateType}; ` +
+        'metadata match only, sigstore NOT verified)',
+    )
+  } else {
+    console.log(`FAIL provenance ${name}@${version}: ${result.reasons.join(', ')}`)
+  }
+  if (!result.ok) process.exitCode = 1
+}
+
+/**
  * @param {string[]} argv
  * @returns {Promise<void>}
  */
@@ -302,6 +397,10 @@ async function main(argv) {
         revocations: { type: 'string' },
         'key-id': { type: 'string' },
         'revoked-at': { type: 'string' },
+        repo: { type: 'string' },
+        commit: { type: 'string' },
+        'tarball-sha512': { type: 'string' },
+        registry: { type: 'string' },
       },
     })
   } catch (error) {
@@ -338,6 +437,9 @@ async function main(argv) {
       return
     case 'revoke':
       await runRevoke(values, args)
+      return
+    case 'verify-provenance':
+      await runVerifyProvenance(values, args)
       return
     default:
       fail(`unknown command ${command}; try --help`)

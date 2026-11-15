@@ -1,0 +1,27 @@
+{
+  "id": "real-07-upgrade-atlas-cli",
+  "category": "real-filesystem",
+  "description": "Real CLI with both node:fs and node:fs/promises imports, URL parsing and path resolution.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "node:path, node:url, node:util and ./core.js are unmapped imports (unknown).",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "dsh-upgrade-atlas",
+    "path": "packages/dsh-upgrade-atlas/src/cli.js",
+    "lines": "1-148",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-upgrade-atlas/src/cli.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

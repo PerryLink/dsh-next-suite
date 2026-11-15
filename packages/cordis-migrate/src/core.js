@@ -5,25 +5,20 @@
  * line-oriented, regular-expression rules to text files. It is NOT a
  * JavaScript/TypeScript parser and it does NOT know the real Cordis API.
  *
- * ⚠️ The built-in {@link RULES} are illustrative examples, not an official
- * Cordis 3 -> 4 migration table. Every proposal must be reviewed by a human
- * against the target Cordis release before it is written to disk.
+ * ⚠️ The built-in {@link RULES} live in `./rules.js`. They are a
+ * community-curated, unofficial Cordis 3 -> 4 list — not an official
+ * migration table. Every proposal must be reviewed by a human against the
+ * target Cordis release before it is written to disk.
  *
  * No third-party imports: the whole module is testable offline.
  */
+import { RULES, RULES_NOTICE } from './rules.js'
+
+export { RULES, RULES_NOTICE }
 
 /**
- * Reminder attached to formatted plans (and to JSON output).
- * Kept in one place so the CLI, README and tests cannot drift apart.
- */
-export const RULES_NOTICE =
-  'These rules are illustrative examples, not an official Cordis migration table. ' +
-  'Verify every proposal against the target Cordis release and review it manually. ' +
-  'This project is unofficial.'
-
-/**
- * @typedef {'import' | 'type-import' | 'lifecycle' | 'api' | 'config'} RuleKind
- * @typedef {'error' | 'warning' | 'info'} RuleSeverity
+ * @typedef {import('./rules.js').RuleKind} RuleKind
+ * @typedef {import('./rules.js').RuleSeverity} RuleSeverity
  *
  * @typedef {object} Rule
  * @property {string} id Unique id used in scan results.
@@ -33,6 +28,8 @@ export const RULES_NOTICE =
  *   Replacement text (JS `$1` / `$&` syntax supported) or a function.
  * @property {string} description Human-readable explanation shown in docs.
  * @property {RuleSeverity | string} severity Suggested severity.
+ * @property {string} [evidence] One-line evidence trail (built-in rules carry it).
+ * @property {boolean} [experimental] True when the rewrite is best-effort.
  *
  * @typedef {object} Match
  * @property {string} ruleId
@@ -54,68 +51,6 @@ export const RULES_NOTICE =
  * @property {SkippedFile[]} skipped
  * @property {{files: number, changedFiles: number, matches: number, skipped: number}} summary
  */
-
-/**
- * The five built-in rules are EXAMPLES chosen to demonstrate the engine.
- *
- * They were written after skimming the published type declarations of
- * `cordis@3.18.1` and `cordis@4.0.0-rc.13` (2026-11-14), so they are
- * plausible rather than random. That does not make them an official table:
- * APIs move between release candidates, and every rule below has edge cases
- * the text engine cannot see (aliases, re-exports, `Context` used as a value,
- * object config built elsewhere, generated code, ...).
- *
- * @type {ReadonlyArray<Readonly<Rule>>}
- */
-export const RULES = Object.freeze(
-  [
-    {
-      id: 'import-specifier',
-      kind: 'import',
-      pattern: /\bfrom\s+(['"])cordis\/loader\1/g,
-      replacement: "from '@cordisjs/loader'",
-      description:
-        "示例：v3 的 `cordis/loader` 子路径在 v4 包导出中已不存在；改为 `@cordisjs/loader`（仍需安装并核验版本）。",
-      severity: 'error',
-    },
-    {
-      id: 'context-type-import',
-      kind: 'type-import',
-      pattern: /\bimport\s*\{\s*Context\s*\}\s*from\s*(['"])cordis\1/g,
-      replacement: "import type { Context } from 'cordis'",
-      description:
-        '示例：`Context` 只作类型使用时改为 `import type`；若同时作为值（`extends Context`、`Context.is(...)`）使用则不可套用。',
-      severity: 'warning',
-    },
-    {
-      id: 'dispose-listener',
-      kind: 'lifecycle',
-      pattern: /\bctx\.on\(\s*(['"])dispose\1\s*,\s*([A-Za-z_$][\w$]*)\s*\)/g,
-      replacement: 'ctx.effect(() => $2)',
-      description:
-        "示例：`ctx.on('dispose', fn)` → `ctx.effect(() => fn)`；只匹配简单标识符回调，闭包/多行/带参回调不会被改写。",
-      severity: 'warning',
-    },
-    {
-      id: 'ctx-plugin-to-use',
-      kind: 'api',
-      pattern: /\bctx\.plugin\(/g,
-      replacement: 'ctx.use(',
-      description:
-        '示例：v4 类型声明把 `ctx.plugin` 标为 deprecated，并建议 `ctx.use`；链式返回值与重载需人工核对。',
-      severity: 'warning',
-    },
-    {
-      id: 'config-base-dir',
-      kind: 'config',
-      pattern: /\bbaseDir\b/g,
-      replacement: 'baseUrl',
-      description:
-        '示例：v3 的 `baseDir` 字段在 v4 Context 中变为 `baseUrl`；目录路径与 URL 语义不同，需人工确认。',
-      severity: 'warning',
-    },
-  ].map((rule) => Object.freeze(rule)),
-)
 
 /**
  * Extensions treated as binary. Used to skip files before decoding so that
@@ -278,6 +213,14 @@ function validateRule(rule, index) {
   const replacement = /** @type {Record<string, unknown>} */ (rule).replacement
   if (typeof replacement !== 'string' && typeof replacement !== 'function') {
     throw new TypeError(`rule[${index}].replacement must be a string or function`)
+  }
+  const evidence = /** @type {Record<string, unknown>} */ (rule).evidence
+  if (evidence !== undefined && (typeof evidence !== 'string' || evidence.trim() === '')) {
+    throw new TypeError(`rule[${index}].evidence must be a non-empty string when present`)
+  }
+  const experimental = /** @type {Record<string, unknown>} */ (rule).experimental
+  if (experimental !== undefined && typeof experimental !== 'boolean') {
+    throw new TypeError(`rule[${index}].experimental must be a boolean when present`)
   }
 }
 

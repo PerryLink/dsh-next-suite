@@ -2,9 +2,11 @@
 /**
  * dsh-supply-watch benchmark runner.
  *
- * Loads three curated datasets (known names, lookalike variants, legitimate
- * names), calls the package core (typosquatScore, watch, severityOf), and writes
- * results.json + RESULTS.md.
+ * Loads four curated datasets (known names, lookalike variants, the original
+ * legitimate-name baseline, and 30 real legitimate npm names), calls the
+ * package core (typosquatScore, watch, severityOf), and writes results.json +
+ * RESULTS.md. The lookalike variants stay synthetic; the real group exists to
+ * measure false positives on names taken from this workspace and DSH docs.
  *
  * The corpus is deliberately small and curated. These are sample metrics for
  * this corpus, not population estimates and not a claim that any package is
@@ -33,7 +35,10 @@ const OUT_MD = join(HERE, 'RESULTS.md')
 
 const EXPECTED_KNOWN = 20
 const EXPECTED_VARIANTS = 30
-const EXPECTED_LEGIT = 20
+const EXPECTED_LEGIT_BASELINE = 20
+const EXPECTED_LEGIT_REAL = 30
+const EXPECTED_LEGIT = EXPECTED_LEGIT_BASELINE + EXPECTED_LEGIT_REAL
+const LEGIT_GROUPS = ['baseline', 'real']
 const CATEGORIES = ['typo', 'separator', 'prefix']
 
 const THRESHOLDS = [
@@ -123,16 +128,26 @@ function assertUnique(names, label) {
 }
 
 async function main() {
-  const [knownData, variantData, legitData, toolPackage] = await Promise.all([
-    readJson(join(DATA, 'known.json')),
-    readJson(join(DATA, 'variants.json')),
-    readJson(join(DATA, 'legit.json')),
-    readJson(PACKAGE_JSON),
-  ])
+  const [knownData, variantData, legitData, legitRealData, toolPackage] =
+    await Promise.all([
+      readJson(join(DATA, 'known.json')),
+      readJson(join(DATA, 'variants.json')),
+      readJson(join(DATA, 'legit.json')),
+      readJson(join(DATA, 'legit-real.json')),
+      readJson(PACKAGE_JSON),
+    ])
 
   const knownEntries = knownData.names
   const variantEntries = variantData.variants
-  const legitEntries = legitData.legit
+  const legitBaselineEntries = legitData.legit.map((entry) => ({
+    ...entry,
+    group: 'baseline',
+  }))
+  const legitRealEntries = legitRealData.legit.map((entry) => ({
+    ...entry,
+    group: 'real',
+  }))
+  const legitEntries = [...legitBaselineEntries, ...legitRealEntries]
 
   if (knownEntries.length !== EXPECTED_KNOWN) {
     throw new Error(`expected ${EXPECTED_KNOWN} known names, found ${knownEntries.length}`)
@@ -140,6 +155,16 @@ async function main() {
   if (variantEntries.length !== EXPECTED_VARIANTS) {
     throw new Error(
       `expected ${EXPECTED_VARIANTS} variants, found ${variantEntries.length}`,
+    )
+  }
+  if (legitBaselineEntries.length !== EXPECTED_LEGIT_BASELINE) {
+    throw new Error(
+      `expected ${EXPECTED_LEGIT_BASELINE} baseline legit names, found ${legitBaselineEntries.length}`,
+    )
+  }
+  if (legitRealEntries.length !== EXPECTED_LEGIT_REAL) {
+    throw new Error(
+      `expected ${EXPECTED_LEGIT_REAL} real legit names, found ${legitRealEntries.length}`,
     )
   }
   if (legitEntries.length !== EXPECTED_LEGIT) {
@@ -182,7 +207,11 @@ async function main() {
             target: entry.target,
             rationale: entry.rationale,
           }
-        : { rationale: entry.rationale }),
+        : {
+            group: entry.group,
+            source: entry.source ?? null,
+            rationale: entry.rationale,
+          }),
       score: result.score,
       nearest: result.nearest,
       distance: result.distance,
@@ -223,12 +252,31 @@ async function main() {
         ]
       }),
     )
+    const byGroup = Object.fromEntries(
+      LEGIT_GROUPS.map((group) => {
+        const total = legit.filter((entry) => entry.group === group)
+        const flagged = total.filter((entry) => entry.score >= threshold.minScore)
+        return [
+          group,
+          {
+            total: total.length,
+            falsePositives: flagged.length,
+            falsePositiveRate:
+              total.length === 0
+                ? null
+                : Number((flagged.length / total.length).toFixed(6)),
+            flagged: flagged.map((entry) => entry.name),
+          },
+        ]
+      }),
+    )
     return {
       id: threshold.id,
       label: threshold.label,
       meaning: threshold.meaning,
       ...metrics,
       perCategory,
+      byGroup,
     }
   })
 
@@ -270,7 +318,7 @@ async function main() {
   const results = {
     benchmark: 'dsh-supply-watch',
     description:
-      'Offline typosquat/lookalike benchmark over a curated known-name baseline, lookalike variants and legitimate names.',
+      'Offline typosquat/lookalike benchmark over a curated known-name baseline, synthetic lookalike variants, 20 baseline legitimate names and 30 real legitimate npm names.',
     tool: {
       packageName: toolPackage.name,
       packageVersion: toolPackage.version,
@@ -289,6 +337,14 @@ async function main() {
         ]),
       ),
       legit: legit.length,
+      legitBaseline: legitBaselineEntries.length,
+      legitReal: legitRealEntries.length,
+      legitByGroup: Object.fromEntries(
+        LEGIT_GROUPS.map((group) => [
+          group,
+          legit.filter((entry) => entry.group === group).length,
+        ]),
+      ),
     },
     thresholds: thresholdMetrics,
     known: knownEntries,
@@ -309,11 +365,15 @@ async function main() {
   await writeFile(OUT_MD, renderMarkdown(results))
 
   console.log(
-    `dsh-supply-watch benchmark: ${knownNames.length} known, ${variants.length} variants, ${legit.length} legit`,
+    `dsh-supply-watch benchmark: ${knownNames.length} known, ${variants.length} variants, ${legit.length} legit (${legitBaselineEntries.length} baseline + ${legitRealEntries.length} real)`,
   )
   for (const metrics of thresholdMetrics) {
     console.log(
       `${metrics.label.padEnd(32)} recall ${pct(metrics.recall)} (${metrics.tp}/${metrics.tp + metrics.fn})  FPR ${pct(metrics.falsePositiveRate)} (${metrics.fp}/${metrics.fp + metrics.tn})  precision ${pct(metrics.precision)}  F1 ${pct(metrics.f1)}`,
+    )
+    const realGroup = metrics.byGroup.real
+    console.log(
+      `${''.padEnd(32)} real-name FPR ${pct(realGroup.falsePositiveRate)} (${realGroup.falsePositives}/${realGroup.total})`,
     )
   }
   console.log(`wrote ${OUT_JSON}`)
@@ -338,7 +398,7 @@ function renderMarkdown(results) {
     `Tool: \`${results.tool.packageName}\` ${results.tool.packageVersion}. Corpus: ` +
       `${results.counts.known} known names (${results.counts.knownReal} real, ${results.counts.knownSynthetic} synthetic), ` +
       `${results.counts.variants} variants (${results.counts.variantsByCategory.typo} typo / ${results.counts.variantsByCategory.separator} separator / ${results.counts.variantsByCategory.prefix} prefix), ` +
-      `${results.counts.legit} legitimate names.`,
+      `${results.counts.legit} legitimate names (${results.counts.legitBaseline} baseline + ${results.counts.legitReal} real npm names).`,
     '',
     `> ${results.disclaimer}`,
     '',
@@ -354,6 +414,24 @@ function renderMarkdown(results) {
   for (const metrics of results.thresholds) {
     push(
       `| ${cell(metrics.label)} | ${metrics.tp} | ${metrics.fp} | ${metrics.fn} | ${metrics.tn} | ${pct(metrics.precision)} | ${pct(metrics.recall)} | ${pct(metrics.f1)} | ${pct(metrics.falsePositiveRate)} | ${pct(metrics.accuracy)} |`,
+    )
+  }
+
+  push(
+    '',
+    '### False positives by legitimate-name group',
+    '',
+    'The 30 real names are checked separately so the measured false-positive rate on real packages is visible without dilution by the original 20-name baseline.',
+    '',
+    '| Group | Names | Any finding FP | FPR (any) | Medium+ FP | High FP |',
+    '| --- | ---: | ---: | ---: | ---: | ---: |',
+  )
+  for (const group of LEGIT_GROUPS) {
+    const any = anyThreshold.byGroup[group]
+    const medium = mediumThreshold.byGroup[group]
+    const high = highThreshold.byGroup[group]
+    push(
+      `| ${group === 'real' ? 'real npm names' : 'original baseline'} | ${any.total} | ${any.falsePositives}/${any.total} | ${pct(any.falsePositiveRate)} | ${medium.falsePositives}/${medium.total} | ${high.falsePositives}/${high.total} |`,
     )
   }
 
@@ -398,7 +476,7 @@ function renderMarkdown(results) {
     )
     for (const entry of results.falsePositives) {
       push(
-        `- \`${entry.name}\`: score ${entry.score} (${entry.severity}), nearest \`${entry.nearest}\` at distance ${entry.distance}; reason: \`${entry.reason}\`. Legitimacy: ${entry.rationale}.`,
+        `- \`${entry.name}\` [${entry.group}]: score ${entry.score} (${entry.severity}), nearest \`${entry.nearest}\` at distance ${entry.distance}; reason: \`${entry.reason}\`. Legitimacy: ${entry.rationale}${entry.source ? ` (source: ${entry.source})` : ''}.`,
       )
     }
   }
@@ -424,12 +502,12 @@ function renderMarkdown(results) {
     '',
     '## Full legitimate-name table',
     '',
-    '| Name | Score | Severity | Nearest | Distance | Reported (any) |',
-    '| --- | ---: | --- | --- | ---: | --- |',
+    '| Name | Group | Source | Score | Severity | Nearest | Distance | Reported (any) |',
+    '| --- | --- | --- | ---: | --- | --- | ---: | --- |',
   )
   for (const entry of results.legit) {
     push(
-      `| \`${entry.name}\` | ${entry.score} | ${entry.severity ?? '—'} | \`${entry.nearest ?? '—'}\` | ${entry.distance ?? '—'} | ${entry.flagged ? 'yes' : 'no'} |`,
+      `| \`${entry.name}\` | ${entry.group} | ${cell(entry.source ?? 'baseline corpus')} | ${entry.score} | ${entry.severity ?? '—'} | \`${entry.nearest ?? '—'}\` | ${entry.distance ?? '—'} | ${entry.flagged ? 'yes' : 'no'} |`,
     )
   }
 
@@ -437,8 +515,9 @@ function renderMarkdown(results) {
     '',
     '## Interpretation and limits',
     '',
-    '- This is a **curated corpus of 20 known names, 30 variants and 20 legitimate names**, not a random sample of npm. Rates are sample metrics for this corpus, not estimates for the registry.',
-    '- The known list is caller-supplied and hand-curated. A stale, incomplete or over-broad list changes both recall and false positives; `cordis` is deliberately short/generic and causes the one measured low-severity false positive (`cordis-http-client`).',
+    '- This is a **curated corpus of 20 known names, 30 synthetic variants and 50 legitimate names (20 original baseline + 30 real npm names)**, not a random sample of npm. Rates are sample metrics for this corpus, not estimates for the registry.',
+    '- The 30 real legitimate names come from `dsh-os-suite` package/lockfile dependencies, the `dsh-next-suite` runtime dependency (`acorn`), and official DSH package names referenced in `deepseek-harness` docs. They are identifiers only; no package code or tarball was downloaded. The variant set remains synthetic.',
+    '- The known list is caller-supplied and hand-curated. A stale, incomplete or over-broad list changes both recall and false positives; `cordis` is deliberately short/generic and causes the one measured low-severity false positive (`cordis-http-client`, which is in the original baseline group, not the real group).',
     '- The tool is offline: there is no registry ownership check, download count, maintainer history, tarball inspection, advisory data, or dependency analysis. A finding is a lead, not proof of malice.',
     '- Scope-wrapped variants (`@deepseek/dsh-xbrl`, `@evil/dsh-capdiff`) and brand-expanded names (`deepseek-harness-capdiff`) are outside the current heuristic coverage and account for the three misses. Homoglyph, pluralization and semantic lookalikes are not exhaustively covered either.',
     '- The any-finding row counts low-severity extra-segment leads as positives. The medium+ and high rows show the precision/recall tradeoff if a reviewer only escalates stronger leads.',

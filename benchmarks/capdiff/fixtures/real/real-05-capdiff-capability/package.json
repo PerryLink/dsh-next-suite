@@ -1,0 +1,10 @@
+{
+  "name": "@bench/real-05-capdiff-capability",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real capability map: strings such as node:fs, process.env and eval appear as keys, not code.",
+  "dsh": {
+    "capabilities": []
+  }
+}

@@ -15,21 +15,24 @@ import { lstat, readdir, readFile, writeFile } from 'node:fs/promises'
 import { basename, join, relative, resolve, sep } from 'node:path'
 import { parseArgs } from 'node:util'
 import { RULES, RULES_NOTICE, applySource, decodeTextContent, formatPlan, plan } from './core.js'
+import { formatRules } from './rules.js'
 
 const USAGE = `cordis-migrate — Cordis 3→4 migration rule engine (unofficial)
 
-⚠️ Built-in rules are illustrative examples, not an official migration table.
-   Review every proposed edit before using --write.
+⚠️ Built-in rules are community-curated, not an official migration table.
+   Some rules are experimental. Review every proposed edit before using --write.
 
 用法 / Usage:
   cordis-migrate scan <dir|file> [--json]
   cordis-migrate apply <dir|file> [--dry-run | --write] [--json]
+  cordis-migrate rules [--json]
   cordis-migrate --help
   cordis-migrate --version
 
 Commands:
   scan     Report rule matches. Never writes files.
   apply    Plan and optionally apply fixes. Defaults to --dry-run.
+  rules    List built-in rules, kinds, severity, evidence and experimental flags.
 
 Options:
   --json      Print machine-readable JSON on stdout.
@@ -219,7 +222,7 @@ async function main() {
     return
   }
   if (values.version) {
-    console.log('cordis-migrate 0.1.3')
+    console.log('cordis-migrate 0.2.0')
     return
   }
   if (positionals.length === 0) {
@@ -229,11 +232,31 @@ async function main() {
   }
 
   const command = positionals[0]
-  if (command !== 'scan' && command !== 'apply') {
+  if (command !== 'scan' && command !== 'apply' && command !== 'rules') {
     console.error(`cordis-migrate: unknown command "${command}"`)
     console.error('')
     console.error(USAGE)
     process.exitCode = 2
+    return
+  }
+
+  if (command === 'rules') {
+    if (positionals.length > 1) {
+      console.error('cordis-migrate: rules takes no target path')
+      process.exitCode = 2
+      return
+    }
+    if (values.write || values['dry-run']) {
+      console.error('cordis-migrate: rules is read-only; it never scans or writes files')
+      process.exitCode = 2
+      return
+    }
+    if (values.json) {
+      const payload = JSON.parse(formatRules(RULES, { json: true }))
+      console.log(JSON.stringify({ command, ok: true, ...payload }, null, 2))
+    } else {
+      console.log(formatRules(RULES))
+    }
     return
   }
 

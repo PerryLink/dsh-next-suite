@@ -1,0 +1,10 @@
+{
+  "name": "@bench/real-14-os-registry-index",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real plugin registration header: imports @deepseek-ai/dsh-tools and ./core.js and defines JSON schemas.",
+  "dsh": {
+    "capabilities": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "real-08-xbrl-cli",
+  "category": "real-filesystem",
+  "description": "Real CLI for offline XBRL reconciliation; reads fact files through node:fs/promises.",
+  "declared": [
+    "filesystem"
+  ],
+  "actual": [
+    "filesystem"
+  ],
+  "staticVisible": [
+    "filesystem"
+  ],
+  "notes": "node:util and ./core.js are unmapped imports (unknown).",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "dsh-xbrl",
+    "path": "packages/dsh-xbrl/src/cli.js",
+    "lines": "1-96",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-xbrl/src/cli.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

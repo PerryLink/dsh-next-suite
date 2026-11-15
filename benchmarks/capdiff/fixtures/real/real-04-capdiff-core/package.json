@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-04-capdiff-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real scanner core header: filesystem imports plus the alias table used by parseDeclared.",
+  "dsh": {
+    "capabilities": [
+      "filesystem"
+    ]
+  }
+}

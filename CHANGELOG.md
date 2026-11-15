@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.0] - 2026-11-15
+
+### Added
+- `dsh-capdiff`: acorn AST analysis with regex fallback; real-code benchmark corpus.
+- `testatum-attest`: npm provenance/attestation presence checks (subject/repo/commit), not sigstore verification.
+- `cordis-migrate`: 26-rule community pack (10 experimental).
+- HCB dataset expanded to 24 rows; upgrade atlas 47/50 target versions.
+- CI: real CLI smoke, Windows/macOS matrix, coverage artifact.
+
 ## [0.1.3] - 2026-11-14
 
 ### Changed

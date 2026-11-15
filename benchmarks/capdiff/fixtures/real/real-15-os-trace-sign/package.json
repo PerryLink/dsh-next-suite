@@ -1,0 +1,12 @@
+{
+  "name": "@bench/real-15-os-trace-sign",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Real-corpus fixture: Real HMAC signing helpers: node:crypto plus a TESTATUM_KEY environment lookup.",
+  "dsh": {
+    "capabilities": [
+      "crypto"
+    ]
+  }
+}

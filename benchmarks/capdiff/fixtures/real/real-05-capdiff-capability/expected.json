@@ -1,0 +1,21 @@
+{
+  "id": "real-05-capdiff-capability",
+  "category": "real-pure",
+  "description": "Real capability map: strings such as node:fs, process.env and eval appear as keys, not code.",
+  "declared": [],
+  "actual": [],
+  "staticVisible": [],
+  "notes": "False-positive trap on real code: the map is data, so nothing may be reported as a capability.",
+  "limitation": null,
+  "source": {
+    "repo": "dsh-next-suite",
+    "revision": "main",
+    "package": "dsh-capdiff",
+    "path": "packages/dsh-capdiff/src/capability.js",
+    "lines": "1-66",
+    "license": "Apache-2.0",
+    "url": "https://github.com/PerryLink/dsh-next-suite/blob/main/packages/dsh-capdiff/src/capability.js",
+    "transformation": "trimmed at a complete top-level statement boundary; imports and calls preserved",
+    "snapshot": "2026-11-15"
+  }
+}

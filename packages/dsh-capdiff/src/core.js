@@ -1,10 +1,12 @@
 /**
  * dsh-capdiff core: static capability extraction and declaration diffing.
  *
- * This module deliberately uses regular expressions instead of a JavaScript
- * parser so it can run offline with zero dependencies on arbitrary plugin
- * source. It is a heuristic scanner: it reports what is *statically visible*,
- * never what a plugin can actually do at runtime. See README.md / DESIGN.md.
+ * The preferred analysis path parses source with acorn (see `ast.js`). When
+ * acorn is unavailable, or the file cannot be parsed (TypeScript, JSX, broken
+ * source), analysis falls back to the zero-dependency regex scanner below.
+ * Either way this is a heuristic scanner: it reports what is *statically
+ * visible*, never what a plugin can actually do at runtime. See README.md /
+ * DESIGN.md.
  *
  * @module dsh-capdiff/core
  */
@@ -12,8 +14,13 @@
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 
+import { analyzeAst } from './ast.js'
+import { CAPABILITY_MAP, capabilityForSpecifier } from './capability.js'
+
+export { CAPABILITY_MAP, capabilityForSpecifier }
+
 export const TOOL_NAME = 'dsh-capdiff'
-export const TOOL_VERSION = '0.1.3'
+export const TOOL_VERSION = '0.2.0'
 
 /** Source extensions scanned by {@link collectSourceFiles}. */
 export const SOURCE_EXTENSIONS = Object.freeze(['.js', '.mjs', '.cjs'])
@@ -31,41 +38,9 @@ export function isSourceFile(file) {
   return SOURCE_EXTENSION_SET.has(extname(String(file)).toLowerCase())
 }
 
-/**
- * Import specifier / language construct -> capability.
- *
- * Bare and `node:`-prefixed builtins are both listed where useful. The three
- * non-module keys (`process.env`, `eval`, `new Function`) are language-level
- * evidence; they are detected by scanning source text, not by imports.
- *
- * @type {Readonly<Record<string, string>>}
- */
-export const CAPABILITY_MAP = Object.freeze({
-  'node:fs': 'filesystem',
-  fs: 'filesystem',
-  'node:fs/promises': 'filesystem',
-  'fs/promises': 'filesystem',
-  'node:net': 'network',
-  net: 'network',
-  'node:http': 'network',
-  http: 'network',
-  'node:https': 'network',
-  https: 'network',
-  'node:http2': 'network',
-  http2: 'network',
-  'node:tls': 'network',
-  tls: 'network',
-  'node:dgram': 'network',
-  dgram: 'network',
-  fetch: 'network',
-  'node:child_process': 'process',
-  child_process: 'process',
-  'node:crypto': 'crypto',
-  crypto: 'crypto',
-  'process.env': 'env',
-  eval: 'eval',
-  'new Function': 'eval',
-})
+// Import specifier / language construct -> capability lives in capability.js so
+// the AST path can use it without importing this module. It is re-exported
+// above for backwards compatibility.
 
 const CANONICAL_CAPABILITIES = new Set([
   'filesystem',
@@ -277,27 +252,6 @@ export function extractImports(code) {
   collect(EXPORT_FROM_RE, 're-export')
 
   return imports.sort((a, b) => a.index - b.index)
-}
-
-/**
- * Map one module specifier to a capability. Subpaths such as
- * `node:fs/promises` inherit the capability of their builtin root.
- *
- * @param {string} specifier
- * @returns {string}
- */
-export function capabilityForSpecifier(specifier) {
-  if (typeof specifier !== 'string') return 'unknown'
-  const value = specifier.trim()
-  if (!value) return 'unknown'
-  if (Object.hasOwn(CAPABILITY_MAP, value)) return CAPABILITY_MAP[value]
-
-  const bare = value.startsWith('node:') ? value.slice(5) : value
-  if (Object.hasOwn(CAPABILITY_MAP, bare)) return CAPABILITY_MAP[bare]
-
-  const [base] = bare.split('/')
-  if (base && Object.hasOwn(CAPABILITY_MAP, base)) return CAPABILITY_MAP[base]
-  return 'unknown'
 }
 
 /**
@@ -809,15 +763,14 @@ export function toSarif(findings, options = {}) {
 }
 
 /**
- * Analyze one source string. Convenience wrapper around extraction + mapping
- * that keeps the evidence (line, trigger) for reporting.
+ * Regex-only extraction path. Kept as the fallback for unparseable files and
+ * for environments where the optional acorn dependency is missing.
  *
- * @param {string} code
- * @param {string|null} [file]
+ * @param {string} source
+ * @param {string|null} file
  * @returns {{ file: string|null, imports: ImportRef[], capabilities: string[], observations: CapabilityEvidence[] }}
  */
-export function analyzeSource(code, file = null) {
-  const source = typeof code === 'string' ? code : ''
+function analyzeSourceRegex(source, file) {
   const imports = extractImports(source)
   const observations = collectCapabilityEvidence(source, imports)
   /** @type {string[]} */
@@ -828,6 +781,32 @@ export function analyzeSource(code, file = null) {
     }
   }
   return { file: file ?? null, imports, capabilities, observations }
+}
+
+/**
+ * Analyze one source string. Convenience wrapper around extraction + mapping
+ * that keeps the evidence (line, trigger) for reporting.
+ *
+ * AST analysis is attempted first; a parse failure (or a missing acorn) falls
+ * back to the regex scanner, so the returned shape and capability ordering stay
+ * compatible with earlier releases.
+ *
+ * @param {string} code
+ * @param {string|null} [file]
+ * @returns {{ file: string|null, imports: ImportRef[], capabilities: string[], observations: CapabilityEvidence[] }}
+ */
+export function analyzeSource(code, file = null) {
+  const source = typeof code === 'string' ? code : ''
+  const ast = analyzeAst(source, { filename: file ?? undefined })
+  if (!ast.parseError) {
+    return {
+      file: file ?? null,
+      imports: ast.imports,
+      capabilities: ast.capabilities,
+      observations: ast.observations,
+    }
+  }
+  return analyzeSourceRegex(source, file)
 }
 
 /**
