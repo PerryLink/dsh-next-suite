@@ -147,7 +147,7 @@ async function main(options) {
     return 0
   }
   if (values.version) {
-    console.log('dsh-supply-watch 0.2.2')
+    console.log('dsh-supply-watch 0.2.3')
     return 0
   }
 

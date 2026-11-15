@@ -20,7 +20,7 @@ import { CAPABILITY_MAP, capabilityForSpecifier } from './capability.js'
 export { CAPABILITY_MAP, capabilityForSpecifier }
 
 export const TOOL_NAME = 'dsh-capdiff'
-export const TOOL_VERSION = '0.2.2'
+export const TOOL_VERSION = '0.2.3'
 
 /** Source extensions scanned by {@link collectSourceFiles}. */
 export const SOURCE_EXTENSIONS = Object.freeze(['.js', '.mjs', '.cjs'])
