@@ -250,14 +250,15 @@
       "id": "session-format-v4",
       "package": "@deepseek-ai/dsh-session",
       "from": "0.1.7-alpha.1",
-      "to": "*",
+      "to": "0.1.7-alpha.1",
       "kind": "protocol",
       "severity": "P0",
-      "summary": "The finalized V4 Session writer bumps SessionHeader.version from 3 to 4, moves released user-role tool results into tool-role messages with a required toolCallId, adds producer-owned message sources, developer-role events, and turn/end.reason forked. V3 readers refuse V4 logs, and native V4 readers refuse unsupported generations before exposing or truncating a Session. Still current in 0.2.2-rc.2. target unknown: no upgrade-guide release directory maps this behavior to a release.",
+      "summary": "The finalized V4 Session writer bumps SessionHeader.version from 3 to 4, moves released user-role tool results into tool-role messages with a required toolCallId, adds producer-owned message sources, developer-role events, and turn/end.reason forked. V3 readers refuse V4 logs, and native V4 readers refuse unsupported generations before exposing or truncating a Session. Still current in 0.2.2-rc.2. Documented in the 0.1.7-alpha.1 release notes.",
       "fix": "Open every shared Session once with the new version before writing; keep a backup and let the built-in V3-to-V4 migration lift tool results, backfill child descriptors from retained direct-child logs, and publish the successor beside unchanged predecessor files. Upgrade all readers and writers sharing the Session directory together, and do not hand-edit headers or delete delivery records to bypass refusal.",
       "evidence": [
         "docs/persistence-changes/2026-09-16-session-format-v4.md",
-        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-16-session-format-v4.md"
+        "https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/persistence-changes/2026-09-16-session-format-v4.md",
+        "https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.1.7-alpha.1"
       ]
     },
     {
@@ -267,7 +268,7 @@
       "to": "*",
       "kind": "protocol",
       "severity": "P1",
-      "summary": "Sessions now persist owned job lifecycle as required job/registered and job/settled events with kind-prefixed unique JobIds, original timestamps, creating tool calls, and producer completion reports. Older builds reject these unknown required events, so a Session containing them cannot be opened by pre-0.2.1-alpha.3 readers. Still current in 0.2.2-rc.2. target unknown: no upgrade-guide release directory maps this behavior to a release.",
+      "summary": "Sessions now persist owned job lifecycle as required job/registered and job/settled events with kind-prefixed unique JobIds, original timestamps, creating tool calls, and producer completion reports. Older builds reject these unknown required events, so a Session containing them cannot be opened by pre-0.2.1-alpha.3 readers. Still current in 0.2.2-rc.2. target unknown: no upgrade-guide topic or release note maps this lifecycle change to a release.",
       "fix": "Upgrade every process that opens the shared Session store before running jobs; do not expect foreground-only job history or synthesize job events for old Sessions. Read producerReported as completion-promise fulfillment, not verified resource release, and keep the jobs service composed.",
       "evidence": [
         "docs/persistence-changes/2026-09-30-job-session-lifecycle.md",
@@ -642,15 +643,16 @@
       "id": "windows-markdown-path-backslashes",
       "package": "@deepseek-ai/dsh-client-ui-primitives",
       "from": "0.2.2-alpha.2",
-      "to": "*",
+      "to": "0.2.2-alpha.2",
       "kind": "ui",
       "severity": "P2",
-      "summary": "Markdown destinations that look like Windows paths now keep their authored backslashes instead of being CommonMark-unescaped: [x](D:\\repo\\.github\\a.md) no longer opens D:\\repo.github\\a.md. Relative backslash destinations without a scheme and character references are handled too, so custom renderers and link snapshots that relied on the old escaping are affected. Still current in 0.2.2-rc.2. target unknown: no upgrade-guide release directory maps this behavior to a release.",
+      "summary": "Markdown destinations that look like Windows paths now keep their authored backslashes instead of being CommonMark-unescaped: [x](D:\\repo\\.github\\a.md) no longer opens D:\\repo.github\\a.md. Relative backslash destinations without a scheme and character references are handled too, so custom renderers and link snapshots that relied on the old escaping are affected. Still current in 0.2.2-rc.2. Documented in the 0.2.2-alpha.2 release notes.",
       "fix": "Stop pre-escaping or rewriting Windows backslash paths before Markdown rendering, update link and file-link snapshots, and verify that a drive-absolute path, a relative backslash path, and a destination with character references open the intended file; use dsh-resource file addresses for Sidebar navigation.",
       "evidence": [
         "packages/client/ui-primitives/src/markdown/windows-path-destinations.ts",
         "packages/client/ui-primitives/src/markdown/parse.ts",
-        "https://github.com/deepseek-ai/deepseek-harness/commit/c262a09fd0b5491a40ac18bdf0ad9a8252691057"
+        "https://github.com/deepseek-ai/deepseek-harness/commit/c262a09fd0b5491a40ac18bdf0ad9a8252691057",
+        "https://github.com/deepseek-ai/deepseek-harness/releases/tag/dsh-v0.2.2-alpha.2"
       ]
     },
     {

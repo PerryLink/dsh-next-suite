@@ -158,8 +158,8 @@ entries use the guide's release directory as both `from` and `to`: the guide is
 the release-scoped evidence for that breakpoint. An entry that was later
 superseded spans a longer window (for example, `plugin-index-wording` from
 `0.2.1-alpha.4` through `0.2.1-rc.5`). `to: "*"` is an open upper bound meaning
-"target unknown: no guide release directory maps this behavior to a release";
-the open-ended summaries still say `still current` separately.
+"target unknown: no guide release directory or release note maps this behavior
+to a release"; the open-ended summaries still say `still current` separately.
 
 `from` must be concrete. A partial `from` such as `0.2` is accepted and
 expanded to the start of that prefix (`0.2.0-0`). A partial `to` is expanded to
@@ -280,10 +280,11 @@ This makes the data useful both offline (with a DSH checkout) and online.
 Evidence may be a string for simple entries; the core normalizes it to an
 array.
 
-The bundled corpus is mostly guide-backed. Three kinds of non-guide evidence
-exist: dated persistence records (`session-format-v4`, `job-session-lifecycle`),
-a source implementation file plus a change commit for the Windows Markdown-path
-fix, and the two commits that introduced and reverted the
+The bundled corpus is mostly guide-backed. Non-guide evidence includes dated
+persistence records (`session-format-v4`, `job-session-lifecycle`), release
+notes (for `session-format-v4` in `0.1.7-alpha.1` and the Windows Markdown-path
+fix in `0.2.2-alpha.2`), a source implementation file plus a change commit for
+the Windows fix, and the two commits that introduced and reverted the
 `plugin-index-wording` label. The plugin label shipped as "Custom plugin
 markets" from `0.2.1-alpha.4` through `0.2.1-rc.5` and was presented as "Custom
 plugin indexes" again in `0.2.2-alpha.2`; no `0.2.2-alpha.1` release exists. Those
