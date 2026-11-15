@@ -139,7 +139,7 @@ BOM 会作为 U+FEFF 参与第 1 行文本，因而使该行列号 +1；这是�
 
 - **默认 dry-run**：迁移工具的默认行为应是“展示”，不是“修改”。`--write` 必须显式出现。
 - **扫描/写入互斥语义**：`scan --write`、`apply --write --dry-run` 直接报错，而不是选一个“更安全”的。
-- **`rules` 只读**：列出 26 条规则及其 `kind`/`severity`/`experimental`/`evidence`；`rules --json` 额外输出来源清单。它不接受目标路径或 `--write`。
+- **`rules` 只读**：列出 24 条规则及其 `kind`/`severity`/`experimental`/`evidence`；`rules --json` 额外输出来源清单。它不接受目标路径或 `--write`。
 - **遍历**：递归、排序、跳过 symlink；忽略 VCS/构建/依赖目录与 lockfile、`*.min.js`、`*.map`，减少噪音和误写风险。
 - **路径展示**：相对目标路径，统一 `/` 分隔符，便于跨平台 JSON 对比；实际写入使用绝对路径。
 - **输出**：文本报告逐条列出 `line:column ruleId before -> after`；`--json` 输出单一 JSON 对象，`--write --json` 追加 `write.{written,unchanged,failures}`。
@@ -149,7 +149,7 @@ BOM 会作为 U+FEFF 参与第 1 行文本，因而使该行列号 +1；这是�
 
 ## 9. 规则为什么是社区整理
 
-26 条内置规则覆盖 import 子路径、`Context` 字段、`ctx.on` 事件名、`ctx.plugin`/`ctx.inject`、service 注册、dispose/effect、config schema、HMR 与 package 字段。每条都带一行 `evidence`，指向 2026-11-15 核对的 v3/v4 类型声明、export map 或 release notes；完整清单见 `src/rules.js` 顶部与 `RULE_SOURCES`。
+24 条内置规则覆盖 import 子路径、`Context` 字段、`ctx.on` 事件名、`ctx.plugin`/`ctx.inject`、service 注册、dispose/effect、config schema、HMR 与 package 字段。每条都带一行 `evidence`，指向 2026-11-15 核对的 v3/v4 类型声明、export map 或 release notes；完整清单见 `src/rules.js` 顶部与 `RULE_SOURCES`。其中 4 条仍为 `experimental`，另有 2 条（`Service.setup`、internal 事件改名）复核后删除并记录在 README 的人工断点清单。
 
 目标版本是 npm 上游 `cordis@4.0.0-rc.13`。DeepSeek Harness vendor 的 `@deepseek-ai/cordis@4.1.0` 在个别 API 上不同（例如仍以 `ctx.plugin` 为主、没有 rc.13 的 `ctx.use`），以 vendored 版本为目标时需重新核对。
 
@@ -177,7 +177,7 @@ BOM 会作为 U+FEFF 参与第 1 行文本，因而使该行列号 +1；这是�
 
 `node --test packages/cordis-migrate/test/*.test.js`，当前 65 个测试，全部离线：
 
-- `test/rules.test.js`（34）：规则完整性（≥20 条、字段齐全、id 唯一、evidence 非空、experimental 类型）、每个 kind 覆盖、**每条规则一个正例 + 一个反例 + 幂等固定点**、别名/默认导入/类型导入/引号/JSON/YAML 变体、26 条规则聚合一次迁移、`formatRules` 文本/JSON 可序列化、来源清单。
+- `test/rules.test.js`（34）：规则完整性（≥20 条、字段齐全、id 唯一、evidence 非空、experimental 类型）、每个 kind 覆盖、**每条规则一个正例 + 一个反例 + 幂等固定点**、别名/默认导入/类型导入/引号/JSON/YAML 变体、24 条规则聚合一次迁移、`formatRules` 文本/JSON 可序列化、来源清单。
 - `test/core.test.js`（16）：scan/apply/plan/formatPlan 的引擎行为、CRLF/LF/混合行尾、重叠最左优先、陈旧匹配、二进制/非法 UTF-8 跳过、BOM、自定义规则校验、内置规则默认值。
 - `test/cli.test.js`（15）：`rules` 文本/JSON/只读拒绝、scan JSON/文本、单文件、默认 dry-run、显式 `--dry-run`、`--write` 写盘、二次写入幂等、二进制不被改动、`--write --json`、冲突参数、缺失目标、`--help`/`--version`。**全部规则的 dry-run 测试断言文件字节不变；`--write` 测试断言迁移结果并再次运行确认幂等。**
 
