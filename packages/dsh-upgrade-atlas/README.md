@@ -12,10 +12,10 @@ Markdown migration sheet.
 > notes 为准。
 
 - **Package:** `dsh-upgrade-atlas`
-- **Version:** 0.2.3 (published on npm)
+- **Version:** 0.2.4 (published on npm)
 - **License:** Apache-2.0
 - **Runtime:** Node.js `^22.19.0 || >=24.9.0`
-- **Data:** 50 curated DSH 0.1.7–0.2.3-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json); 49 carry a concrete `to` release, 1 is `*` with `target unknown`
+- **Data:** 50 curated DSH 0.1.7–0.2.4-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json); 49 carry a concrete `to` release, 1 is `*` with `target unknown`
 - **Dependencies:** none
 
 ## What it is
@@ -24,7 +24,7 @@ DSH upgrade notes are spread across `docs/upgrade-guide/v<release>/<topic>/`
 directories. That is fine when you already know which release you are reading,
 but painful when you need to answer:
 
-- "I am upgrading from 0.2.3 to 0.2.3. What can break?"
+- "I am upgrading from 0.2.4 to 0.2.4. What can break?"
 - "Does anything in the Office packages affect my profile?"
 - "Which P0 changes must I fix before I start the new version?"
 - "Give me a one-page migration checklist for the release window."
@@ -51,7 +51,7 @@ in traceable evidence and a stable query shape, not in exhaustive coverage.
 
 ## Install
 
-The package is published as `dsh-upgrade-atlas@0.2.3`. From npm:
+The package is published as `dsh-upgrade-atlas@0.2.4`. From npm:
 
 ```sh
 node packages/dsh-upgrade-atlas/src/cli.js --help
@@ -103,10 +103,10 @@ List only the blockers:
 dsh-upgrade-atlas list --severity P0
 ```
 
-Ask what changes affect a 0.2.3 -> 0.2.3 upgrade:
+Ask what changes affect a 0.2.4 -> 0.2.4 upgrade:
 
 ```sh
-dsh-upgrade-atlas query --from 0.2.3 --to 0.2.3
+dsh-upgrade-atlas query --from 0.2.4 --to 0.2.4
 ```
 
 Narrow to Office packages and machine-readable output:
@@ -176,9 +176,9 @@ bounds are open.
 
 The comparison is semver-like and prerelease-aware:
 
-- `0.2.3-rc.2 < 0.2.3 < 0.2.3-alpha.1 < 0.2.3`.
-- A query version without a prerelease is prefix-aware: `--from 0.2.3`
-  starts at `0.2.3-0`, and `--to 0.2.3` ends just before `0.2.3-0`.
+- `0.2.4-rc.2 < 0.2.4 < 0.2.4-alpha.1 < 0.2.4`.
+- A query version without a prerelease is prefix-aware: `--from 0.2.4`
+  starts at `0.2.4-0`, and `--to 0.2.4` ends just before `0.2.4-0`.
 - A partial version is a full prefix: `--from 0.2 --to 0.2` covers every
   `0.2.x` release.
 - `*` is an open upper bound. In the data, a `to` of `*` means "target unknown:
@@ -188,8 +188,8 @@ The comparison is semver-like and prerelease-aware:
   A concrete `to` is an evidence bound, not a claim that later releases are
   unaffected: most guide-backed entries use the guide's release directory as
   both `from` and `to`, while an entry that was superseded spans a longer
-  window (for example, `plugin-index-wording` from `0.2.3-alpha.4` through
-  `0.2.3-rc.5`). Read the summary's `still current` note for applicability
+  window (for example, `plugin-index-wording` from `0.2.4-alpha.4` through
+  `0.2.4-rc.5`). Read the summary's `still current` note for applicability
   after `to`.
 
 Because guide-backed entries are pinned to their guide release, a query
@@ -220,17 +220,17 @@ import {
 const entry = validateEntry({
   id: 'my-breakpoint',
   package: '@example/dsh-plugin',
-  from: '0.2.3-rc.2',
+  from: '0.2.4-rc.2',
   to: '*',
   kind: 'api',
   severity: 'P1',
   summary: 'A service method was removed.',
   fix: 'Use the replacement service.',
-  evidence: ['docs/upgrade-guide/v0.2.3-rc.2/example/guide.md'],
+  evidence: ['docs/upgrade-guide/v0.2.4-rc.2/example/guide.md'],
 })
 
 const atlas = addEntry(createAtlas([]), entry)
-const hits = query(atlas, { package: '@example/', from: '0.2.3', to: '0.2.3' })
+const hits = query(atlas, { package: '@example/', from: '0.2.4', to: '0.2.4' })
 console.log(renderMarkdown(hits))
 console.log(stats(atlas))
 ```
@@ -251,15 +251,15 @@ Every bundled entry cites at least one DSH source. Paths are relative to a DSH
 source checkout, and the parallel GitHub URL is included for convenience:
 
 ```text
-docs/upgrade-guide/v0.2.3-rc.2/node-24/guide.md
-https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.3-rc.2/node-24/guide.md
+docs/upgrade-guide/v0.2.4-rc.2/node-24/guide.md
+https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/upgrade-guide/v0.2.4-rc.2/node-24/guide.md
 ```
 
 The `plugin-index-wording` entry cites the upstream user guide and the two
 commits that introduced and reverted the label, because that wording change is
 not a separate upgrade-guide topic. The label was **Custom plugin markets** from
-`0.2.3-alpha.4` through `0.2.3-rc.5` and was presented as **Custom plugin indexes**
-again in `0.2.3-alpha.2`; no `0.2.3-alpha.1` release exists. The Session-format and job
+`0.2.4-alpha.4` through `0.2.4-rc.5` and was presented as **Custom plugin indexes**
+again in `0.2.4-alpha.2`; no `0.2.4-alpha.1` release exists. The Session-format and job
 entries cite the dated persistence records, and the Windows Markdown-path entry
 cites the change commit and the implementation file:
 
@@ -276,7 +276,7 @@ it is not generated from upstream release notes.
 
 ## Limitations
 
-- **Not exhaustive.** 50 entries cover the 0.1.7–0.2.3-rc.2 breakpoints that were
+- **Not exhaustive.** 50 entries cover the 0.1.7–0.2.4-rc.2 breakpoints that were
   documented and verified when this atlas was assembled. New releases add
   new breakpoints; run the upstream upgrade guides for the full text.
 - **Hand-curated version mapping.** For guide-backed entries, `from` and (after
@@ -285,11 +285,11 @@ it is not generated from upstream release notes.
   the release tag that first contains the cited persistence record or commit:
   `session-format-v4` starts at `0.1.7-alpha.1`, `job-session-lifecycle` at
   `0.2.1-alpha.3`, and `windows-markdown-path-backslashes` at
-  `0.2.3-alpha.2`. Release notes pin two of them: `session-format-v4` to
-  `0.1.7-alpha.1` and `windows-markdown-path-backslashes` to `0.2.3-alpha.2`.
+  `0.2.4-alpha.2`. Release notes pin two of them: `session-format-v4` to
+  `0.1.7-alpha.1` and `windows-markdown-path-backslashes` to `0.2.4-alpha.2`.
   `job-session-lifecycle` keeps `to: "*"` and says `target unknown`. On
   2026-11-15 it was re-checked against the 39 releases returned by the GitHub
-  releases API (latest `0.2.3-rc.3`) and the full `docs/upgrade-guide/` tree
+  releases API (latest `0.2.2-rc.3`) and the full `docs/upgrade-guide/` tree
   (searched for the event names and lifecycle wording). No release note
   mentions required `job/registered` / `job/settled` persistence. The only
   related guide,
@@ -303,8 +303,8 @@ it is not generated from upstream release notes.
   bound. Keep `*` rather than invent a target.
   The `plugin-index-wording` boundary was checked with
   `git show <tag>:docs/user/guide/plugin-market.md`: the market label shipped
-  in `0.2.3-alpha.4` through `0.2.3-rc.5`, and the index wording returned in
-  `0.2.3-alpha.2`. Re-verify these boundaries if you depend on them.
+  in `0.2.4-alpha.4` through `0.2.4-rc.5`, and the index wording returned in
+  `0.2.4-alpha.2`. Re-verify these boundaries if you depend on them.
 - **`*` means target unknown.** A `to` of `*` means no release bound could be
   established, not that the breakpoint is fixed. The remaining open-ended entry
   still states `still current` in its summary. A concrete `to` is the last
