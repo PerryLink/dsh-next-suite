@@ -1,0 +1,14 @@
+WORK=/tmp/hcb-host-fwHBGE
+dsh-os-trace-0.2.1.tgz
+dsh-os-lease-0.2.1.tgz
+dsh-os-quota-0.2.1.tgz
+dsh-os-eval-0.2.1.tgz
+dsh-os-catalog-0.2.1.tgz
+dsh-os-registry-0.2.1.tgz
+total 224
+-rw-r--r-- 1 yy yy 22812 Nov 15 19:18 dsh-os-catalog-0.2.1.tgz
+-rw-r--r-- 1 yy yy 33713 Nov 15 19:18 dsh-os-eval-0.2.1.tgz
+-rw-r--r-- 1 yy yy 52612 Nov 15 19:18 dsh-os-lease-0.2.1.tgz
+-rw-r--r-- 1 yy yy 36673 Nov 15 19:18 dsh-os-quota-0.2.1.tgz
+-rw-r--r-- 1 yy yy 18862 Nov 15 19:18 dsh-os-registry-0.2.1.tgz
+-rw-r--r-- 1 yy yy 54811 Nov 15 19:18 dsh-os-trace-0.2.1.tgz

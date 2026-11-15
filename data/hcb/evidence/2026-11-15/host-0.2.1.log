@@ -1,0 +1,24 @@
+# HCB host probe: npx @deepseek-ai/dsh@0.2.1
+date=2026-11-15T19:18:49+08:00
+node=v24.22.1
+npx=11.19.1
+DSH_HOME=/tmp/hcb-npx021-4qufUN/dsh-home
+WORK=/tmp/hcb-npx021-4qufUN
+$ npx --yes @deepseek-ai/dsh@0.2.1 --version
+npm error code ETARGET
+npm error notarget No matching version found for @deepseek-ai/dsh@0.2.1.
+npm error notarget In most cases you or one of your dependencies are requesting a package version that doesn't exist.
+npm error A complete log of this run can be found in: /home/yy/.npm/_logs/2026-11-15T11_18_49_376Z-debug-0.log
+exit_code=1
+
+# official npm registry confirmation
+$ npm view --registry=https://registry.npmjs.org @deepseek-ai/dsh@0.2.1 version
+npm error code E404
+npm error 404 No match found for version 0.2.1
+npm error 404
+npm error 404  The requested resource '@deepseek-ai/dsh@0.2.1' could not be found or you do not have permission to access it.
+npm error 404
+npm error 404 Note that you can also install from a
+npm error 404 tarball, folder, http url, or git url.
+npm error A complete log of this run can be found in: /home/yy/.npm/_logs/2026-11-15T11_20_05_341Z-debug-0.log
+official_registry_exit=1

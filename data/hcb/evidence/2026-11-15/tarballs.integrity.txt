@@ -1,0 +1,7 @@
+# tarball integrity vs npm dist.integrity
+dsh-os-trace: match
+dsh-os-lease: match
+dsh-os-quota: match
+dsh-os-eval: match
+dsh-os-catalog: match
+dsh-os-registry: match
