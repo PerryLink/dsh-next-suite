@@ -3,13 +3,26 @@ import { readFileSync } from 'node:fs'
 const p = new URL('../data/hcb/matrix.csv', import.meta.url)
 const lines = readFileSync(p, 'utf8').trim().split(/\r?\n/)
 const EXPECTED_HEADER =
-  'package,version,host,node,install_ok,dump_config_ok,tests_pass,tests_total,license,repo,date'
+  'package,version,host,node,host_supported,install_ok,dump_config_ok,tests_pass,tests_total,license,repo,date'
 const header = lines.shift().split(',')
 if (header.join(',') !== EXPECTED_HEADER) {
   throw new Error('unexpected HCB header')
 }
 
-const CHECK_VALUES = new Set(['true', 'false', 'not-tested'])
+const CHECK_VALUES = new Set(['true', 'false', 'not-tested', 'unsupported'])
+const SUPPORT_VALUES = new Set(['true', 'false'])
+// Node floors from each host checkout's package.json. This keeps
+// host_supported honest even if a row is edited by hand.
+const HOST_NODE_FLOOR = new Map([['0.2.2-rc.3', [24, 9, 0]]])
+const atLeastNode = (node, floor) => {
+  const [major, minor, patch] = node.split('.').map(Number)
+  const [floorMajor, floorMinor, floorPatch] = floor
+  return (
+    major > floorMajor ||
+    (major === floorMajor &&
+      (minor > floorMinor || (minor === floorMinor && patch >= floorPatch)))
+  )
+}
 const VERSION_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/
 const NODE_RE = /^\d+\.\d+\.\d+$/
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
@@ -31,6 +44,7 @@ for (const line of lines) {
     version,
     host,
     node,
+    hostSupported,
     installOk,
     dumpConfigOk,
     testsPass,
@@ -44,13 +58,36 @@ for (const line of lines) {
   if (!VERSION_RE.test(version)) throw new Error(`bad version: ${packageName}`)
   if (!host) throw new Error(`empty host: ${packageName}`)
   if (!NODE_RE.test(node)) throw new Error(`bad node: ${packageName} ${node}`)
-  for (const [field, value] of [
+  if (!SUPPORT_VALUES.has(hostSupported)) {
+    throw new Error(`host_supported must be true or false: ${packageName} ${hostSupported}`)
+  }
+  const hostChecks = [
     ['install_ok', installOk],
     ['dump_config_ok', dumpConfigOk],
-  ]) {
+  ]
+  for (const [field, value] of hostChecks) {
     if (!CHECK_VALUES.has(value)) {
-      throw new Error(`${field} must be true, false, or not-tested: ${packageName} ${value}`)
+      throw new Error(
+        `${field} must be true, false, not-tested, or unsupported: ${packageName} ${value}`,
+      )
     }
+  }
+  if (hostSupported === 'false') {
+    for (const [field, value] of hostChecks) {
+      if (value !== 'unsupported') {
+        throw new Error(
+          `${field} must be unsupported when host_supported=false: ${packageName} ${value}`,
+        )
+      }
+    }
+  } else if (hostChecks.some(([, value]) => value === 'unsupported')) {
+    throw new Error(`unsupported is only valid when host_supported=false: ${packageName}`)
+  }
+  const floor = HOST_NODE_FLOOR.get(host)
+  if (floor && (hostSupported === 'true') !== atLeastNode(node, floor)) {
+    throw new Error(
+      `host_supported=${hostSupported} contradicts host ${host} Node floor ${floor.join('.')} for Node ${node}: ${packageName}`,
+    )
   }
 
   const passCounted = isCount(testsPass)
