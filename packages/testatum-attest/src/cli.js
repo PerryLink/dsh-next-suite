@@ -18,7 +18,7 @@ import {
 import { VERIFICATION_BOUNDARY, verifyPackage } from './provenance.js'
 import { SigstoreUnavailableError, verifyBundle } from './sigstore.js'
 
-const VERSION = '0.2.3'
+const VERSION = '0.2.4'
 
 const USAGE = `testatum-attest ${VERSION} - HMAC-signed trust cards for plugin artifacts
 
