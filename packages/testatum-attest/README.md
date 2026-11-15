@@ -1,6 +1,6 @@
 # testatum-attest
 
-> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.2.0`，**已发布到 npm**。
+> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.2.1`，**已发布到 npm**。
 >
 > **HMAC 是 MVP 占位方案，不是 sigstore / npm provenance 的替代品。**
 > 它解决“离线核对一份文件清单有没有被改过、是不是我签的”，不解决身份、
@@ -75,7 +75,7 @@
 
 ## 安装
 
-已发布到 npm：`npx testatum-attest@0.2.0 --help`。也可在本仓库里直接运行：
+已发布到 npm：`npx testatum-attest@0.2.1 --help`。也可在本仓库里直接运行：
 
 ```sh
 cd packages/testatum-attest
@@ -226,7 +226,7 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
   `verify-provenance` 的 JSON 额外包含 `cryptoVerified: false`、`boundary`、
   `warnings`、`url`、`predicateType`、`subject`。
 - `--help` / `-h`：完整用法；`-V` / `--version`：输出
-  `testatum-attest 0.2.0` 并 exit 0。
+  `testatum-attest 0.2.1` 并 exit 0。
 
 退出码：
 

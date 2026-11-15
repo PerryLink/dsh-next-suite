@@ -149,7 +149,7 @@ test('query filters by package prefix and sorts by severity', () => {
     sample({
       id: 'alpha-config',
       package: '@deepseek-ai/dsh-alpha',
-      from: '0.2.0',
+      from: '0.2.1',
       to: '0.2.1',
       kind: 'config',
       severity: 'P2',
@@ -193,7 +193,7 @@ test('query matches entries overlapping a version window', () => {
     sample({
       id: 'alpha-config',
       package: '@deepseek-ai/dsh-alpha',
-      from: '0.2.0',
+      from: '0.2.1',
       to: '0.2.1',
       kind: 'config',
       severity: 'P2',
@@ -223,8 +223,8 @@ test('query matches entries overlapping a version window', () => {
     ['beta-runtime', 'alpha-api'],
   )
   assert.deepEqual(
-    query(atlas, { to: '0.2.0' }).map((entry) => entry.id),
-    ['alpha-config'],
+    query(atlas, { to: '0.2.1' }).map((entry) => entry.id),
+    ['beta-runtime', 'alpha-config'],
   )
   assert.deepEqual(
     query(atlas, { from: '0.3.0' }).map((entry) => entry.id),

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] - 2026-11-15
+
+### Fixed
+- `dsh-capdiff`: normalize evidence paths to `/` on Windows; scan output is stable across platforms.
+- Windows CI: lease mode assertion skipped where POSIX modes do not apply.
+
 ## [0.2.0] - 2026-11-15
 
 ### Added

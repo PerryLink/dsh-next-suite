@@ -8,7 +8,7 @@
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
-> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.0` on npm (2026-11-15).
+> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.1` on npm (2026-11-15).
 
 This suite is deliberately **not** another set of governance packages. It targets the gaps left after [`dsh-os-suite`](../dsh-os-suite/): plugin trust, Cordis developer experience, and a domain-data check.
 
@@ -50,7 +50,7 @@ This suite is deliberately **not** another set of governance packages. It target
 - **Data**: HCB has **24 rows** (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`; Node 22 install/dump are `not-tested`); the upgrade atlas has **50 entries**, **47** with a concrete `to` release and **3** marked `target unknown`.
 - **8/8 names** were verified free before publish (npm E404, GitHub 0); all are now published under this project.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md); contract fixes tracked in `CONTRACT-FIX.md`.
-- **Published**: all eight packages at `0.2.0` on npm (2026-11-15); GitHub repo and `v0.2.0` release.
+- **Published**: all eight packages at `0.2.1` on npm (2026-11-15); GitHub repo and `v0.2.1` release.
 
 ## Quick start
 

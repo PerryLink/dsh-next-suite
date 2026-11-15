@@ -1,7 +1,7 @@
 # dsh-capdiff
 
 > 社区项目，**与 DeepSeek（深度求索）及 DeepSeek Harness 官方无隶属关系、无赞助、无背书**。
-> Apache-2.0，版本 `0.2.0`，**已发布到 npm**。
+> Apache-2.0，版本 `0.2.1`，**已发布到 npm**。
 
 ## 是什么
 
@@ -25,7 +25,7 @@ DSH 插件 manifest 可以声明 `dsh.capabilities`，但声明是手写的，�
 
 ## 安装
 
-已发布到 npm：`npx dsh-capdiff@0.2.0 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
+已发布到 npm：`npx dsh-capdiff@0.2.1 --help`。也可直接从源码运行（需要 Node `^22.19.0 || >=24.9.0`）：
 
 ```sh
 node packages/dsh-capdiff/src/cli.js <file-or-dir> [--manifest path] [--json|--sarif]
@@ -54,7 +54,7 @@ dsh-capdiff <file-or-dir> [options]
   --json             输出机器可读 JSON
   --sarif            输出 SARIF 2.1.0
   -h, --help         帮助
-  -V, --version      版本（输出 `dsh-capdiff 0.2.0` 并 exit 0）
+  -V, --version      版本（输出 `dsh-capdiff 0.2.1` 并 exit 0）
 ```
 
 - 目标是目录时递归扫描 `.js` / `.mjs` / `.cjs`，跳过任意层级的 `node_modules` 与 `.git`，不跟随 symlink。
@@ -129,7 +129,7 @@ dsh-capdiff <file-or-dir> [options]
 人类可读摘要（默认）：
 
 ```text
-dsh-capdiff 0.2.0 - static capability diff (heuristic)
+dsh-capdiff 0.2.1 - static capability diff (heuristic)
 Target:   examples/my-plugin
 Manifest: examples/my-plugin/plugin.json
 Files:    2 source file(s) scanned
@@ -151,7 +151,7 @@ Note: static heuristic only - "matched" and zero findings are not proof of safet
   "command": "scan",
   "ok": true,
   "tool": "dsh-capdiff",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "target": "/abs/path/my-plugin",
   "manifest": "/abs/path/my-plugin/plugin.json",
   "filesScanned": 2,

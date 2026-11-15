@@ -17,7 +17,7 @@ import {
 } from './core.js'
 import { VERIFICATION_BOUNDARY, verifyPackage } from './provenance.js'
 
-const VERSION = '0.2.0'
+const VERSION = '0.2.1'
 
 const USAGE = `testatum-attest ${VERSION} - HMAC-signed trust cards for plugin artifacts
 

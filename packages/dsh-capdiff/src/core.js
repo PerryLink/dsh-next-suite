@@ -12,7 +12,7 @@
  */
 
 import { readdir, readFile, stat } from 'node:fs/promises'
-import { basename, dirname, extname, join, relative, resolve } from 'node:path'
+import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path'
 
 import { analyzeAst } from './ast.js'
 import { CAPABILITY_MAP, capabilityForSpecifier } from './capability.js'
@@ -20,7 +20,7 @@ import { CAPABILITY_MAP, capabilityForSpecifier } from './capability.js'
 export { CAPABILITY_MAP, capabilityForSpecifier }
 
 export const TOOL_NAME = 'dsh-capdiff'
-export const TOOL_VERSION = '0.2.0'
+export const TOOL_VERSION = '0.2.1'
 
 /** Source extensions scanned by {@link collectSourceFiles}. */
 export const SOURCE_EXTENSIONS = Object.freeze(['.js', '.mjs', '.cjs'])
@@ -875,7 +875,7 @@ export async function scanTarget(target) {
 
   for (const absolutePath of paths) {
     const code = await readFile(absolutePath, 'utf8')
-    const relativePath = relative(root, absolutePath) || basename(absolutePath)
+    const relativePath = (relative(root, absolutePath) || basename(absolutePath)).split(sep).join('/')
     const analysis = analyzeSource(code, relativePath)
     files.push({ ...analysis, absolutePath })
 
