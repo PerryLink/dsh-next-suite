@@ -1,7 +1,7 @@
 # cordis-migrate
 
 > **非官方社区工具。** 与 Cordiverse / Cordis 项目、DeepSeek 均无隶属关系。
-> Apache-2.0，本仓库版本 `0.2.2`。
+> Apache-2.0，本仓库版本 `0.2.3`。
 > **内置 24 条规则，其中 4 条标为 `experimental`。规则是社区整理，不是官方迁移表。**
 
 Cordis 3 → 4 的**文本级迁移规则引擎**：扫描（scan）、生成计划（dry-run）、显式写入（apply `--write`）、列出规则（rules）。
@@ -67,7 +67,7 @@ cordis-migrate --version
 - `rules`：只读地列出全部内置规则（id、kind、severity、`experimental`、description、pattern、replacement、evidence）；`--json` 额外带 `sources`。
 - `--json`：stdout 只输出一个 JSON 对象，至少包含 `{ command, ok }`，并带 `notice`、`changes`、`skipped`、`summary`；`--write --json` 额外包含 `write.{written,unchanged,failures}`，写入失败时 `ok=false`；`rules --json` 带 `count`、`experimental`、`rules`、`sources`。
 - 可以直接传单个文件，也可以传目录；目录会递归遍历。
-- `-h` / `--help` 打印用法并 exit `0`；`-V` / `--version` 打印 `cordis-migrate 0.2.2` 并 exit `0`。
+- `-h` / `--help` 打印用法并 exit `0`；`-V` / `--version` 打印 `cordis-migrate 0.2.3` 并 exit `0`。
 
 退出码：
 
@@ -213,6 +213,27 @@ const rule = {
 
 `ctx.config` 与 `ctx.set` 两条保留原因不是“名字不存在”，而是替换后的语义不等价；`start()` 与 `reactive` 两条保留原因是文本无法限定作用域。两条删除规则已从 `RULES`、fixtures 与聚合迁移中移除，测试会断言其不再出现。
 
+同日第二轮复核重新解包 npm 的 `cordis@4.0.0-rc.13` tarball（`dist.integrity` 为
+`sha512-rYsquBfrd1U8HuaDr/1TYpdnHiuy5X2oEWJbfEveIZwysfjg3vTXJWKvTPlaPtt2VeFsAJIrzHZnymONyOr3PA==`），
+四条仍不能升级：
+
+- `context-config`：`lib/context.d.ts` 没有 `config`；`lib/fiber.d.ts:52` 的
+  `config: any` 是构造时保存的原始输入，`lib/index.js:356` 的 `_resolve()` 只在
+  执行回调前产生 resolved config 并作为实参传入，没有可用的
+  `ctx.fiber.config` 等价读取。保留的原因是 raw/resolved 语义不同，不是 API 缺失。
+- `service-set-provide`：`lib/index.js:1012-1017` 的 `set` 在未 `provide` 时直接抛
+  `cannot set property ... without provide`，`:1024` 的 `provide` 才注册并返回
+  disposer。把 `ctx.set(` 一律改为 `ctx.provide(` 仍会破坏覆盖/清理语义。
+- `service-start-init`：`lib/service.d.ts:5` 只有 `static readonly init`，
+  `lib/index.js:362` 在构造后调用 `instance[symbols.init]?.()`，没有 `start()` /
+  `stop()`。pattern 只匹配行首 `start() {`，无法确认所在类是 `Service` 子类，且
+  `stop()` 没有对应改写。
+- `config-plugin-legacy-flags`：`lib/registry.d.ts:22-28` 的 `Component.Base` 仍无
+  `reactive` / `reusable`；但按行删除仍无法区分插件/组件对象与同名业务 config
+  字段。
+
+结论：四条均保持 `experimental: true`，本轮不升级。
+
 ## 来源（2026-11-15 核对）
 
 **本地文档（DeepSeek Harness checkout）：**
@@ -229,11 +250,11 @@ const rule = {
 
 `src/rules.js` 顶部的 `RULE_SOURCES` 与 `rules --json` 的 `sources` 是同一份可审计清单。
 
-## 规则迁移说明（0.1.x → 0.2.2）
+## 规则迁移说明（0.1.x → 0.2.3）
 
 旧的 5 条“示例规则”已替换为 24 条带证据的规则，部分 id 变化：
 
-| 0.1.x | 0.2.2 |
+| 0.1.x | 0.2.3 |
 |---|---|
 | `import-specifier` | `import-cordis-loader` |
 | `context-type-import` | 移除（`Context` 可能同时作值，类型导入改写风险过高） |
