@@ -1,6 +1,6 @@
 # HCB 数据集：Zenodo 元数据、发布步骤与引用格式
 
-> Seed dataset: `data/hcb/matrix.csv` (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`; **24 rows**). Node 22 install/dump cells are `not-tested`; expand rows before DOI submission.
+> Seed dataset: `data/hcb/matrix.csv` (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`; **24 rows**). Node 22 install/dump cells are `unsupported` because the host declares Node `>=24.9.0`; expand rows before DOI submission.
 
 > **状态：draft / planned。** 本文件是提交前的可执行草稿，**不是**已发布记录。
 > 截至 2026-11-14：**DOI 未分配**、**Zenodo record 未创建**、**没有对外提交**。
