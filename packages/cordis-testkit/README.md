@@ -25,7 +25,7 @@ Cordis 插件的约定是「通过 `ctx` 注册的东西，由 `ctx.dispose()` �
 
 ## 安装
 
-0.2.3，**已发布到 npm**（`npm i cordis-testkit@0.2.3`）。也可在本仓库内直接使用：
+0.2.4，**已发布到 npm**（`npm i cordis-testkit@0.2.4`）。也可在本仓库内直接使用：
 
 ```sh
 cd packages/cordis-testkit

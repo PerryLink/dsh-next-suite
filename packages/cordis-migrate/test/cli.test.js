@@ -236,5 +236,5 @@ test('apply --help exits 0 without touching files', async (t) => {
 test('--version reports the package version without scanning', () => {
   const result = run(['--version'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /cordis-migrate 0\.2\.3/)
+  assert.match(result.stdout, /cordis-migrate 0\.2\.4/)
 })

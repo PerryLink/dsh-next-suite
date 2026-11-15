@@ -1,7 +1,7 @@
 # cordis-migrate
 
 > **非官方社区工具。** 与 Cordiverse / Cordis 项目、DeepSeek 均无隶属关系。
-> Apache-2.0，本仓库版本 `0.2.3`。
+> Apache-2.0，本仓库版本 `0.2.4`。
 > **内置 24 条规则，其中 4 条标为 `experimental`。规则是社区整理，不是官方迁移表。**
 
 Cordis 3 → 4 的**文本级迁移规则引擎**：扫描（scan）、生成计划（dry-run）、显式写入（apply `--write`）、列出规则（rules）。
@@ -67,7 +67,7 @@ cordis-migrate --version
 - `rules`：只读地列出全部内置规则（id、kind、severity、`experimental`、description、pattern、replacement、evidence）；`--json` 额外带 `sources`。
 - `--json`：stdout 只输出一个 JSON 对象，至少包含 `{ command, ok }`，并带 `notice`、`changes`、`skipped`、`summary`；`--write --json` 额外包含 `write.{written,unchanged,failures}`，写入失败时 `ok=false`；`rules --json` 带 `count`、`experimental`、`rules`、`sources`。
 - 可以直接传单个文件，也可以传目录；目录会递归遍历。
-- `-h` / `--help` 打印用法并 exit `0`；`-V` / `--version` 打印 `cordis-migrate 0.2.3` 并 exit `0`。
+- `-h` / `--help` 打印用法并 exit `0`；`-V` / `--version` 打印 `cordis-migrate 0.2.4` 并 exit `0`。
 
 退出码：
 
@@ -250,11 +250,11 @@ const rule = {
 
 `src/rules.js` 顶部的 `RULE_SOURCES` 与 `rules --json` 的 `sources` 是同一份可审计清单。
 
-## 规则迁移说明（0.1.x → 0.2.3）
+## 规则迁移说明（0.1.x → 0.2.4）
 
 旧的 5 条“示例规则”已替换为 24 条带证据的规则，部分 id 变化：
 
-| 0.1.x | 0.2.3 |
+| 0.1.x | 0.2.4 |
 |---|---|
 | `import-specifier` | `import-cordis-loader` |
 | `context-type-import` | 移除（`Context` 可能同时作值，类型导入改写风险过高） |
