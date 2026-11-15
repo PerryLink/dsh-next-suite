@@ -129,18 +129,6 @@ export const RULE_CASES = Object.freeze(
       negative: 'ctx.effect(() => cleanup)\n',
     },
     {
-      id: 'lifecycle-internal-event-rename',
-      positive: "ctx.on('internal/before-service', (name) => {})\n",
-      expected: "ctx.on('internal/service', (name) => {})\n",
-      negative: "ctx.on('internal/service', (name) => {})\n",
-    },
-    {
-      id: 'service-setup-init',
-      positive: 'Service.setup\n',
-      expected: 'Service.init\n',
-      negative: 'Service.init\n',
-    },
-    {
       id: 'service-super-immediate',
       positive: "super(ctx, 'foo', true)\n",
       expected: "super(ctx, 'foo')\n",

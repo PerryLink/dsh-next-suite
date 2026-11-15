@@ -78,7 +78,7 @@ test('rules --json is machine-readable and carries evidence plus sources', () =>
   assert.ok(output.count >= 20)
   assert.equal(output.count, RULE_CASES.length)
   assert.equal(output.rules.length, output.count)
-  assert.ok(output.experimental >= 8)
+  assert.equal(output.experimental, 4)
   assert.ok(output.sources.length >= 8)
   assert.match(output.notice, /not an official migration table/i)
   for (const rule of output.rules) {
@@ -236,5 +236,5 @@ test('apply --help exits 0 without touching files', async (t) => {
 test('--version reports the package version without scanning', () => {
   const result = run(['--version'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /cordis-migrate 0\.2\.1/)
+  assert.match(result.stdout, /cordis-migrate 0\.2\.2/)
 })

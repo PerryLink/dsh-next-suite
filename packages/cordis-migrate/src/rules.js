@@ -12,6 +12,14 @@
  * - the DeepSeek Harness `docs/cordis-primer.zh.md` and `docs/cordis-api/*`
  *   pages (read locally during the same review).
  *
+ * Re-verified on 2026-11-15 against the actual npm tarballs instead of only
+ * registry declarations: `cordis@4.0.0-rc.13` (`lib/*.d.ts`, `lib/index.js`,
+ * `package.json`) and the `@cordisjs/core@3.18.1` / `cordis@3.18.1` sources.
+ * The ten former `experimental` rules were reviewed one by one: four promoted
+ * to stable, four retained as experimental with a documented reason, two
+ * removed because the proposed rewrite is not semantically valid. See the
+ * per-rule evidence table in README.md.
+ *
  * See {@link RULE_SOURCES} for the public URLs. Cordis 4 is still a release
  * candidate: APIs may move again, and none of these rules understands aliases,
  * re-exports, scopes, types, or multi-line structures. Every proposal needs a
@@ -55,13 +63,13 @@ export const RULE_SOURCES = Object.freeze(
       id: 'npm-cordis-3',
       title: 'npm cordis@3.18.1',
       url: 'https://registry.npmjs.org/cordis/3.18.1',
-      note: 'v3 包导出：./loader、./group、./import、./worker、./cli；根包再导出 @cordisjs/core、Schema/z、Logger、TimerService。',
+      note: 'v3 包导出：./loader、./group、./import、./worker、./cli；根包再导出 @cordisjs/core、Schema/z、Logger、TimerService。本次另解包 @cordisjs/core@3.18.1 源码核对 setup/start/set/provide。',
     },
     {
       id: 'npm-cordis-4',
       title: 'npm cordis@4.0.0-rc.13',
       url: 'https://registry.npmjs.org/cordis/4.0.0-rc.13',
-      note: 'v4 包只导出根入口；核心、logger、fiber 等并入 cordis。',
+      note: 'v4 包只导出根入口；核心、logger、fiber 等并入 cordis。本次解包核对 lib/context.d.ts、fiber.d.ts、service.d.ts、reflect.d.ts、events.d.ts、registry.d.ts 与 lib/index.js。',
     },
     {
       id: 'npm-cordisjs-core-3',
@@ -233,11 +241,10 @@ export const RULES = Object.freeze(
       pattern: /(["'])cordis\1(\s*:\s*)(["'])\^?3\.[^"']*\3/g,
       replacement: '$1cordis$1$2$3^4.0.0-rc.13$3',
       description:
-        'v3 插件的 peerDependencies 通常写 `cordis: ^3.x`；v4 要求 `^4.0.0-rc.13`。具体范围可能需按项目调整，故标为 experimental。',
+        'v3 插件的 peerDependencies 通常写 `cordis: ^3.x`；v4 生态包统一声明 `^4.0.0-rc.13`。规则按此改写；若项目需支持更宽的版本范围，请在审阅时人工调整。',
       severity: 'warning',
       evidence:
-        '@cordisjs/plugin-hmr@0.2.6 peerDependencies.cordis 为 ^3.18.0；@cordisjs/hmr@2.0.0-rc.0 peerDependencies.cordis 为 ^4.0.0-rc.13。',
-      experimental: true,
+        'v3 例：@cordisjs/plugin-hmr@0.2.6 peerDependencies.cordis=^3.18.0；v4 例：loader@1.0.0-rc.10、hmr@2.0.0-rc.0、group@1.0.1、timer@1.1.5、fs@2.0.0-rc.0 的 peerDependencies.cordis 均为 ^4.0.0-rc.13（2026-11-15 npm view）。',
     },
 
     // ---------------------------------------------------------------------
@@ -271,11 +278,10 @@ export const RULES = Object.freeze(
       pattern: /\bctx\.root\b/g,
       replacement: 'ctx[Context.root]',
       description:
-        'v4 rc.12 把实验性的 `ctx.root` 改为 `ctx[Context.root]`。替换后需要 `Context` 以值（非仅类型）导入。',
+        'v4 rc.12 起 `ctx.root` 不再存在，根上下文改为 `ctx[Context.root]`；`Context.root` 是 Context 类导出的 symbol。替换后需要 `Context` 以值（非仅类型）导入。',
       severity: 'warning',
       evidence:
-        'rc.12 release notes：The experimental `ctx.root` is replaced by `ctx[Context.root]`；cordis@4.0.0-rc.13 lib/context.d.ts `static readonly root: unique symbol`。',
-      experimental: true,
+        'cordis@3.18.1 @cordisjs/core src/context.ts:55 `root: this`；cordis@4.0.0-rc.13 lib/context.d.ts:9 `[symbols.root]: this`、:19 `static readonly root: unique symbol`，lib/index.js:1623 `this[symbols.root] = self`；rc.12 release notes。',
     },
     {
       id: 'context-config',
@@ -283,10 +289,10 @@ export const RULES = Object.freeze(
       pattern: /\bctx\.config\b/g,
       replacement: 'ctx.fiber.config',
       description:
-        'v3 的 `Context.config` 在 v4 移到 `Fiber.config`（rc.11 起保存原始 config，而非 resolve 后的值）；只适用于插件 fiber 内的读取。',
+        'v3 的 `ctx.config` 是当前 scope 的 resolved config（reflect 从 scope 混入）；v4 没有 `ctx.config`，对应位置是 `ctx.fiber.config`，但 rc.11 起它保存**原始输入**而非 resolve 后的值。只有确认调用方接受原始 config 时才可直接替换。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `interface Context { config: any }`；cordis@4.0.0-rc.13 lib/context.d.ts 无 config，lib/fiber.d.ts `Fiber.config`。',
+        'cordis@3.18.1 @cordisjs/core src/context.ts:59 `config: any`，src/reflect.ts:103 把 scope.config 混入 ctx；cordis@4.0.0-rc.13 lib/context.d.ts 无 config，lib/fiber.d.ts:52 `config: any` 保存原始输入（rc.11 release notes）。',
       experimental: true,
     },
     {
@@ -295,11 +301,10 @@ export const RULES = Object.freeze(
       pattern: /\bctx\.lifecycle\b/g,
       replacement: 'ctx.events',
       description:
-        'v3 的 `ctx.lifecycle`（Lifecycle）在 v4 改名为 `ctx.events`（EventsService）；on/once/emit/parallel/serial/bail 名称基本一致，但事件表已变。',
+        'v3 的 `ctx.lifecycle`（Lifecycle）在 v4 改名为 `ctx.events`（EventsService）；v3 本身已有 `ctx.events` getter 别名，属性改名可安全替换。但 v4 事件表已变（`ready`/`fork`/`dispose` 等公共事件移除），事件名仍需逐个人工核对。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `lifecycle: Lifecycle`；cordis@4.0.0-rc.13 lib/context.d.ts `events: EventsService`。',
-      experimental: true,
+        'cordis@3.18.1 @cordisjs/core src/context.ts:56 `lifecycle: Lifecycle`、:126 `get events()`；cordis@4.0.0-rc.13 lib/context.d.ts:13 `events: EventsService`。',
     },
     {
       id: 'context-using',
@@ -349,42 +354,9 @@ export const RULES = Object.freeze(
       evidence:
         'cordis@3.18.1 @cordisjs/core lib/index.d.ts Events 含 `dispose`；cordis@4.0.0-rc.13 lib/events.d.ts 公共事件表无 dispose，lib/fiber.d.ts 提供 effect。',
     },
-    {
-      id: 'lifecycle-internal-event-rename',
-      kind: 'lifecycle',
-      pattern: /\bctx\.(on|once)\(\s*(['"])internal\/(before-service|before-update|fork|event)\2/g,
-      replacement: (match, method, quote, name) => {
-        const next = {
-          'before-service': 'internal/service',
-          'before-update': 'internal/update',
-          fork: 'internal/plugin',
-          event: 'internal/dispatch',
-        }[name]
-        return `ctx.${method}(${quote}${next}${quote}`
-      },
-      description:
-        'v4 重命名了若干 internal 事件：before-service→internal/service、before-update→internal/update、internal/fork→internal/plugin、internal/event→internal/dispatch。参数形状也可能变化，故标 experimental。',
-      severity: 'warning',
-      evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts 与 cordis@4.0.0-rc.13 lib/events.d.ts 的 Events 接口对比（internal/before-service、internal/fork、internal/event、internal/before-update 均不在 v4）。',
-      experimental: true,
-    },
-
     // ---------------------------------------------------------------------
     // service registration and lifecycle
     // ---------------------------------------------------------------------
-    {
-      id: 'service-setup-init',
-      kind: 'service',
-      pattern: /\bService\.setup\b/g,
-      replacement: 'Service.init',
-      description:
-        'v3 的 `Service.setup` symbol 在 v4 改名为 `Service.init`；类插件构造完成后会调用实例的 `[Service.init]()`。',
-      severity: 'warning',
-      evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `static readonly setup`；cordis@4.0.0-rc.13 lib/service.d.ts `static readonly init`，lib/index.js 调用 `instance[symbols.init]()`。',
-      experimental: true,
-    },
     {
       id: 'service-super-immediate',
       kind: 'service',
@@ -402,10 +374,10 @@ export const RULES = Object.freeze(
       pattern: /\bctx\.set\(/g,
       replacement: 'ctx.provide(',
       description:
-        'v3 用 `ctx.set(name, value)` 注册服务（`ctx.provide` 是 deprecated 别名）；v4 反过来：`provide` 注册并返回 disposer，`set` 只能覆盖已提供服务。若原代码是覆盖语义，需人工保留 set。',
+        'v3 的 `ctx.set(name, value)` 会先 `provide(name)` 再写入值并返回 disposer（`ctx.provide` 是 deprecated 别名）；v4 反过来：`provide` 注册并返回 disposer，`set` 只能覆盖已提供服务。新注册可直接替换；若原代码是清理（`set(name, undefined)`）或覆盖语义，必须保留/改写为 v4 的 `set`。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts：`provide` 标 “@deprecated use ctx.set() instead”；cordis@4.0.0-rc.13 lib/reflect.d.ts：provide 返回 Disposable，set 返回 void。',
+        'cordis@3.18.1 @cordisjs/core src/reflect.ts:9-12（set 返回 `() => void`，provide 标 “@deprecated use ctx.set() instead”）、:116-148（set 先 provide 再写值）；cordis@4.0.0-rc.13 lib/reflect.d.ts:8-11（provide 注册、set 仅覆盖）。',
       experimental: true,
     },
     {
@@ -414,10 +386,10 @@ export const RULES = Object.freeze(
       pattern: /^([ \t]*)(async\s+)?start\(\)\s*\{/g,
       replacement: '$1$2[Service.init]() {',
       description:
-        'v3 的 `Service` 子类用 `start()` / `stop()` 生命周期；v4 没有这两个方法，改用 `[Service.init]()`，清理走 effect。只匹配行首 `start() {`，可能误伤普通类。',
+        'v3 的 `Service` 子类用 `start()` / `stop()` 生命周期；v4 没有这两个方法，构造后改用 `[Service.init]()`，清理走 effect。规则只匹配行首 `start() {`，仍会误伤普通类/对象方法，且 `stop()` 没有对应改写；只能在确认是 Service 子类后逐条应用。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `protected start(): Awaitable<void>` / `stop()`；cordis@4.0.0-rc.13 lib/service.d.ts 只有 `static readonly init`，无 start/stop。',
+        'cordis@3.18.1 @cordisjs/core src/service.ts:14-15 `protected start(): Awaitable<void>` / `stop()`；cordis@4.0.0-rc.13 lib/service.d.ts:5 `static readonly init`、lib/index.js:362 构造后调用 `instance[symbols.init]?.()`，无 start/stop。',
       experimental: true,
     },
     {
@@ -426,11 +398,10 @@ export const RULES = Object.freeze(
       pattern: /\bctx\.provide\(\s*([^,()]+?)\s*,\s*([^,()]+?)\s*,\s*(?:true|false)\s*\)/g,
       replacement: 'ctx.provide($1, $2)',
       description:
-        'v3 的 `provide(name, value?, builtin?)` 第三参是布尔 builtin 标记；v4 第三参变成 `check?: () => boolean`，布尔值必须移除。只匹配简单实参。',
+        'v3 的 `ctx.provide(name, value?, builtin?)` 第三参是布尔 builtin 标记；v4 的公共 `ctx.provide(name, value?)` 不接受第三参（`ReflectService.provide` 内部的 `check?` 不是 ctx 公共签名），布尔值必须移除。只匹配简单实参。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `provide(name, value?, builtin?)`；cordis@4.0.0-rc.13 lib/reflect.d.ts `provide(name, value?, check?)`。',
-      experimental: true,
+        'cordis@3.18.1 @cordisjs/core src/reflect.ts:12 `provide(name, value?, builtin?: boolean)`；cordis@4.0.0-rc.13 lib/reflect.d.ts:10-11 公共 `provide(name, value?)`，:52 内部 `ReflectService.provide(name, value?, check?)`。',
     },
 
     // ---------------------------------------------------------------------
@@ -442,10 +413,10 @@ export const RULES = Object.freeze(
       pattern: /^[ \t]*(?:reactive|reusable)\s*:\s*(?:true|false)\s*,?[ \t]*$/g,
       replacement: '',
       description:
-        'v3 的 `Plugin.Base` 有 `reactive` / `reusable` 标志；v4 的 `Component.Base` 已移除。规则删除独占一行的布尔标志，可能误删同名业务字段，故标 experimental。',
+        'v3 的 `Plugin.Base` 有 `reactive` / `reusable` 标志；v4 的 `Component.Base` 已移除。规则删除独占一行的布尔标志，但文本无法区分组件/插件对象与同名业务 config 字段，只能作为 experimental 线索逐条确认。',
       severity: 'warning',
       evidence:
-        'cordis@3.18.1 @cordisjs/core lib/index.d.ts `Plugin.Base { reactive?; reusable? }`；cordis@4.0.0-rc.13 lib/registry.d.ts `Component.Base` 无这两个字段。',
+        'cordis@3.18.1 @cordisjs/core src/registry.ts:59-60 `Plugin.Base { reactive?: boolean; reusable?: boolean }`；cordis@4.0.0-rc.13 lib/registry.d.ts:22-28 `Component.Base` 无这两个字段；删除范围无法由单行文本限定。',
       experimental: true,
     },
     {

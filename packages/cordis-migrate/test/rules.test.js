@@ -37,26 +37,16 @@ test('RULES is a frozen, uniquely identified, evidence-bearing rule set', () => 
   assert.match(RULES_NOTICE, /experimental/i)
 })
 
-test('RULES covers every documented category and marks the uncertain rules experimental', () => {
+test('RULES covers every documented category and keeps only the documented experimental rules', () => {
   const kinds = new Set(RULES.map((rule) => rule.kind))
   for (const kind of EXPECTED_KINDS) assert.ok(kinds.has(kind), `missing kind ${kind}`)
 
   const experimental = new Set(RULES.filter((rule) => rule.experimental).map((rule) => rule.id))
-  for (const id of [
-    'context-root',
-    'context-config',
-    'context-lifecycle',
-    'lifecycle-internal-event-rename',
-    'service-setup-init',
-    'service-set-provide',
-    'service-start-init',
-    'service-provide-builtin',
-    'config-plugin-legacy-flags',
-    'package-cordis-peer',
-  ]) {
-    assert.ok(experimental.has(id), `${id} must be marked experimental`)
-  }
-  assert.ok(experimental.size >= 8)
+  assert.deepEqual(
+    [...experimental].sort(),
+    ['config-plugin-legacy-flags', 'context-config', 'service-set-provide', 'service-start-init'],
+  )
+  assert.equal(RULES.filter((rule) => rule.experimental).length, 4)
 })
 
 test('every built-in rule has exactly one positive/negative fixture case', () => {
@@ -96,6 +86,36 @@ for (const entry of RULE_CASES) {
     assert.deepEqual(scanSource(entry.negative, [rule]), [])
   })
 }
+
+test('every stable rule has a positive and negative fixture and a fixed point', () => {
+  const stable = RULES.filter((rule) => rule.experimental !== true)
+  assert.ok(stable.length >= 20)
+  for (const id of [
+    'context-lifecycle',
+    'context-root',
+    'package-cordis-peer',
+    'service-provide-builtin',
+  ]) {
+    assert.ok(stable.some((rule) => rule.id === id), `${id} must be stable after re-verification`)
+  }
+
+  for (const rule of stable) {
+    const entry = RULE_CASES.find((candidate) => candidate.id === rule.id)
+    assert.ok(entry, `${rule.id} fixture`)
+    assert.equal(scanSource(entry.positive, [rule]).length, 1, `${rule.id} positive`)
+    assert.deepEqual(scanSource(entry.negative, [rule]), [], `${rule.id} negative`)
+    const output = applySource(entry.positive, scanSource(entry.positive, [rule]))
+    assert.deepEqual(scanSource(output, [rule]), [], `${rule.id} fixed point`)
+  }
+})
+
+test('rules removed after re-verification stay absent from inventory and fixtures', () => {
+  for (const id of ['lifecycle-internal-event-rename', 'service-setup-init']) {
+    assert.equal(RULES.some((rule) => rule.id === id), false, `${id} must be removed`)
+    assert.equal(RULE_CASES.some((entry) => entry.id === id), false, `${id} fixture must be removed`)
+    assert.equal(formatRules().includes(id), false, `${id} must not be rendered`)
+  }
+})
 
 test('import rewrites preserve quoting and handle aliases/default/type imports', () => {
   const cases = [
@@ -143,24 +163,24 @@ test('event, service and package rewrites cover the documented variants', () => 
       after: 'ctx.effect(() => stop)\n',
     },
     {
-      rule: 'lifecycle-internal-event-rename',
-      before: "ctx.once('internal/fork', (entry) => {})\n",
-      after: "ctx.once('internal/plugin', (entry) => {})\n",
-    },
-    {
-      rule: 'lifecycle-internal-event-rename',
-      before: "ctx.on('internal/before-update', fn)\n",
-      after: "ctx.on('internal/update', fn)\n",
-    },
-    {
-      rule: 'lifecycle-internal-event-rename',
-      before: "ctx.on('internal/event', fn)\n",
-      after: "ctx.on('internal/dispatch', fn)\n",
-    },
-    {
       rule: 'service-start-init',
       before: '    start() {\n',
       after: '    [Service.init]() {\n',
+    },
+    {
+      rule: 'service-provide-builtin',
+      before: "ctx.provide('foo', bar, false)\n",
+      after: "ctx.provide('foo', bar)\n",
+    },
+    {
+      rule: 'context-root',
+      before: 'ctx.root.logger\n',
+      after: 'ctx[Context.root].logger\n',
+    },
+    {
+      rule: 'context-lifecycle',
+      before: "ctx.lifecycle.emit('ready')\n",
+      after: "ctx.events.emit('ready')\n",
     },
     {
       rule: 'config-base-dir',
@@ -181,6 +201,11 @@ test('event, service and package rewrites cover the documented variants', () => 
       rule: 'package-cordis-peer',
       before: "'cordis': '^3.18.1'\n",
       after: "'cordis': '^4.0.0-rc.13'\n",
+    },
+    {
+      rule: 'package-cordis-peer',
+      before: '"cordis": "3.18.1"\n',
+      after: '"cordis": "^4.0.0-rc.13"\n',
     },
   ]
 
@@ -226,7 +251,8 @@ test('formatRules renders text and JSON without leaking RegExp objects', () => {
   assert.match(parsed.notice, /not an official migration table/i)
   assert.equal(parsed.count, RULES.length)
   assert.equal(parsed.rules.length, RULES.length)
-  assert.ok(parsed.experimental >= 8)
+  assert.equal(parsed.experimental, RULES.filter((rule) => rule.experimental).length)
+  assert.equal(parsed.experimental, 4)
   assert.ok(parsed.sources.length >= 8)
   assert.equal(typeof parsed.rules[0].pattern, 'string')
   assert.equal(typeof parsed.rules[0].evidence, 'string')
