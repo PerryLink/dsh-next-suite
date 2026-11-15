@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const CLI = fileURLToPath(new URL('../src/cli.js', import.meta.url))
 const HOOK = fileURLToPath(new URL('./fixtures/sigstore-hook.mjs', import.meta.url))
@@ -48,7 +48,7 @@ function run(args, { mode = 'ok', env = {} } = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(
       process.execPath,
-      ['--no-warnings', '--import', HOOK, CLI, ...args],
+      ['--no-warnings', '--import', pathToFileURL(HOOK).href, CLI, ...args],
       {
         cwd: dir,
         env: {
