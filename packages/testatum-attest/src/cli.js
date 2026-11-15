@@ -16,8 +16,9 @@ import {
   verifyCardIntegrity,
 } from './core.js'
 import { VERIFICATION_BOUNDARY, verifyPackage } from './provenance.js'
+import { SigstoreUnavailableError, verifyBundle } from './sigstore.js'
 
-const VERSION = '0.2.2'
+const VERSION = '0.2.3'
 
 const USAGE = `testatum-attest ${VERSION} - HMAC-signed trust cards for plugin artifacts
 
@@ -26,12 +27,14 @@ Usage:
   testatum-attest verify <signed.json> [--revocations <list.json>] [--json]
   testatum-attest revoke <signed.json> --reason <text> [--out <record.json>] [--revoked-at <iso>]
   testatum-attest verify-provenance <name>@<version> [--repo <owner/repo>] [--commit <sha>] [--json]
+  testatum-attest verify-sigstore <bundle.json> --identity <uri> --issuer <issuer> [--json]
 
 Commands:
   sign    Add an HMAC-SHA256 signature; refuses a card whose hash manifest is invalid.
   verify  Recompute the root hash, verify the signature, and optionally check revocations.
   revoke  Emit a revocation record (stdout unless --out is given).
   verify-provenance  Check the npm provenance attestation for a published package.
+  verify-sigstore    Verify a Sigstore bundle with a pinned Fulcio identity/issuer.
 
 Options:
   -h, --help             Show this help.
@@ -46,6 +49,8 @@ Options:
       --commit <sha>         Expected source commit (verify-provenance only).
       --tarball-sha512 <v>   Expected tarball SHA-512, hex/base64/SRI (verify-provenance only).
       --registry <url>       npm registry base URL (default https://registry.npmjs.org).
+      --identity <uri>       Expected Fulcio SAN as a regex (verify-sigstore only).
+      --issuer <issuer>      Expected Fulcio issuer, exact match (verify-sigstore only).
 
 Environment:
   TESTATUM_KEY       Shared HMAC secret. Required for sign and verify; never printed.
@@ -57,6 +62,9 @@ Security:
   verify-provenance matches attestation metadata only (existence, predicate
   type, subject digest, repository/commit). It does NOT verify the sigstore
   bundle; use sigstore or 'npm audit signatures' for that.
+  verify-sigstore performs real Sigstore verification but needs the optional
+  'sigstore' package (npm i sigstore) plus a pinned Fulcio identity/issuer.
+  HMAC remains the default; the two answer different trust questions.
 `
 
 /**
@@ -378,6 +386,96 @@ async function runVerifyProvenance(values, positionals) {
 }
 
 /**
+ * Verify one Sigstore bundle with a pinned Fulcio identity and issuer.
+ *
+ * Exit codes: 0 verified; 1 verification rejected (identity/signature/
+ * certificate/tlog/bundle); 2 usage, invalid input, missing `sigstore`, or an
+ * infrastructure failure (TUF/network) that makes the verdict inconclusive.
+ *
+ * @param {Record<string, unknown>} values
+ * @param {string[]} positionals
+ * @returns {Promise<void>}
+ */
+async function runVerifySigstore(values, positionals) {
+  const file = requireFile(positionals, 'verify-sigstore')
+  if (typeof values.identity !== 'string' || values.identity.trim().length === 0) {
+    fail('verify-sigstore requires --identity <uri>')
+  }
+  if (typeof values.issuer !== 'string' || values.issuer.trim().length === 0) {
+    fail('verify-sigstore requires --issuer <issuer>')
+  }
+  const identity = /** @type {string} */ (values.identity)
+  const issuer = /** @type {string} */ (values.issuer)
+  const bundle = await readJson(file, 'sigstore bundle')
+
+  /** @type {Awaited<ReturnType<typeof verifyBundle>>} */
+  let verdict
+  try {
+    verdict = await verifyBundle(bundle, {
+      certificateIdentityURI: identity,
+      certificateIssuer: issuer,
+    })
+  } catch (error) {
+    const unavailable =
+      error instanceof SigstoreUnavailableError ||
+      (error !== null &&
+        typeof error === 'object' &&
+        error.code === 'SIGSTORE_NOT_INSTALLED')
+    if (unavailable) {
+      fail(
+        'sigstore is not installed; run `npm i sigstore` to enable verify-sigstore',
+        2,
+      )
+    }
+    fail(
+      `sigstore verification could not run: ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+      2,
+    )
+  }
+
+  for (const warning of verdict.warnings) {
+    console.error(`warning: ${warning}`)
+  }
+
+  /** @type {{ command: string, ok: boolean, identity: string, issuer: string, reasons?: string[], error?: unknown }} */
+  const summary = {
+    command: 'verify-sigstore',
+    ok: verdict.ok,
+    identity,
+    issuer,
+  }
+  if (!verdict.ok) {
+    summary.reasons = verdict.reasons
+    if (verdict.error !== undefined) summary.error = verdict.error
+  }
+
+  if (values.json) {
+    console.log(JSON.stringify(summary, null, 2))
+  } else if (verdict.ok) {
+    console.log(`OK sigstore ${file} identity=${identity} issuer=${issuer}`)
+  } else {
+    console.log(`FAIL sigstore ${file}: ${verdict.reasons.join(', ')}`)
+    if (verdict.error !== undefined) {
+      console.error(`reason: ${verdict.error.message}`)
+    }
+  }
+
+  if (!verdict.ok) {
+    if (verdict.fatal) {
+      console.error(
+        'testatum-attest: infrastructure error (TUF/network); ' +
+          'the verification verdict is inconclusive, exiting 2',
+      )
+      process.exitCode = 2
+    } else {
+      process.exitCode = 1
+    }
+  }
+}
+
+/**
  * @param {string[]} argv
  * @returns {Promise<void>}
  */
@@ -401,6 +499,8 @@ async function main(argv) {
         commit: { type: 'string' },
         'tarball-sha512': { type: 'string' },
         registry: { type: 'string' },
+        identity: { type: 'string' },
+        issuer: { type: 'string' },
       },
     })
   } catch (error) {
@@ -440,6 +540,9 @@ async function main(argv) {
       return
     case 'verify-provenance':
       await runVerifyProvenance(values, args)
+      return
+    case 'verify-sigstore':
+      await runVerifySigstore(values, args)
       return
     default:
       fail(`unknown command ${command}; try --help`)

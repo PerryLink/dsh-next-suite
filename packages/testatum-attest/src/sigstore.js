@@ -15,6 +15,10 @@
  *   only when verification is actually requested, so the default HMAC path
  *   keeps working with zero runtime dependencies.
  *
+ *   `verifyImpl` can replace `sigstore.verify` for offline tests (or for
+ *   callers that already own a verifier). Injection skips the dynamic import
+ *   but keeps the same fail-closed identity policy.
+ *
  *   `sigstore.verify` always resolves the Sigstore trusted root through TUF.
  *   That is the network-dependent part: with a warm, unexpired TUF cache and
  *   `tufForceCache: true` verification can run offline (the bundle itself
@@ -24,6 +28,8 @@
  * @typedef {object} SigstoreIdentity
  * @property {string | null} subjectAlternativeName
  * @property {string | null} issuer
+ *
+ * @typedef {(bundle: unknown, payloadOrOptions?: unknown, options?: unknown) => Promise<unknown>} SigstoreVerifyImpl
  *
  * @typedef {object} SigstoreVerdict
  * @property {boolean} ok
@@ -178,7 +184,8 @@ export function selectProvenanceBundle(document, options = {}) {
  *   payload?: Buffer,
  *   allowUnpinnedIdentity?: boolean,
  *   predicateType?: string,
- *   importer?: () => Promise<{ verify?: Function }>
+ *   importer?: () => Promise<{ verify?: Function }>,
+ *   verifyImpl?: SigstoreVerifyImpl
  * }} [options]
  * @returns {Promise<SigstoreVerdict>}
  */
@@ -195,6 +202,11 @@ export async function verifyBundle(bundle, options = {}) {
     return failure([policy.reason], { options: opts, warnings })
   }
 
+  const verifyImpl = opts.verifyImpl
+  if (verifyImpl !== undefined && typeof verifyImpl !== 'function') {
+    throw new TypeError('verifyBundle: verifyImpl must be a function')
+  }
+
   /** @type {Buffer | undefined} */
   let payload
   if (opts.payload !== undefined) {
@@ -207,11 +219,18 @@ export async function verifyBundle(bundle, options = {}) {
     return failure(['payload-required'], { options: opts, warnings })
   }
 
-  const module = await loadSigstore(opts)
+  // Injection bypasses the optional import entirely, so offline tests never
+  // touch TUF or the network and `sigstore` need not be installed.
+  const module = verifyImpl === undefined ? await loadSigstore(opts) : null
   const args = payload === undefined ? [bundle, policy.verifyOptions] : [bundle, payload, policy.verifyOptions]
 
   try {
-    const signer = await module.verify(...args)
+    let signer
+    if (verifyImpl === undefined) {
+      signer = await /** @type {{ verify: Function }} */ (module).verify(...args)
+    } else {
+      signer = await verifyImpl(...args)
+    }
     return success(signer, bundle, opts, warnings)
   } catch (error) {
     const reason = mapError(error)
@@ -519,8 +538,8 @@ function isModuleNotFound(error) {
  */
 function unavailableError(cause) {
   return new SigstoreUnavailableError(
-    'the optional sigstore package is not installed; run ' +
-      '`npm install --save-dev sigstore@5.0.1` (Node ^22.22.2 || ^24.15.0 || >=26) ' +
+    'the optional sigstore package is not installed; run `npm i sigstore` ' +
+      '(or `npm install --save-dev sigstore@5.0.1`; Node ^22.22.2 || ^24.15.0 || >=26) ' +
       'or use the default HMAC-only verification',
     { cause },
   )

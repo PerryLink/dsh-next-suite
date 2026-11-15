@@ -1,6 +1,6 @@
 # testatum-attest
 
-> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.2.2`，**已发布到 npm**。
+> 社区项目，**与 DeepSeek 无隶属关系**。Apache-2.0。版本 `0.2.3`，**已发布到 npm**。
 >
 > **HMAC 是 MVP 占位方案，不是 sigstore / npm provenance 的替代品。**
 > 它解决“离线核对一份文件清单有没有被改过、是不是我签的”，不解决身份、
@@ -9,7 +9,9 @@
 >
 > `verify-provenance` 只做 npm attestation 的**结构性匹配**（存在、
 > `predicateType`、subject 摘要、repo/commit），**不验 sigstore 签名包**。
-> 密码学验签请用 `sigstore` 或 `npm audit signatures`。
+> 真正的 Sigstore 验签请用可选的 `verify-sigstore` 命令（需自行安装
+> `sigstore`，并钉住 Fulcio identity/issuer），或用 `sigstore` /
+> `npm audit signatures`。**HMAC 仍是默认路径**。
 
 `testatum-attest` 给插件产物做一张 **trust card（信任卡）**：
 
@@ -18,6 +20,8 @@
 - 支持撤销记录（revocation list）和离线验证；
 - 可选地读取 npm provenance attestation，做**结构性**的 subject / repo / commit
   匹配（**不做 sigstore 验签**）；
+- 可选地对一个 Sigstore bundle 做**密码学验签**（DSSE 签名、Fulcio 证书链、
+  Rekor 透明日志；需要安装可选的 `sigstore`，并显式给出 identity/issuer）；
 - HMAC 部分不依赖数据库、网络、第三方包，只用 Node 内置 `node:crypto`；
   provenance 检查需要访问 registry，`fetchImpl` 可注入。
 
@@ -75,7 +79,7 @@
 
 ## 安装
 
-已发布到 npm：`npx testatum-attest@0.2.2 --help`。也可在本仓库里直接运行：
+已发布到 npm：`npx testatum-attest@0.2.3 --help`。也可在本仓库里直接运行：
 
 ```sh
 cd packages/testatum-attest
@@ -208,6 +212,12 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
 # 独立摘要检查：先用下载的 tarball 本地算 sha512，再传进来
 node src/cli.js verify-provenance demo-plugin@1.2.3 \
   --tarball-sha512 "sha512-$(openssl dgst -sha512 -binary demo-plugin-1.2.3.tgz | openssl base64 -A)"
+
+# Sigstore bundle 验签（可选；先 npm i sigstore）
+# --identity 是 Fulcio SAN 正则（建议 ^...$ 锚定），--issuer 是精确匹配。
+node src/cli.js verify-sigstore bundle.json \
+  --identity '^https://github\.com/PerryLink/demo-plugin/\.github/workflows/release\.yml@refs/heads/main$' \
+  --issuer https://token.actions.githubusercontent.com --json
 ```
 
 - `sign`：读取未签名 card，拒绝 `rootHash`/清单不一致的卡片，写出附带
@@ -221,26 +231,67 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
   （`--commit sha`）。`--tarball-sha512` 可给 hex / base64 / SRI；不给时使用
   registry 的 `dist.integrity` 并警告。`--registry <url>` 可指向镜像。
   **只做元数据匹配，不验证 sigstore 签名包。**
+- `verify-sigstore`：读取一个 Sigstore bundle JSON，调用 `sigstore.verify`
+  校验 DSSE/消息签名、Fulcio 证书链与 SCT、Rekor 透明日志和时间戳。
+  `--identity <uri>` 映射到 `certificateIdentityURI`（**正则**，建议用
+  `^...$` 锚定），`--issuer <issuer>` 映射到 `certificateIssuer`
+  （**精确匹配**）；两者都必填。需要可选依赖 `npm i sigstore`，否则 exit 2
+  并提示安装。**只验 bundle 本身，不绑定 tarball / repo / commit**；
+  artifact 绑定仍要用 `verify-provenance`。
 - `--json`：结构化输出；每个命令输出一个对象，至少包含
-  `{ command, ok, ... }`（`sign` / `verify` / `revoke` / `verify-provenance`）。
-  `verify-provenance` 的 JSON 额外包含 `cryptoVerified: false`、`boundary`、
-  `warnings`、`url`、`predicateType`、`subject`。
+  `{ command, ok, ... }`（`sign` / `verify` / `revoke` /
+  `verify-provenance` / `verify-sigstore`）。`verify-provenance` 的 JSON
+  额外包含 `cryptoVerified: false`、`boundary`、`warnings`、`url`、
+  `predicateType`、`subject`。`verify-sigstore` 成功时输出
+  `{ command, ok, identity, issuer }`，失败时另含 `reasons` 与 `error`。
 - `--help` / `-h`：完整用法；`-V` / `--version`：输出
-  `testatum-attest 0.2.2` 并 exit 0。
+  `testatum-attest 0.2.3` 并 exit 0。
 
 退出码：
 
 | 码 | 含义 |
 |---|---|
 | `0` | 成功 / 验证通过 |
-| `1` | 业务否定：验证失败、签名不匹配、卡片无效、拒绝签名或拒绝撤销、provenance 不匹配或缺失 |
-| `2` | 用法 / 输入 / IO / 网络错误：无参数、未知命令、未知选项、`sign`/`verify` 缺少 `TESTATUM_KEY`、读文件 / 写文件 / JSON 解析错误、registry 不可达或返回非 2xx |
+| `1` | 业务否定：验证失败、签名不匹配、卡片无效、拒绝签名或拒绝撤销、provenance 不匹配或缺失、`verify-sigstore` 的身份/签名/证书/日志被拒 |
+| `2` | 用法 / 输入 / IO / 网络错误：无参数、未知命令、未知选项、`sign`/`verify` 缺少 `TESTATUM_KEY`、`verify-sigstore` 缺少 `--identity`/`--issuer` 或 `sigstore` 未安装、读文件 / 写文件 / JSON 解析错误、registry 不可达或返回非 2xx、TUF/网络导致验签结论不确定 |
 
 环境变量：
 
 - `TESTATUM_KEY`：共享 HMAC 密钥，`sign` / `verify` 必需；`revoke` 可选。
   **CLI 永远不会打印它的值**，也不会写进任何输出文件。
 - `TESTATUM_KEY_ID`：可选默认 key id，仅作为提示记录，不是密钥，也不被验签方信任。
+
+### Sigstore bundle 验签（可选）
+
+`verify-sigstore` 是**按次启用**的密码学验签层，**不改变 HMAC 默认路径**：
+
+```sh
+# 可选依赖；还需满足 sigstore 自己的 Node 版本要求。
+npm i sigstore
+
+node src/cli.js verify-sigstore bundle.json \
+  --identity '^https://github\.com/OWNER/REPO/\.github/workflows/WORKFLOW\.yml@refs/tags/v1\.2\.3$' \
+  --issuer https://token.actions.githubusercontent.com --json
+```
+
+- **必须钉住 Fulcio 身份**：`--identity` 是证书 SAN 的**正则**（GitHub Actions
+  的 npm provenance 身份是 workflow URI，不是邮箱；建议用 `^...$` 锚定），
+  `--issuer` 是 issuer 扩展的**精确字符串**。缺失任一项 → exit 2；
+  身份/签名不匹配 → exit 1。
+- 常见 issuer：GitHub Actions 为
+  `https://token.actions.githubusercontent.com`，GitLab CI 为
+  `https://gitlab.com`。交互式登录的 issuer 由 Fulcio/OIDC 配置决定，不要
+  照抄 CI 的值。
+- 依赖与网络：需要 `npm i sigstore`；未安装时 exit 2 并提示
+  `npm i sigstore`。`sigstore.verify` 每次通过 TUF 获取信任根（冷缓存需联网，
+  热缓存可离线），TUF/网络失败 exit 2，结论视为不确定。细节见
+  [docs/sigstore.md](../../docs/sigstore.md)。
+- **只验 bundle**：DSSE 签名、Fulcio 证书链与 SCT、Rekor 透明日志、时间戳。
+  **不绑定** subject 摘要、tarball、repo/commit；这些仍由
+  `verify-provenance` 负责。CLI 只接受自带 payload 的 DSSE bundle；
+  `messageSignature` bundle 需要原始 payload，会以 `payload-required` 失败。
+- **HMAC 仍是默认**：私有插件、本地产物、离线场景继续用 `sign` / `verify`。
+  Sigstore 只覆盖“有 provenance bundle 的 npm 包”，两者是叠加关系，不是替代。
 
 ### 撤销记录
 
@@ -275,6 +326,8 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
 - `keyId` 只是签名里的一个未认证提示，`verifyCard` 不校验它，也没有 keyring。
 - 本包另有 `verify-provenance`（见 §6）：它只匹配 npm attestation 元数据，
   同样不做 sigstore 密码学验签，不能替代 sigstore / `npm audit signatures`。
+  可选的 `verify-sigstore` 会做真正的 bundle 验签，但需要 `sigstore` 和
+  Fulcio identity/issuer，且不绑定 artifact；**默认路径仍是 HMAC**。
 
 ### 2. 密钥管理限制
 
@@ -349,7 +402,9 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
 
 需要密码学验签时，用 `sigstore`（校验 bundle / 证书 / Rekor）或
 `npm audit signatures`（校验已安装包的 registry 签名与 attestation）。
-本包不重复实现它们，也不声称与之等价。
+本包不重复实现它们，也不声称与之等价。可选的 `verify-sigstore` 封装了
+`sigstore.verify`：它能验证 bundle 本身（DSSE/证书/SCT/Rekor/时间戳），
+但仍**不绑定** subject/tarball/repo/commit；应与 `verify-provenance` 组合使用。
 
 ## 命名核验
 
@@ -383,12 +438,15 @@ node src/cli.js verify-provenance demo-plugin@1.2.3 \
 node --test test/*.test.js
 node --check src/core.js
 node --check src/provenance.js
+node --check src/sigstore.js
 node --check src/cli.js
 node src/cli.js --help
 ```
 
 测试不读取真实密钥、不访问公网：卡片/CLI 测试使用临时目录和注入的测试密钥；
-provenance 测试使用注入的 mock `fetch` 与本机回环 HTTP 服务器。
+provenance 测试使用注入的 mock `fetch` 与本机回环 HTTP 服务器；
+`verify-sigstore` CLI 测试通过 `module.registerHooks` 注入离线 fake
+`sigstore`，覆盖成功、身份失败、未安装、缺参数、坏 JSON 与 TUF 失败。
 
 ## 许可证
 
