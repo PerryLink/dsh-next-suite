@@ -1,5 +1,8 @@
 # HCB v0 — Host Compatibility Baseline (seed)
 
+> **Scope note (2026-11-15):** this is a historical host-service **seed** for the six `dsh-os-*` packages at 0.1.x. It is **not** the HCB DOI dataset; the canonical dataset is [`PerryLink/dsh-hcb`](https://github.com/PerryLink/dsh-hcb) (0.14.0). Do not cite these 24 rows as the current 0.2.4 compatibility matrix; the current 0.2.4 install/dump is verified by the `dsh-smoke` job in `dsh-os-suite` CI, not by this historical seed.
+
+
 This is the seed dataset for a citable **Host Compatibility Baseline**: which DSH plugin packages install, load, and pass their tests on which host and Node version.
 
 ## Scope (2026-11-15)

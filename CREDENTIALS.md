@@ -9,7 +9,7 @@
 
 **做什么**：把已有的 DSH/Cordis 兼容矩阵整理成可引用数据集，发布到 Zenodo，拿 DOI。
 
-**已有资产**：45-patch、rc9/rc10 双基线；`dsh-os-suite` 的兼容矩阵；192 包安装数据。
+**已有资产**：`PerryLink/dsh-hcb` 的 HCB 数据集（canonical；当前 `0.14.0`）；本套件的 24 行 host-service seed；14 个一方包的 capdiff 语料。**不要**再引用早期「192 包安装数据」口径。
 
 **步骤**：
 1. 冻结一版数据：`atlas.csv`/`matrix.json` + `README.md`（字段、口径、日期、许可 CC-BY-4.0）。
@@ -47,7 +47,7 @@
 **截止**：Tool Demo 约 **2027-01-26**；Industry 约 **2027-01-23**（以官网为准）。
 
 **选题（二选一）**：
-- Tool Demo：**“CapDiff: Auditing Declared vs Actual Capabilities in Agent Plugins”**——工具架构 + 在 192 个真实插件上的发现。
+- Tool Demo：**“CapDiff: Auditing Declared vs Actual Capabilities in Agent Plugins”**——工具架构 + 在冻结的 HCB 快照上的发现（快照版本与行数在投稿前重算，不引用早期的 192 包口径）。
 - Industry：**“Governance Primitives for Agent Harnesses: Trace, Lease, Quota”**——企业落地经验 + 失败模式。
 
 **需要材料**：2–4 页工具论文/经验论文、demo 视频、可复现实验、 artifact 链接。

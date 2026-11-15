@@ -1,5 +1,8 @@
 # HCB 数据集：Zenodo 元数据、发布步骤与引用格式
 
+> **SUPERSEDED / SCOPE NOTE (2026-11-15):** this file is a **historical HCB v0.5.1 draft** for the `PerryLink/dsh-hcb` repo, retained as a Zenodo submission template. The canonical dataset is now `dsh-hcb@0.14.0`; the 24-row matrix under `data/hcb/` in this suite is a host-service seed, not the DOI dataset. Do not submit this metadata as-is: re-pin the version, row/evidence counts and licence against the canonical repo first.
+
+
 > Seed dataset: `data/hcb/matrix.csv` (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`; **24 rows**). Node 22 install/dump cells are `unsupported` because the host declares Node `>=24.9.0`; expand rows before DOI submission.
 
 > **状态：draft / planned。** 本文件是提交前的可执行草稿，**不是**已发布记录。
@@ -7,7 +10,7 @@
 > 数据集的代码仓为 <https://github.com/PerryLink/dsh-hcb>（2026-11 由 `dsh-compat-baseline` 改名）。
 > 项目为独立社区项目，**与 DeepSeek 无隶属、无赞助、无背书**。
 >
-> **口径说明**：`CREDENTIALS.md` 里的「192 包安装数据」是早期计划口径；本文件与 Zenodo 元数据以 **HCB v0.5.1 的 143 行**为准，不把 192 写进数据集描述。
+> **口径说明（历史）**：本文件以 **HCB v0.5.1 的 143 行**为准，不把早期的「192 包安装数据」写进数据集描述。v0.5.1 之后 `dsh-hcb` 已演进到 0.14.0；提交前必须以 canonical 仓库的快照重新冻结行数与证据计数。
 
 | 项目 | 当前值 | 证据 / 说明 |
 |---|---|---|

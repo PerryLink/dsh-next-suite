@@ -24,7 +24,7 @@
 
 > 按空白分词计数为 **250 words**（2026-11-14 本机 `split(/\s+/)`）。投稿系统若按连字符/LaTeX 计数，可能差 1–3 词；提交前以系统计数为准，必要时删 `intentionally` 这类副词。
 
-Agent plugins extend a host with tools, but they also request capabilities such as filesystem access, network egress, and process execution. In today's manifests these capabilities are hand-written, and nothing checks them against the code that actually runs. We present CapDiff, a static, zero-dependency auditor that compares a plugin's declared dsh.capabilities with capability evidence found in its source: module imports, process.env access, eval, and child-process use. CapDiff classifies each capability as matched, undeclared, or unused, reports file and line evidence, and emits SARIF for code-scanning dashboards. It never executes plugin code and treats findings as review candidates, not safety verdicts. The scanner is intentionally conservative: it reports what static analysis can see, labels everything else unknown, and never infers runtime behavior. The tool is motivated by a corpus-level gap: in the HCB compatibility dataset, 79 of 143 plugins have no capability manifest, so their risk is recorded as unknown. We contribute (i) a compact capability model and diff semantics, (ii) an Apache-2.0 implementation with JSON and SARIF output plus an offline test suite, and (iii) a pilot on 14 first-party packages (58 source files) in which no package declares capabilities and CapDiff surfaces 32 undeclared capability classes for review. A 17-fixture synthetic benchmark gives 92.3% precision and 80.0% recall at capability level; a labeled public-plugin study remains future work. Artifact, fixtures, and reproduction commands will ship with the submission. CapDiff is a first, cheap gate for plugin authors and reviewers; it complements, rather than replaces, runtime sandboxing and signed provenance.
+Agent plugins extend a host with tools, but they also request capabilities such as filesystem access, network egress, and process execution. In today's manifests these capabilities are hand-written, and nothing checks them against the code that actually runs. We present CapDiff, a static, zero-dependency auditor that compares a plugin's declared dsh.capabilities with capability evidence found in its source: module imports, process.env access, eval, and child-process use. CapDiff classifies each capability as matched, undeclared, or unused, reports file and line evidence, and emits SARIF for code-scanning dashboards. It never executes plugin code and treats findings as review candidates, not safety verdicts. The scanner is intentionally conservative: it reports what static analysis can see, labels everything else unknown, and never infers runtime behavior. The tool is motivated by a corpus-level gap: in the HCB v0.5.1 snapshot, 79 of 143 plugins have no capability manifest, so their risk is recorded as unknown. We contribute (i) a compact capability model and diff semantics, (ii) an Apache-2.0 implementation with JSON and SARIF output plus an offline test suite, and (iii) a pilot on 14 first-party packages (58 source files) in which no package declares capabilities and CapDiff surfaces 32 undeclared capability classes for review. A 17-fixture synthetic benchmark gives 92.3% precision and 80.0% recall at capability level; a labeled public-plugin study remains future work. Artifact, fixtures, and reproduction commands will ship with the submission. CapDiff is a first, cheap gate for plugin authors and reviewers; it complements, rather than replaces, runtime sandboxing and signed provenance.
 
 ---
 
@@ -40,7 +40,7 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 **评估**：已可复算的是试点数字与 17 例合成基准（§4）：capability-level precision 92.31%、recall 80.00%（合成样本，不能外推）。**尚未测**公开插件上的 precision/recall、跨项目误报率、reviewer 节省时间；论文投稿前必须补一个有标注的公开插件样本，否则不能把「有效」写成结论。
 
-**Artifact**：`dsh-capdiff@0.1.1`（npm，Apache-2.0）、GitHub 仓库、`npm test`、17 例合成基准（`benchmarks/capdiff/`）；Zenodo DOI 为 **planned**，尚未分配。
+**Artifact**：`dsh-capdiff@0.2.4`（npm，Apache-2.0）、GitHub 仓库、`npm test`、17 例合成基准（`benchmarks/capdiff/`）；Zenodo DOI 为 **planned**，尚未分配。
 
 **截止日期**：`CREDENTIALS.md` 里的 2027-01-26 / 2027-01-23 只是计划估计，**不是官方日期**。投稿前必须打开 FSE'27 官网核对 Important Dates；官网未发布就写「待定」，不要对外承诺。
 
@@ -52,18 +52,18 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 | 数字 | 来源 / 复现命令 | 备注 |
 |---|---|---|
-| HCB 143 行，79 行无 capability manifest | `data/matrix.json`；`summary.risk.unknown = 79` | 79 是 `risk.level=unknown` 且 reason 为 `no capability manifest` 的行 |
+| HCB v0.5.1 快照：143 行，79 行无 capability manifest | `dsh-hcb` 的 v0.5.1 `data/matrix.json`；`summary.risk.unknown = 79` | 79 是 `risk.level=unknown` 且 reason 为 `no capability manifest` 的行。**canonical 已到 `dsh-hcb@0.14.0`；投稿前必须用冻结快照重算，不能直接沿用本行数字。** |
 | HCB 123 declared / 20 checked / 0 tested | `summary.evidence` | **0 tested** 必须写进论文 |
 | 14 个一方包，0 个声明 `dsh.capabilities` | `node -e` 遍历 14 个 `package.json` | 这些是 CLI/库，部分本来就不该有 manifest；论文里要说清「pilot 是工具自检，不是插件生态结论」 |
 | 58 个源文件、32 类未声明能力 | `dsh-capdiff <pkg> --json` × 14；`diff.undeclared.length` 求和 | 未传 manifest 时声明为空，32 必然全部 undeclared；这是**上限**，不是生态估计 |
-| CapDiff 单测 26/26 | `cd packages/dsh-capdiff && npm test` | 与 8 包 242/242 分开报 |
-| 17 例合成基准：capability P=92.31% / R=80.00%；in-scope R=100% | `node benchmarks/capdiff/run.mjs`；`benchmarks/capdiff/RESULTS.md` | **合成、人工挑选**；benchmark 在 staging，尚未进入 `v0.1.1` tag，投稿 artifact 需打新 tag 或单独打包 |
+| CapDiff 单测 39/39 | `cd packages/dsh-capdiff && npm test` | 与 8 包 342/342 分开报 |
+| 17 例合成基准：capability P=92.31% / R=80.00%；in-scope R=100% | `node benchmarks/capdiff/run.mjs`；`benchmarks/capdiff/RESULTS.md` | **合成、人工挑选**；benchmark 已进入 `v0.2.4` tag，投稿 artifact 可从该 tag 复现 |
 
 ### 4.2 投稿前必须补（当前 TODO）
 
 | 需要的结果 | 最小实验设计 | 状态 |
 |---|---|---|
-| 公开插件上的 precision / recall | 从 HCB 的 143 行抽 30–50 个包，人工标注「代码实际能力」；跑 CapDiff；算 per-capability P/R 与混淆矩阵 | ⬜ todo（合成 17 例已完成，见 §4.1） |
+| 公开插件上的 precision / recall | 从 HCB v0.5.1 的 143 行抽 30–50 个包，人工标注「代码实际能力」；跑 CapDiff；算 per-capability P/R 与混淆矩阵 | ⬜ todo（合成 17 例已完成，见 §4.1） |
 | 误报来源分类 | 对每个 `undeclared` 样本标：真差异 / 正则误报 / 动态 import 漏报 / 别名不识别 | ⬜ todo |
 | Reviewer 成本 | 2 名评审各自看「原始 manifest」vs「CapDiff findings」，记时间与漏项 | ⬜ todo |
 | 与基线对比 | 至少一个通用 SAST（如 Semgrep 规则）或「纯人工」基线 | ⬜ todo |
@@ -77,7 +77,7 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 ## 5. 章节骨架（按 Tool Demo 常见 2–4 页准备，最终页数限制以官网为准）
 
 1. **Introduction**：插件能力声明的信任缺口；一个具体 under-declaration 例子（用合成 fixture，不点名第三方）。
-2. **Motivation**：HCB 的 79/143 unknown；为什么通用 SAST 不够。
+2. **Motivation**：HCB v0.5.1 的 79/143 unknown；为什么通用 SAST 不够。
 3. **CapDiff**：manifest 解析 → 源码扫描 → 能力映射 → diff → SARIF；一张架构图。
 4. **Design decisions**：零依赖、不执行、findings 不作为失败、`unknown` 兜底。
 5. **Evaluation**：§4.1 的 pilot + §4.2 的标注实验（有多少写多少）。
@@ -92,11 +92,11 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 | 项 | 当前 | 投稿前目标 |
 |---|---|---|
-| 代码 | <https://github.com/PerryLink/dsh-next-suite>（`packages/dsh-capdiff`） | 工具在 `v0.1.1`；benchmark 在 staging，需发 `v0.1.2`（或 artifact zip）才能从 tag 复现 |
-| npm | `dsh-capdiff@0.1.1` | 保留同版本；artifact 评审用 `npm pack` 的 tarball + SHA-256 |
+| 代码 | <https://github.com/PerryLink/dsh-next-suite>（`packages/dsh-capdiff`） | 工具在 `v0.2.4`；benchmark 已随 `v0.2.4` tag 发布，可从 tag 复现 |
+| npm | `dsh-capdiff@0.2.4` | 保留 `0.2.4`；artifact 评审用 `npm pack` 的 tarball + SHA-256 |
 | 许可 | Apache-2.0 | 不变 |
-| 测试 | `npm test`（26/26） | CI 跑 Node 22.19 / 24.x；benchmark 用独立命令 |
-| 数据 | HCB v0.5.1（143 行） | Zenodo DOI（planned；见 `hcb-doi.md`） |
+| 测试 | `dsh-capdiff` 39/39；全套件 342/342 | CI 跑 Node 22.19 / 24.x；benchmark 用独立命令 |
+| 数据 | HCB（canonical `dsh-hcb`；本稿表格数字来自 v0.5.1 快照，投稿前重算） | Zenodo DOI（planned；见 `hcb-doi.md`，该文件已标 SUPERSEDED） |
 | 标注集 | 17 个合成 fixture（`benchmarks/capdiff/fixtures/`） | 公开插件标注集 + 标注指南 + 双人一致性 |
 | 复现脚本 | `node benchmarks/capdiff/run.mjs`（已可复跑） | `npm run reproduce` 或 `make artifact`，一条命令出所有表 |
 | Artifact badge | 无 | 按会议 artifact 流程申请；**未申请前不写「available」** |
@@ -132,7 +132,7 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 1. **不写录用。** 没有回执就不写 `accepted`；被拒也不写 `accepted`。
 2. **不写未测数字。** 合成 P/R 必须带「17-fixture synthetic」限定；公开插件 P/R、reviewer 节省时间、企业部署规模都还没测。
-3. **不把 pilot 说成生态结论。** 14 个一方包不是 143 个插件的随机样本。
+3. **不把 pilot 说成生态结论。** 14 个一方包不是 v0.5.1 的 143 个插件的随机样本。
 4. **不点名第三方插件。** HCB 数据可以聚合引用；论文例子用合成 fixture。
 5. **不把 Zenodo DOI 写成已分配。** 只有 `doi.org` 可解析后才写。
 6. **不虚构截止日期。** 官网没写就写「待定」。

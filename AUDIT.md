@@ -1,5 +1,8 @@
 # 发布前审计 — dsh-next-suite（8 包）
 
+> **Historical (2026-11-14, 0.1.x era):** retained for traceability. It is superseded by the `0.2.4` release; see `CHANGELOG.md` and the README status block for current state.
+
+
 - 审计日期：2026-11-14（Asia/Shanghai）
 - 审计对象：`packages/dsh-capdiff`、`testatum-attest`、`dsh-supply-watch`、`cordis-hmr-doctor`、`cordis-migrate`、`cordis-testkit`、`dsh-xbrl`、`dsh-upgrade-atlas`
 - 审计方式：只读检查 + 临时目录冒烟；**未修改任何实现代码或 package.json**，只新增本文件。

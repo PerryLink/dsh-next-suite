@@ -10,6 +10,8 @@
     "validate:atlas": "node scripts/validate-atlas.mjs --check-md",
     "validate:hcb": "node scripts/validate-hcb.mjs",
     "dojo": "node dojo/run-all.mjs",
-    "bench": "node benchmarks/capdiff/run.mjs && node benchmarks/supply-watch/run.mjs"
+    "bench": "node benchmarks/capdiff/run.mjs && node benchmarks/supply-watch/run.mjs",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-lines=85 --test-coverage-functions=80 --test-coverage-branches=70 packages/*/test/*.test.js",
+    "check:docs": "node scripts/check-docs.mjs"
   }
 }

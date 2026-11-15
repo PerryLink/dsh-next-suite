@@ -4,7 +4,7 @@
 > 本文件是提交前的自评底稿：按官方 **Passing** 级 criteria 分组，逐项标 `done` / `todo`，并给出证据或最小动作。
 > 官方条目与完整措辞以 <https://www.bestpractices.dev/en/criteria> 为准；本文只做逐项对照，不替代官方问卷。
 >
-> **时效性（2026-11-14 20:20 核对）**：`dsh-next-suite` 与 `dsh-os-suite` 的 `SECURITY.md`、`CONTRIBUTING.md`、`CODE_OF_CONDUCT.md`、`.github/workflows/*` 已出现在 **staging tree**；公网 GitHub 是否已同步、CI 是否已首次跑绿，本文件**未确认**。表中 `✅ done*` 表示「staging 有文件」，提交 badge 前必须换成公网 URL 并去掉星号。
+> **时效性（2026-11-15 22:40 核对）**：`dsh-next-suite` 与 `dsh-os-suite` 均已公开；两仓 `CI` / `Scorecard` / `Release` 在 2026-11-15 的最新 run 为 success，npm 上 14/14 包为 `0.2.4` 且带 provenance。下表版本/测试数已按公网状态更新；`✅ done*` 现在仅表示「文件已在公网，但 badge 问卷仍需引用具体 URL」，提交前逐项替换。
 
 ---
 
@@ -16,9 +16,9 @@
 
 | # | 仓库 | 内容 | 许可 | 版本 / tag | 测试 | CI | SECURITY.md | CONTRIBUTING |
 |---|---|---|---|---|---|---|---|---|
-| 1 | <https://github.com/PerryLink/dsh-next-suite> | 8 个工具/库（capdiff、attest、supply-watch、cordis-*、xbrl、atlas） | Apache-2.0 | `0.1.1` / `v0.1.1` | 242/242 | `ci.yml`、`release.yml`（staging） | 有（staging） | 有（staging） |
-| 2 | <https://github.com/PerryLink/dsh-os-suite> | 6 个治理插件（trace、lease、quota、eval、catalog、registry） | Apache-2.0 | `0.1.1` / `v0.1.1` | 90/90 | `ci.yml`、`release.yml`（staging） | 有（staging） | 有（staging） |
-| 3 | <https://github.com/PerryLink/dsh-hcb> | HCB 数据/门禁子项目（矩阵、schema、CLI、证据层） | MIT | `0.5.1` / `v0.5.1` | `npm test` | `self-check.yml`、`collect.yml` | 无 | 无 |
+| 1 | <https://github.com/PerryLink/dsh-next-suite> | 8 个工具/库（capdiff、attest、supply-watch、cordis-*、xbrl、atlas） | Apache-2.0 | `0.2.4` / `v0.2.4` | 342/342 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
+| 2 | <https://github.com/PerryLink/dsh-os-suite> | 6 个治理插件（trace、lease、quota、eval、catalog、registry） | Apache-2.0 | `0.2.4` / `v0.2.4` | 276/276 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
+| 3 | <https://github.com/PerryLink/dsh-hcb> | HCB 数据/门禁子项目（矩阵、schema、CLI、证据层） | MIT | `0.14.0` / `v0.14.0` | `npm test` | `self-check.yml`、`collect.yml` | 无 | 无 |
 
 **没有把 `dsh-hcb` 换成某个插件包的原因**：它是三者中唯一已有 CI、CHANGELOG、schema 文档和版本 tag 链的项目，最接近 passing；同时它与前两个仓的风险面不同（数据 + 静态检查），自评能暴露不同缺口。若坚持「每个插件一个 badge」，必须先拆仓，成本远高于先给三个 monorepo 过 passing。
 
@@ -27,7 +27,7 @@
 ## 2. 读法
 
 - `✅ done`：仓库里已有可指认的证据（文件、命令、release、tag）。
-- `✅ done*`：**staging tree 已有文件，但公网同步 / 首次 CI run 未确认**；不能直接当作 badge 的 public evidence。
+- `✅ done*`：文件已在**公开仓库**；badge 问卷里仍要引用具体 URL 和 2026-11-15 的 CI run，不能只写「有文件」。
 - `⬜ todo`：还没有，或证据不足以在 badge 问卷里勾选。
 - `➖ N/A`：官方条目允许 N/A，且本项目确实不适用；提交时**必须填 justification**，不能空着勾。
 - `Cat`：官方类别 `MUST` / `SHOULD` / `SUGGESTED`。**Passing 要求全部 MUST 满足**；SHOULD/SUGGESTED 不阻断 passing，但会影响评审印象。
@@ -73,8 +73,8 @@
 | Criterion | Cat | next-suite | os-suite | HCB | Evidence / action |
 |---|---|---|---|---|---|
 | `description_good` | MUST | ✅ done | ✅ done | ✅ done | README 首段说明问题与用途 |
-| `interact` | MUST | ✅ done* | ✅ done* | ⬜ todo | README 已有 Security/Contributing/Changelog 导航（next/os 为 staging）；HCB 仍缺反馈/贡献入口 |
-| `contribution` | MUST | ✅ done* | ✅ done* | ⬜ todo | CONTRIBUTING.md 已落地（next/os staging）；HCB 无 |
+| `interact` | MUST | ✅ done* | ✅ done* | ⬜ todo | README 已有 Security/Contributing/Changelog 导航（next/os 已公开）；HCB 仍缺反馈/贡献入口 |
+| `contribution` | MUST | ✅ done* | ✅ done* | ⬜ todo | CONTRIBUTING.md 已落地（next/os public）；HCB 无 |
 | `contribution_requirements` | SHOULD | ✅ done* | ✅ done* | ⬜ todo | CONTRIBUTING 已写 Node 版本/测试/无构建/命名；HCB 无 |
 | `floss_license` | MUST | ✅ done | ✅ done | ✅ done | Apache-2.0；HCB 为 MIT |
 | `floss_license_osi` | SUGGESTED | ✅ done | ✅ done | ✅ done | OSI 认可许可 |
@@ -94,10 +94,10 @@
 | `repo_track` | MUST | ✅ done | ✅ done | ✅ done | git 历史含作者与时间 |
 | `repo_interim` | MUST | ✅ done | ✅ done | ✅ done | 有开发期提交，不是只 push 最终 release |
 | `repo_distributed` | SUGGESTED | ✅ done | ✅ done | ✅ done | git |
-| `version_unique` | MUST | ✅ done | ✅ done | ✅ done | 0.1.1 / HCB 0.5.1 |
+| `version_unique` | MUST | ✅ done | ✅ done | ✅ done | 0.2.4 / HCB 0.14.0 |
 | `version_semver` | SUGGESTED | ✅ done | ✅ done | ✅ done | SemVer（见 VERSIONING.md） |
-| `version_tags` | SUGGESTED | ✅ done | ✅ done | ✅ done | v0.1.1；HCB v0.5.1 |
-| `release_notes` | MUST | ✅ done | ✅ done | ✅ done | GitHub release v0.1.1 有摘要；HCB CHANGELOG 更完整（建议补每包 changelog） |
+| `version_tags` | SUGGESTED | ✅ done | ✅ done | ✅ done | v0.2.4；HCB v0.14.0 |
+| `release_notes` | MUST | ✅ done | ✅ done | ✅ done | GitHub release v0.2.4 有摘要；HCB CHANGELOG 更完整（建议补每包 changelog） |
 | `release_notes_vulns` | MUST | ➖ N/A | ➖ N/A | ➖ N/A | 无已知 CVE；每个 release 显式写「none known」 |
 
 ### Reporting
@@ -109,7 +109,7 @@
 | `report_responses` | MUST | ⬜ todo | ⬜ todo | ⬜ todo | 项目 <2 个月，尚无 2–12 个月窗口；开始记录首次响应时间 |
 | `enhancement_responses` | SHOULD | ⬜ todo | ⬜ todo | ⬜ todo | 同上；建立 enhancement 标签与响应 SLA |
 | `report_archive` | MUST | ✅ done | ✅ done | ✅ done | 公开 issue 历史可搜索 |
-| `vulnerability_report_process` | MUST | ✅ done* | ✅ done* | ⬜ todo | SECURITY.md 已落地（next/os staging）；HCB 无 |
+| `vulnerability_report_process` | MUST | ✅ done* | ✅ done* | ⬜ todo | SECURITY.md 已落地（next/os public）；HCB 无 |
 | `vulnerability_report_private` | MUST | ✅ done* | ✅ done* | ⬜ todo | SECURITY.md 指向 GitHub Security Advisories；HCB 无 |
 | `vulnerability_report_response` | MUST | ➖ N/A | ➖ N/A | ⬜ todo | next/os：无报告历史，SECURITY.md 目标 7 天，按 N/A 记录；HCB 无渠道 |
 
@@ -120,12 +120,12 @@
 | `build` | MUST | ➖ N/A | ➖ N/A | ➖ N/A | 纯 ESM，无构建步骤；按 N/A 说明 |
 | `build_common_tools` | SUGGESTED | ✅ done | ✅ done | ✅ done | Node + npm |
 | `build_floss_tools` | SHOULD | ✅ done | ✅ done | ✅ done | 仅 FLOSS 工具 |
-| `test` | MUST | ✅ done | ✅ done | ✅ done | 242/242、90/90；HCB npm test |
+| `test` | MUST | ✅ done | ✅ done | ✅ done | 342/342、276/276；HCB npm test |
 | `test_invocation` | SHOULD | ✅ done | ✅ done | ✅ done | npm test / node --test |
-| `test_most` | SUGGESTED | ⬜ todo | ⬜ todo | ⬜ todo | 未测覆盖率；加 c8 并记录语句/分支覆盖 |
-| `test_continuous_integration` | SUGGESTED | ⬜ todo | ⬜ todo | ✅ done | next/os workflow 已在 staging 落地，但尚未确认首次 GitHub run 绿；HCB 的 self-check.yml 已有运行记录 |
+| `test_most` | SUGGESTED | ✅ done | ✅ done | ⬜ todo | `node --test --experimental-test-coverage` 门槛：lines 85 / funcs 80 / branches 70；HCB 未测 |
+| `test_continuous_integration` | SUGGESTED | ✅ done | ✅ done | ✅ done | next/os 2026-11-15 的 CI / Release / Scorecard run 均绿；HCB 的 self-check.yml 已有运行记录 |
 | `test_policy` | MUST | ✅ done* | ✅ done* | ⬜ todo | CONTRIBUTING 已写「Tests are required for behavior changes」；HCB 无 |
-| `tests_are_added` | MUST | ✅ done | ✅ done | ✅ done | 最近功能均带测试（242/90/HCB audit-entry tests） |
+| `tests_are_added` | MUST | ✅ done | ✅ done | ✅ done | 最近功能均带测试（342/276/HCB audit-entry tests） |
 | `tests_documented_added` | SUGGESTED | ⬜ todo | ⬜ todo | ⬜ todo | 在 PR 模板/CONTRIBUTING 写明 |
 | `warnings` | MUST | ⬜ todo | ⬜ todo | ⬜ todo | 无 linter；加 ESLint（或等价） |
 | `warnings_fixed` | MUST | ⬜ todo | ⬜ todo | ⬜ todo | 先启用再清零；CI 记录 |
@@ -169,25 +169,25 @@
 
 ## 4. 当前工程状态与本轮仍缺项
 
-> 本节按 2026-11-14 20:20 的 staging tree 核对。**不是**对公网 GitHub 的最终确认。
+> 本节按 2026-11-15 22:40 的公网状态核对。CI / Release / Scorecard 的最新 run 均为 success。
 
-### 4.1 已在 staging tree 落地（`done*` 的依据）
+### 4.1 已在公开仓库落地（`done*` 的依据）
 
 | 文件 / 流程 | next-suite | os-suite | HCB | 备注 |
 |---|---|---|---|---|
 | `SECURITY.md` | 有 | 有 | 无 | 指向 GitHub Security Advisories；写明支持版本与 90 天披露窗口 |
 | `CONTRIBUTING.md` | 有 | 有 | 无 | PR 流程、Node 版本、测试要求、无构建 |
 | `CODE_OF_CONDUCT.md` | 有 | 有 | 无 | Contributor Covenant |
-| CI workflow | `ci.yml` + `release.yml` | `ci.yml` + `release.yml` | `self-check.yml` + `collect.yml` | next/os 尚未确认首次 GitHub run |
+| CI workflow | `ci.yml` + `release.yml` + `codeql.yml` | `ci.yml` + `release.yml` + `codeql.yml` | `self-check.yml` + `collect.yml` | next/os 2026-11-15 run 绿 |
 | `CHANGELOG.md` | 有 | 有 | 有 | Keep a Changelog |
 | Issue templates | 有 | 有 | 无 | bug / feature 表单；安全报告走 SECURITY.md |
 
-**注意**：`done*` 只说明文件在 staging。公网 GitHub 未同步、CI 未跑绿之前，badge 问卷不能把它当作 public evidence；也不要在 README 放 badge 占位图。
+**注意**：`done*` 只说明文件已在公开仓库。badge 问卷里仍要引用具体 public URL 与 CI run，不要只写「有文件」，也不要在 README 放 badge 占位图。
 
 ### 4.2 本轮仍缺的工程项
 
 1. **lint**：加 ESLint（`eslint:recommended`），清零后 CI 跑 `--max-warnings 0` → `warnings`、`warnings_fixed`。
-2. **静态分析**：CodeQL（JS/TS）或 `eslint-plugin-security`，在 release 前跑 → `static_analysis`。
+2. **静态分析**：`.github/workflows/codeql.yml` 已加（JS/TS）；首次 CodeQL run 绿后勾选 `static_analysis`。
 3. **secret scan**：`gitleaks` 或 `trufflehog`，每次 push 跑 → `no_leaked_credentials`。
 4. **维护者自评 + 威胁模型**：明确资产、信任边界、误报风险、HMAC 占位边界 → `know_secure_design`、`know_common_errors`。
 5. **首次响应记录**：`report_responses` 需要真实 issue 历史；项目太新，**最早 2027-01** 才有 2–12 个月窗口。
@@ -196,15 +196,16 @@
 
 ### 4.3 CI 真正跑绿才算证据
 
-`test_continuous_integration` 目前对 next/os 仍是 `⬜ todo`：workflow 文件存在 ≠ CI 已运行。第一次 push 后要：
+两仓 2026-11-15 的 CI 矩阵（ubuntu Node 24 / ubuntu Node 22.19 / windows Node 24 / macos Node 24）已绿：
 
-- 打开 Actions 页面，确认 `CI` 在 Node 22.19 与 Node 24 两条矩阵都绿；
-- 把 run URL 写进本文件；
-- 再把该条从 `⬜ todo` 改为 `✅ done`。
+- os-suite：<https://github.com/PerryLink/dsh-os-suite/actions/runs/43722869939>
+- next-suite：<https://github.com/PerryLink/dsh-next-suite/actions/runs/43722946711>
+
+`test_continuous_integration` 可以引用这两个 public run。CodeQL 是新增 workflow，首次 run 之后再把 `static_analysis` 勾成 done。
 
 ### 4.4 版本与 release
 
-- 三个仓都已有 tag：`v0.1.1` / `v0.1.1` / `v0.5.1`。
+- 三个仓都已有 tag：`v0.2.4` / `v0.2.4` / `v0.14.0`。
 - 两个 suite 已有 `CHANGELOG.md` 与 `RELEASE.md`；HCB 有 `CHANGELOG.md`。
 - `release_notes_vulns` 当前是 N/A；从下一个 release 起，如果没有已知漏洞，也显式写 `Known vulnerabilities fixed in this release: none`。
 
