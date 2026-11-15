@@ -213,6 +213,51 @@ test('verifyBundle maps sigstore policy, tlog, certificate and TUF errors', asyn
   assert.equal(tuf.fatal, true)
 })
 
+test('verifyBundle accepts an injected verifyImpl and skips the optional import', async () => {
+  const calls = []
+  const result = await verifyBundle(bundle(), {
+    ...identity,
+    importer: async () => {
+      throw new Error('the importer must not run when verifyImpl is injected')
+    },
+    verifyImpl: async (...args) => {
+      calls.push(args)
+      return {
+        identity: {
+          subjectAlternativeName: IDENTITY_URI,
+          extensions: { issuer: ISSUER },
+        },
+      }
+    },
+  })
+
+  assert.equal(result.ok, true)
+  assert.equal(result.identity.subjectAlternativeName, IDENTITY_URI)
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0].length, 2)
+  assert.equal(calls[0][1].certificateIdentityURI, identity.certificateIdentityURI)
+  assert.equal(calls[0][1].certificateIssuer, ISSUER)
+})
+
+test('verifyImpl failures are mapped like sigstore.verify failures', async () => {
+  const result = await verifyBundle(bundle(), {
+    ...identity,
+    verifyImpl: async () => {
+      throw codedError('PolicyError', 'UNTRUSTED_SIGNER_ERROR', 'certificate identity error')
+    },
+  })
+  assert.equal(result.ok, false)
+  assert.deepEqual(result.reasons, ['identity-mismatch'])
+  assert.equal(result.fatal, false)
+})
+
+test('verifyBundle rejects a non-function verifyImpl', async () => {
+  await assert.rejects(
+    () => verifyBundle(bundle(), { ...identity, verifyImpl: 'sigstore.verify' }),
+    /verifyBundle: verifyImpl must be a function/,
+  )
+})
+
 test('verifyBundle rejects malformed bundles without importing sigstore', async () => {
   const fake = fakeSigstore()
   for (const [value, reason] of [
