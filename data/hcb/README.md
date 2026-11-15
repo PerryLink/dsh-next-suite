@@ -1,6 +1,6 @@
 # HCB v0 — Host Compatibility Baseline (seed)
 
-> **Scope note (2026-11-15):** this is a historical host-service **seed** for the six `dsh-os-*` packages at 0.1.x. It is **not** the HCB DOI dataset; the canonical dataset is [`PerryLink/dsh-hcb`](https://github.com/PerryLink/dsh-hcb) (0.14.0). Do not cite these 24 rows as the current 0.2.4 compatibility matrix; the current 0.2.4 install/dump is verified by the `dsh-smoke` job in `dsh-os-suite` CI, not by this historical seed.
+> **Scope note (2026-11-15):** this is a host-service **seed** for the six `dsh-os-*` packages. It contains the historical 0.1.x rows plus a 0.2.4 refresh. It is **not** the HCB DOI dataset; the canonical dataset is [`PerryLink/dsh-hcb`](https://github.com/PerryLink/dsh-hcb) (0.14.0). The 0.2.4 rows are a point-in-time install/dump/test snapshot, not a compatibility guarantee; `dsh-smoke` in `dsh-os-suite` CI re-verifies the current tarballs on every push.
 
 
 This is the seed dataset for a citable **Host Compatibility Baseline**: which DSH plugin packages install, load, and pass their tests on which host and Node version.
@@ -8,9 +8,9 @@ This is the seed dataset for a citable **Host Compatibility Baseline**: which DS
 ## Scope (2026-11-15)
 
 - **Host**: DSH `0.2.2-rc.3` (commit `39163dd`), Linux x64.
-- **Packages**: the six `dsh-os-*` bundles at `0.1.1` and `0.1.2` (source tags `v0.1.1`, `v0.1.2`).
+- **Packages**: the six `dsh-os-*` bundles at `0.1.1`, `0.1.2` (source tags `v0.1.1`, `v0.1.2`) and the current `0.2.4` tarballs.
 - **Node**: `24.22.1` (supported; install + tests) and `22.19.0` (outside the host's supported Node range; tests only).
-- **Rows**: 24 = 6 packages × 2 versions × 2 Node versions.
+- **Rows**: 36 = 6 packages × 3 versions (`0.1.1`, `0.1.2`, `0.2.4`) × 2 Node versions.
 - **Checks**: `dsh plugin --profile web add <tarball>` in an isolated `DSH_HOME`; `dsh --profile web --dump-config` contains the bundle entry; `node --test` counts from the tagged package. `host_supported` records whether the host's `engines.node` range accepts the row's Node version.
 
 ## Fields
@@ -30,9 +30,9 @@ This is the seed dataset for a citable **Host Compatibility Baseline**: which DS
 
 `unsupported` means the host's declared runtime range excludes that Node version, so the check was **not attempted by design**. It is not `false`, not `not-tested`, and not a package-level incompatibility. Every `unsupported` cell pairs with `host_supported=false`; the validator enforces that pairing and the `0.2.2-rc.3` Node floor.
 
-## Evidence behind the 24 rows
+## Evidence behind the 36 rows
 
-### Node 24.22.1 — install and config dump (both versions)
+### Node 24.22.1 — install and config dump (0.1.1, 0.1.2, 0.2.4)
 
 On 2026-11-15, all six tarballs from each tag were packed with `npm pack` and installed into a throwaway `DSH_HOME` (`mktemp -d`, never the user profile):
 
@@ -43,8 +43,9 @@ DSH_HOME=<temp> node .../@deepseek-ai/dsh/lib/bin.js --profile web --dump-config
 
 - `0.1.1`: six `+ dsh-os-* 0.1.1` lines; dump has six `# == dsh-os-*` sections.
 - `0.1.2`: six `+ dsh-os-* 0.1.2` lines; dump has six `# == dsh-os-*` sections.
+- `0.2.4`: six `+ dsh-os-* 0.2.4` lines; dump has six `# == dsh-os-*` sections. Raw output is in [`evidence/2026-11-15/0.2.4/`](evidence/2026-11-15/0.2.4/).
 - Toolchain: Node `24.22.1`, DSH `0.2.2-rc.3`, pnpm `12.16.1`. Peer-dependency warnings were present but did not block install (same warning recorded in `dsh-os-suite/AUDIT.md`).
-- The packed tarballs were compared with the published npm artifacts for both versions (`diff -rq` on the extracted trees): all six contents are identical, so the install evidence applies to the npm packages, not only to the git tags.
+- For `0.1.1`/`0.1.2`, the packed tarballs were compared with the published npm artifacts (`diff -rq` on the extracted trees): all six contents are identical, so the install evidence applies to the npm packages, not only to the git tags. The `0.2.4` rows were collected from the current tagged tarballs; the same `dsh-smoke` job re-checks them in CI.
 - The dump was checked for exactly six `# == dsh-os-*` sections; no other `dsh-os-*` layer appeared.
 
 ### Tests — Node 24.22.1 and Node 22.19.0
@@ -61,6 +62,10 @@ packages/dsh-os-<name>/test/*.test.js`) against both tags:
 | `dsh-os-catalog` | 12 / 12 |
 | `dsh-os-registry` | 16 / 16 |
 
+The `0.2.4` refresh has a larger suite; the per-package counts are in
+[`evidence/2026-11-15/0.2.4/README.md`](evidence/2026-11-15/0.2.4/README.md):
+trace 53, lease 63, quota 73, eval 59, catalog 12, registry 16 (**276** total).
+
 The Node `22.19.0` column was measured with the official `v22.19.0` Linux x64 binary. This agrees with the GitHub Actions CI matrix for the `v0.1.2` tag (run [43596789668](https://github.com/PerryLink/dsh-os-suite/actions/runs/43596789668), job "Node 22.19.0", **90/90 pass**). The `0.1.1` and `0.1.2` test files are byte-identical (the `0.1.2` tag changes versions and READMEs only), so both versions carry the same 90-test split.
 
 ### Node 22.19.0 — install and dump are `unsupported`
@@ -69,7 +74,7 @@ DSH `0.2.2-rc.3` declares `"engines": { "node": ">=24.9.0" }` in the host
 `package.json` (verified 2026-11-15 against the host checkout), so Node
 `22.19.0` is outside the supported host range. The install/profile smoke is
 therefore not a meaningful Node 22 test: `install_ok` and `dump_config_ok` are
-`unsupported` for all twelve Node 22 rows, and `host_supported` is `false`.
+`unsupported` for all eighteen Node 22 rows, and `host_supported` is `false`.
 The package-level `node --test` suite still runs under Node 22, so
 `tests_pass`/`tests_total` remain counts. Do not infer host installability on
 Node 22 from the passing tests.
@@ -78,7 +83,7 @@ Node 22 from the passing tests.
 
 A requested expansion to older hosts produced **no new matrix rows**: neither
 host reached a certifiable install + dump. Per the row rule (success → six
-rows; failure → recorded reason), `matrix.csv` remains at 24 rows.
+rows; failure → recorded reason), the probe adds no rows; `matrix.csv` is 36 rows (24 seed + 12 from the 0.2.4 refresh).
 
 | Host | `npx` probe | `install_ok` | `dump_config_ok` | Outcome |
 |---|---|---|---|---|
@@ -99,11 +104,11 @@ Probe details:
 
 ## Limits
 
-- One host version (`0.2.2-rc.3`), one OS (Linux x64), two Node versions. This is **not** a compatibility guarantee.
+- One host version (`0.2.2-rc.3`), one OS (Linux x64), two Node versions, three package versions (`0.1.1`, `0.1.2`, `0.2.4`). This is **not** a compatibility guarantee.
 - Node 22 rows are **test-only**: `tests_pass/tests_total` only, with `host_supported=false` and `install_ok`/`dump_config_ok` = `unsupported`.
 - No Windows/macOS rows; no `0.2.1` or `0.2.2-rc.1` rows (see the probe above — `0.2.1` is unpublished and `0.2.2-rc.1` rejects `dsh-os-*@0.2.1` via `engines.dsh`); no `0.1.0` rows.
-- `0.1.2` is a version-alignment release: its runtime source and tests match `0.1.1`, so the identical test counts are expected, not independent re-certification of the feature set.
-- The date column records when the evidence was collected; `2026-11-14` rows are the original seed, `2026-11-15` rows are this expansion.
+- `0.1.2` is a version-alignment release: its runtime source and tests match `0.1.1`, so the identical test counts are expected, not independent re-certification of the feature set. `0.2.4` is the current feature release; its rows are the current host-service snapshot.
+- The date column records when the evidence was collected; `2026-11-14` rows are the original seed, `2026-11-15` rows are the 0.1.x expansion and the 0.2.4 refresh.
 - Expand by adding rows, not by editing old ones (keep the time series append-only). If a check was not run, write `not-tested`; if the host's engine range excludes the Node version, write `host_supported=false` and `unsupported` for host-level checks; never turn an untested or unsupported cell into `true`.
 
 ## Cite

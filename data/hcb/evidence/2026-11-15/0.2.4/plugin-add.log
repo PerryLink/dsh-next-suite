@@ -1,0 +1,19 @@
+dsh: initialized profile web at <temp DSH_HOME>/profiles/web
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <pnpm store>
+  Virtual store is at:             node_modules/.pnpm
+Packages: +6
+++++++
+Progress: resolved 6, reused 0, downloaded 6, added 6, done
+[WARN] Issues with peer dependencies found. Run "pnpm peers check" to list them.
+
+dependencies:
++ dsh-os-catalog 0.2.4
++ dsh-os-eval 0.2.4
++ dsh-os-lease 0.2.4
++ dsh-os-quota 0.2.4
++ dsh-os-registry 0.2.4
++ dsh-os-trace 0.2.4
+
+Done in 63ms using pnpm v12.16.1

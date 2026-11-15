@@ -3,7 +3,7 @@
 > **SUPERSEDED / SCOPE NOTE (2026-11-15):** this file is a **historical HCB v0.5.1 draft** for the `PerryLink/dsh-hcb` repo, retained as a Zenodo submission template. The canonical dataset is now `dsh-hcb@0.14.0`; the 24-row matrix under `data/hcb/` in this suite is a host-service seed, not the DOI dataset. Do not submit this metadata as-is: re-pin the version, row/evidence counts and licence against the canonical repo first.
 
 
-> Seed dataset: `data/hcb/matrix.csv` (6 packages × `0.1.1`/`0.1.2` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`; **24 rows**). Node 22 install/dump cells are `unsupported` because the host declares Node `>=24.9.0`; expand rows before DOI submission.
+> Seed dataset: `data/hcb/matrix.csv` (6 packages × `0.1.1`/`0.1.2`/`0.2.4` × Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`; **36 rows**). Node 22 install/dump cells are `unsupported` because the host declares Node `>=24.9.0`. This seed is not the DOI dataset; the canonical dataset is `dsh-hcb`.
 
 > **状态：draft / planned。** 本文件是提交前的可执行草稿，**不是**已发布记录。
 > 截至 2026-11-14：**DOI 未分配**、**Zenodo record 未创建**、**没有对外提交**。
