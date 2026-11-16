@@ -1,8 +1,8 @@
 # npm Trusted Publishing (OIDC) — status and steps
 
 > **Status (2026-11-16): blocked on npm account 2FA.** The release workflows still
-> use the `NPM_TOKEN` secret. `npm trust github` was attempted for
-> `dsh-os-trace` and returned `E403`: the configured granular access token
+> use the `NPM_TOKEN` secret. `npm trust github` was attempted on
+> `dsh-os-trace` in the sibling `dsh-os-suite` as a token-permission probe and returned `E403`: the configured granular access token
 > bypasses 2FA, and npm refuses that token for trusted-publisher changes.
 > Do not remove `NPM_TOKEN` until all eight packages are configured.
 
