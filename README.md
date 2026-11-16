@@ -46,6 +46,8 @@ This suite is deliberately **not** another set of governance packages. It target
 ## Status (2026-11-15)
 
 - **342/342 tests** across the eight packages (`npm test`; template is outside `packages/`).
+- **Branch protection**: `main` requires a PR, the CI/CodeQL checks, and an up-to-date branch; force pushes and deletion are blocked.
+- **Release auth**: `NPM_TOKEN` (transitional); trusted-publishing steps are in [`docs/trusted-publishing.md`](docs/trusted-publishing.md).
 - **Coverage gate**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`).
 - **19 `src/*.js` files** pass `node --check`.
 - **Data**: the local HCB seed has **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + current `0.2.4`, on Node `22.19.0`/`24.22.1`; Node 22 rows are `host_supported=false` with install/dump `unsupported`) and is not the DOI dataset (canonical: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); the upgrade atlas has **50 entries**, **49** with a concrete `to` release and **1** marked `target unknown`.
