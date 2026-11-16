@@ -47,6 +47,7 @@ This suite is deliberately **not** another set of governance packages. It target
 
 - **342/342 tests** across the eight packages (`npm test`; template is outside `packages/`).
 - **Branch protection**: `main` requires a PR, the CI/CodeQL checks, and an up-to-date branch; force pushes and deletion are blocked.
+- **Release provenance**: published GitHub releases carry a `.intoto.jsonl` asset generated from npm attestations (manually for `v0.2.4`, automatically for future releases via `.github/workflows/release-provenance.yml`).
 - **Release auth**: `NPM_TOKEN` (transitional); trusted-publishing steps are in [`docs/trusted-publishing.md`](docs/trusted-publishing.md).
 - **Coverage gate**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`).
 - **19 `src/*.js` files** pass `node --check`.
