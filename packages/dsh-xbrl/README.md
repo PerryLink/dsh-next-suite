@@ -42,7 +42,7 @@ policy or assure a filing.
 
 ## Install
 
-`dsh-xbrl` 0.2.4 is published on npm:
+`dsh-xbrl` 0.2.5 is published on npm:
 
 ```sh
 npm install dsh-xbrl

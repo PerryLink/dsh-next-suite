@@ -8,7 +8,7 @@
 Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
-> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.4` on npm (2026-11-15).
+> Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.5` on npm (2026-11-19).
 
 This suite is deliberately **not** another set of governance packages. It targets the gaps left after [`dsh-os-suite`](../dsh-os-suite/): plugin trust, Cordis developer experience, and a domain-data check.
 
@@ -41,20 +41,20 @@ This suite is deliberately **not** another set of governance packages. It target
 - [`CREDENTIALS.md`](CREDENTIALS.md) — 90-day credential plan (DOI, OpenSSF badge, FSE'27, IETF/W3C, 职称). No fabricated results.
 - [`DOJO.md`](DOJO.md) — two hands-on labs: Hello Plugin and Governance Lab, with acceptance criteria.
 - [`ECOSYSTEM-ATLAS.md`](ECOSYSTEM-ATLAS.md) — 64-entity ecosystem atlas (JSON: [`data/ecosystem-atlas.json`](data/ecosystem-atlas.json)), not an exhaustive directory; validate with `npm run validate:atlas`.
-- [`data/hcb/`](data/hcb/) — HCB host-service **seed** dataset, **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + current `0.2.4`, each on Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`). This is a point-in-time seed, **not** the HCB DOI dataset; the canonical dataset is [`PerryLink/dsh-hcb`](https://github.com/PerryLink/dsh-hcb). `host_supported` marks Node versions outside the host's `engines.node` range (their install/dump cells are `unsupported`), and `not-tested` marks checks without evidence. Validate with `npm run validate:hcb`.
+- [`data/hcb/`](data/hcb/) — HCB host-service **seed** dataset, **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + a `0.2.4` snapshot, each on Node `22.19.0`/`24.22.1`, host DSH `0.2.2-rc.3`). This is a point-in-time seed, **not** the HCB DOI dataset; the canonical dataset is [`PerryLink/dsh-hcb`](https://github.com/PerryLink/dsh-hcb). `host_supported` marks Node versions outside the host's `engines.node` range (their install/dump cells are `unsupported`), and `not-tested` marks checks without evidence. Validate with `npm run validate:hcb`.
 
 ## Status (2026-11-15)
 
 - **342/342 tests** across the eight packages (`npm test`; template is outside `packages/`).
 - **Branch protection**: `main` requires a PR, the CI/CodeQL checks, and an up-to-date branch; force pushes and deletion are blocked.
-- **Release provenance**: published GitHub releases carry a `.intoto.jsonl` asset generated from npm attestations (manually for `v0.2.4`, automatically for future releases via `.github/workflows/release-provenance.yml`).
+- **Release provenance**: published GitHub releases carry a `.intoto.jsonl` asset generated from npm attestations (manually for `v0.2.4`+, automatically for future releases via `.github/workflows/release-provenance.yml`).
 - **Release auth**: npm Trusted Publishing (OIDC); the legacy `NPM_TOKEN` is retained only until one tag release verifies the OIDC path. Steps/history: [`docs/trusted-publishing.md`](docs/trusted-publishing.md).
 - **Coverage gate**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`).
 - **19 `src/*.js` files** pass `node --check`.
-- **Data**: the local HCB seed has **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + current `0.2.4`, on Node `22.19.0`/`24.22.1`; Node 22 rows are `host_supported=false` with install/dump `unsupported`) and is not the DOI dataset (canonical: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); the upgrade atlas has **50 entries**, **49** with a concrete `to` release and **1** marked `target unknown`.
+- **Data**: the local HCB seed has **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + a `0.2.4` snapshot, on Node `22.19.0`/`24.22.1`; Node 22 rows are `host_supported=false` with install/dump `unsupported`) and is not the DOI dataset (canonical: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); the upgrade atlas has **50 entries**, **49** with a concrete `to` release and **1** marked `target unknown`.
 - **8/8 names** were verified free before publish (npm E404, GitHub 0); all are now published under this project.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md) (historical, 0.1.x); contract fixes tracked in `CONTRACT-FIX.md`.
-- **Published**: all eight packages at `0.2.4` on npm (2026-11-15); GitHub repo and `v0.2.4` release.
+- **Published**: all eight packages at `0.2.5` on npm (2026-11-19); GitHub repo and `v0.2.5` release.
 
 ## Quick start
 

@@ -12,7 +12,7 @@ Markdown migration sheet.
 > notes 为准。
 
 - **Package:** `dsh-upgrade-atlas`
-- **Version:** 0.2.4 (published on npm)
+- **Version:** 0.2.5 (published on npm)
 - **License:** Apache-2.0
 - **Runtime:** Node.js `^22.19.0 || >=24.9.0`
 - **Data:** 50 curated DSH 0.1.7–0.2.4-rc.2 breakpoints in [`data/atlas.json`](data/atlas.json); 49 carry a concrete `to` release, 1 is `*` with `target unknown`
@@ -51,7 +51,7 @@ in traceable evidence and a stable query shape, not in exhaustive coverage.
 
 ## Install
 
-The package is published as `dsh-upgrade-atlas@0.2.4`. From npm:
+The package is published as `dsh-upgrade-atlas@0.2.5`. From npm:
 
 ```sh
 node packages/dsh-upgrade-atlas/src/cli.js --help

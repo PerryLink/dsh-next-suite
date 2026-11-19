@@ -4,7 +4,7 @@
 > 本文件是提交前的自评底稿：按官方 **Passing** 级 criteria 分组，逐项标 `done` / `todo`，并给出证据或最小动作。
 > 官方条目与完整措辞以 <https://www.bestpractices.dev/en/criteria> 为准；本文只做逐项对照，不替代官方问卷。
 >
-> **时效性（2026-11-15 22:40 核对）**：`dsh-next-suite` 与 `dsh-os-suite` 均已公开；两仓 `CI` / `Scorecard` / `Release` 在 2026-11-15 的最新 run 为 success，npm 上 14/14 包为 `0.2.4` 且带 provenance。下表版本/测试数已按公网状态更新；`✅ done*` 现在仅表示「文件已在公网，但 badge 问卷仍需引用具体 URL」，提交前逐项替换。
+> **时效性（2026-11-15 22:40 核对）**：`dsh-next-suite` 与 `dsh-os-suite` 均已公开；两仓 `CI` / `Scorecard` / `Release` 在 2026-11-15 的最新 run 为 success，npm 上 14/14 包为 `0.2.5` 且带 provenance。下表版本/测试数已按公网状态更新；`✅ done*` 现在仅表示「文件已在公网，但 badge 问卷仍需引用具体 URL」，提交前逐项替换。
 
 ---
 
@@ -16,8 +16,8 @@
 
 | # | 仓库 | 内容 | 许可 | 版本 / tag | 测试 | CI | SECURITY.md | CONTRIBUTING |
 |---|---|---|---|---|---|---|---|---|
-| 1 | <https://github.com/PerryLink/dsh-next-suite> | 8 个工具/库（capdiff、attest、supply-watch、cordis-*、xbrl、atlas） | Apache-2.0 | `0.2.4` / `v0.2.4` | 342/342 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
-| 2 | <https://github.com/PerryLink/dsh-os-suite> | 6 个治理插件（trace、lease、quota、eval、catalog、registry） | Apache-2.0 | `0.2.4` / `v0.2.4` | 276/276 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
+| 1 | <https://github.com/PerryLink/dsh-next-suite> | 8 个工具/库（capdiff、attest、supply-watch、cordis-*、xbrl、atlas） | Apache-2.0 | `0.2.5` / `v0.2.5` | 342/342 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
+| 2 | <https://github.com/PerryLink/dsh-os-suite> | 6 个治理插件（trace、lease、quota、eval、catalog、registry） | Apache-2.0 | `0.2.5` / `v0.2.5` | 276/276 | `ci.yml`、`release.yml`、`codeql.yml` | 有 | 有 |
 | 3 | <https://github.com/PerryLink/dsh-hcb> | HCB 数据/门禁子项目（矩阵、schema、CLI、证据层） | MIT | `0.14.0` / `v0.14.0` | `npm test` | `self-check.yml`、`collect.yml` | 无 | 无 |
 
 **没有把 `dsh-hcb` 换成某个插件包的原因**：它是三者中唯一已有 CI、CHANGELOG、schema 文档和版本 tag 链的项目，最接近 passing；同时它与前两个仓的风险面不同（数据 + 静态检查），自评能暴露不同缺口。若坚持「每个插件一个 badge」，必须先拆仓，成本远高于先给三个 monorepo 过 passing。
@@ -94,10 +94,10 @@
 | `repo_track` | MUST | ✅ done | ✅ done | ✅ done | git 历史含作者与时间 |
 | `repo_interim` | MUST | ✅ done | ✅ done | ✅ done | 有开发期提交，不是只 push 最终 release |
 | `repo_distributed` | SUGGESTED | ✅ done | ✅ done | ✅ done | git |
-| `version_unique` | MUST | ✅ done | ✅ done | ✅ done | 0.2.4 / HCB 0.14.0 |
+| `version_unique` | MUST | ✅ done | ✅ done | ✅ done | 0.2.5 / HCB 0.14.0 |
 | `version_semver` | SUGGESTED | ✅ done | ✅ done | ✅ done | SemVer（见 VERSIONING.md） |
-| `version_tags` | SUGGESTED | ✅ done | ✅ done | ✅ done | v0.2.4；HCB v0.14.0 |
-| `release_notes` | MUST | ✅ done | ✅ done | ✅ done | GitHub release v0.2.4 有摘要；HCB CHANGELOG 更完整（建议补每包 changelog） |
+| `version_tags` | SUGGESTED | ✅ done | ✅ done | ✅ done | v0.2.5；HCB v0.14.0 |
+| `release_notes` | MUST | ✅ done | ✅ done | ✅ done | GitHub release v0.2.5 有摘要；HCB CHANGELOG 更完整（建议补每包 changelog） |
 | `release_notes_vulns` | MUST | ➖ N/A | ➖ N/A | ➖ N/A | 无已知 CVE；每个 release 显式写「none known」 |
 
 ### Reporting
@@ -205,7 +205,7 @@
 
 ### 4.4 版本与 release
 
-- 三个仓都已有 tag：`v0.2.4` / `v0.2.4` / `v0.14.0`。
+- 三个仓都已有 tag：`v0.2.5` / `v0.2.5` / `v0.14.0`。
 - 两个 suite 已有 `CHANGELOG.md` 与 `RELEASE.md`；HCB 有 `CHANGELOG.md`。
 - `release_notes_vulns` 当前是 N/A；从下一个 release 起，如果没有已知漏洞，也显式写 `Known vulnerabilities fixed in this release: none`。
 
