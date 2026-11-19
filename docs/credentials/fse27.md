@@ -40,7 +40,7 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 **评估**：已可复算的是试点数字与 17 例合成基准（§4）：capability-level precision 92.31%、recall 80.00%（合成样本，不能外推）。**尚未测**公开插件上的 precision/recall、跨项目误报率、reviewer 节省时间；论文投稿前必须补一个有标注的公开插件样本，否则不能把「有效」写成结论。
 
-**Artifact**：`dsh-capdiff@0.2.4`（npm，Apache-2.0）、GitHub 仓库、`npm test`、17 例合成基准（`benchmarks/capdiff/`）；Zenodo DOI 为 **planned**，尚未分配。
+**Artifact**：`dsh-capdiff@0.2.5`（npm，Apache-2.0）、GitHub 仓库、`npm test`、17 例合成基准（`benchmarks/capdiff/`）；Zenodo DOI 为 **planned**，尚未分配。
 
 **截止日期**：`CREDENTIALS.md` 里的 2027-01-26 / 2027-01-23 只是计划估计，**不是官方日期**。投稿前必须打开 FSE'27 官网核对 Important Dates；官网未发布就写「待定」，不要对外承诺。
 
@@ -57,7 +57,7 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 | 14 个一方包，0 个声明 `dsh.capabilities` | `node -e` 遍历 14 个 `package.json` | 这些是 CLI/库，部分本来就不该有 manifest；论文里要说清「pilot 是工具自检，不是插件生态结论」 |
 | 58 个源文件、32 类未声明能力 | `dsh-capdiff <pkg> --json` × 14；`diff.undeclared.length` 求和 | 未传 manifest 时声明为空，32 必然全部 undeclared；这是**上限**，不是生态估计 |
 | CapDiff 单测 39/39 | `cd packages/dsh-capdiff && npm test` | 与 8 包 342/342 分开报 |
-| 17 例合成基准：capability P=92.31% / R=80.00%；in-scope R=100% | `node benchmarks/capdiff/run.mjs`；`benchmarks/capdiff/RESULTS.md` | **合成、人工挑选**；benchmark 已进入 `v0.2.4` tag，投稿 artifact 可从该 tag 复现 |
+| 17 例合成基准：capability P=92.31% / R=80.00%；in-scope R=100% | `node benchmarks/capdiff/run.mjs`；`benchmarks/capdiff/RESULTS.md` | **合成、人工挑选**；benchmark 已进入 `v0.2.5` tag，投稿 artifact 可从该 tag 复现 |
 
 ### 4.2 投稿前必须补（当前 TODO）
 
@@ -92,8 +92,8 @@ Agent plugins extend a host with tools, but they also request capabilities such 
 
 | 项 | 当前 | 投稿前目标 |
 |---|---|---|
-| 代码 | <https://github.com/PerryLink/dsh-next-suite>（`packages/dsh-capdiff`） | 工具在 `v0.2.4`；benchmark 已随 `v0.2.4` tag 发布，可从 tag 复现 |
-| npm | `dsh-capdiff@0.2.4` | 保留 `0.2.4`；artifact 评审用 `npm pack` 的 tarball + SHA-256 |
+| 代码 | <https://github.com/PerryLink/dsh-next-suite>（`packages/dsh-capdiff`） | 工具在 `v0.2.5`；benchmark 已随 `v0.2.5` tag 发布，可从 tag 复现 |
+| npm | `dsh-capdiff@0.2.5` | 保留 `0.2.5`；artifact 评审用 `npm pack` 的 tarball + SHA-256 |
 | 许可 | Apache-2.0 | 不变 |
 | 测试 | `dsh-capdiff` 39/39；全套件 342/342 | CI 跑 Node 22.19 / 24.x；benchmark 用独立命令 |
 | 数据 | HCB（canonical `dsh-hcb`；本稿表格数字来自 v0.5.1 快照，投稿前重算） | Zenodo DOI（planned；见 `hcb-doi.md`，该文件已标 SUPERSEDED） |

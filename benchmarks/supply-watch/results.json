@@ -3,9 +3,9 @@
   "description": "Offline typosquat/lookalike benchmark over a curated known-name baseline, synthetic lookalike variants, 20 baseline legitimate names and 30 real legitimate npm names.",
   "tool": {
     "packageName": "dsh-supply-watch",
-    "packageVersion": "0.2.4"
+    "packageVersion": "0.2.5"
   },
-  "generatedAt": "2026-11-15T14:49:21.462Z",
+  "generatedAt": "2026-11-19T04:37:51.436Z",
   "node": "v24.22.1",
   "counts": {
     "known": 20,

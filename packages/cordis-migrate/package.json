@@ -1,6 +1,6 @@
 {
   "name": "cordis-migrate",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Cordis 3→4 migration rule engine with community-curated, unofficial rules: scan, dry-run, apply, list rules. Some rules are experimental.",
   "type": "module",
   "license": "Apache-2.0",

@@ -233,8 +233,9 @@ test('apply --help exits 0 without touching files', async (t) => {
   assert.equal(await readFile(join(dir, 'src', 'a.js'), 'utf8'), original)
 })
 
-test('--version reports the package version without scanning', () => {
+test('--version reports the package version without scanning', async () => {
+  const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'))
   const result = run(['--version'])
   assert.equal(result.status, 0)
-  assert.match(result.stdout, /cordis-migrate 0\.2\.4/)
+  assert.match(result.stdout, new RegExp(`cordis-migrate ${manifest.version.replaceAll('.', '\\.')}`))
 })

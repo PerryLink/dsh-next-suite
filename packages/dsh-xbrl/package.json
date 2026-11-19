@@ -1,6 +1,6 @@
 {
   "name": "dsh-xbrl",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Offline XBRL-style financial fact reconciliation and restatement diff.",
   "type": "module",
   "license": "Apache-2.0",

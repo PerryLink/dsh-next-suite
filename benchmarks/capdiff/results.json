@@ -3,10 +3,10 @@
   "description": "Declaration-vs-static-use benchmark over 17 synthetic DSH-style plugin fixtures and 17 real code excerpts (14 workspace packages + 2 DSH docs examples).",
   "tool": {
     "name": "dsh-capdiff",
-    "coreVersion": "0.2.4",
-    "packageVersion": "0.2.4"
+    "coreVersion": "0.2.5",
+    "packageVersion": "0.2.5"
   },
-  "generatedAt": "2026-11-15T14:49:21.409Z",
+  "generatedAt": "2026-11-19T04:37:51.360Z",
   "node": "v24.22.1",
   "corpora": {
     "synthetic": {

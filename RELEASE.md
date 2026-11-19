@@ -3,9 +3,9 @@
 How the eight packages in this repo are tested, published with provenance,
 verified and rolled back.
 
-**Current state (2026-11-15):** all eight packages are published at `0.2.4`,
-and `v0.2.4` is the current GitHub release. The next release must therefore use
-a new version, e.g. `0.2.5` / tag `v0.2.5`.
+**Current state (2026-11-19):** all eight packages are published at `0.2.5`,
+and `v0.2.5` is the current GitHub release. The next release must therefore use
+a new version, e.g. `0.2.6` / tag `v0.2.6`.
 
 - Packages: `cordis-hmr-doctor`, `cordis-migrate`, `cordis-testkit`,
   `dsh-capdiff`, `dsh-supply-watch`, `dsh-upgrade-atlas`, `dsh-xbrl`,
@@ -99,19 +99,19 @@ workflow uses.
    This packs each package, runs `npm install --ignore-scripts` into a temp
    project, imports the package by name, and runs every CLI's `--version`. It
    leaves the repo untouched.
-5. Commit through a PR, e.g. `chore(release): 0.2.5`, merge to `main`, and wait
+5. Commit through a PR, e.g. `chore(release): 0.2.6`, merge to `main`, and wait
    for the `CI` workflow to pass on the merge commit.
 6. Create and push an annotated tag on that commit:
    ```sh
-   git tag -a v0.2.5 -m "dsh-next-suite 0.2.5"
-   git push origin v0.2.5
+   git tag -a v0.2.6 -m "dsh-next-suite 0.2.6"
+   git push origin v0.2.6
    ```
-   Do not tag `v0.2.4` again: those versions already exist on npm and the
+   Do not tag `v0.2.5` again: those versions already exist on npm and the
    release preflight rejects them.
 
 ### CLI `--version` strings
 
-All seven CLIs print `0.2.4` (verified 2026-11-15); `cordis-testkit` has no
+All seven CLIs print `0.2.5` (verified 2026-11-19); `cordis-testkit` has no
 binary. The version constants live in the CLI source, so a bump must update
 them together with `package.json` and the README status line.
 
@@ -158,17 +158,17 @@ Permissions are deliberately minimal: `contents: read` and `id-token: write`.
    `https://github.com/PerryLink/dsh-next-suite/actions/workflows/release.yml`
 2. Registry metadata and provenance are present:
    ```sh
-   npm view dsh-xbrl@0.2.5 version dist.integrity dist.attestations
+   npm view dsh-xbrl@0.2.6 version dist.integrity dist.attestations
    ```
    `dist.attestations` should contain a `provenance` entry whose predicate points
    at this repo, the tag commit and `release.yml`.
 3. The raw attestation is also available at:
-   `https://registry.npmjs.org/-/npm/v1/attestations/dsh-xbrl@0.2.5`
+   `https://registry.npmjs.org/-/npm/v1/attestations/dsh-xbrl@0.2.6`
 4. Verify signatures from a scratch consumer project:
    ```sh
    mkdir /tmp/dsh-next-sig-check && cd /tmp/dsh-next-sig-check
    npm init -y
-   npm install dsh-xbrl@0.2.5
+   npm install dsh-xbrl@0.2.6
    npm audit signatures
    ```
    It should report verified registry signatures and provenance attestations for
@@ -177,16 +177,16 @@ Permissions are deliberately minimal: `contents: read` and `id-token: write`.
    ```sh
    for pkg in cordis-hmr-doctor cordis-migrate cordis-testkit dsh-capdiff \
               dsh-supply-watch dsh-upgrade-atlas dsh-xbrl testatum-attest; do
-     npm view "$pkg@0.2.5" version
+     npm view "$pkg@0.2.6" version
    done
    ```
 6. Run every installed CLI once, and check the atlas help:
    ```sh
    for pkg in cordis-hmr-doctor cordis-migrate dsh-capdiff dsh-supply-watch \
               dsh-upgrade-atlas dsh-xbrl testatum-attest; do
-     npx --yes "$pkg@0.2.5" --version
+     npx --yes "$pkg@0.2.6" --version
    done
-   npx --yes dsh-upgrade-atlas@0.2.5 --help
+   npx --yes dsh-upgrade-atlas@0.2.6 --help
    ```
    `cordis-testkit` is the only package without a CLI; CI's `cli-smoke` job
    checks it by installing the packed tarballs into a scratch consumer and
@@ -200,8 +200,8 @@ Decide first whether anything reached the registry.
 
 The tag was wrong or the run failed before `npm publish`:
 ```sh
-git tag -d v0.2.5
-git push origin :refs/tags/v0.2.5
+git tag -d v0.2.6
+git push origin :refs/tags/v0.2.6
 ```
 Fix the commit, merge to `main`, then tag again. No registry state to clean up.
 
@@ -229,10 +229,10 @@ npm does not allow a published version to be replaced. Use, in order:
 
 1. **Deprecate** the affected versions so installs warn immediately:
    ```sh
-   npm deprecate 'dsh-xbrl@0.2.5' 'Broken release: <reason>. Use 0.2.6.'
+   npm deprecate 'dsh-xbrl@0.2.6' 'Broken release: <reason>. Use 0.2.6.'
    ```
    Repeat for each affected package. Deprecation is reversible with
-   `npm deprecate 'dsh-xbrl@0.2.5' ''`.
+   `npm deprecate 'dsh-xbrl@0.2.6' ''`.
 2. **Publish a fixed patch** (`0.2.6`). This moves the `latest` dist-tag and
    creates new provenance attestations.
 3. **Unpublish only as a last resort.** npm allows unpublishing a version only
@@ -240,7 +240,7 @@ npm does not allow a published version to be replaced. Use, in order:
    package or a version older than that requires npm support and is not
    guaranteed. If used:
    ```sh
-   npm unpublish dsh-xbrl@0.2.5 --force
+   npm unpublish dsh-xbrl@0.2.6 --force
    ```
    Unpublishing does not restore trust: consumers may still have the tarball.
 
@@ -270,7 +270,7 @@ its own after a few minutes.
 - Never create a tag such as `v0.0.0-stage`. The release workflow rejects any tag
   whose version does not equal every package version.
 - Tarballs built from a scratch/staging version are for local experiments only;
-  never promote them to a release. Always bump to a real semver (`0.2.5`,
+  never promote them to a release. Always bump to a real semver (`0.2.6`,
   `0.2.0`, …) before tagging.
 - If the placeholder is still visible after ~30 minutes, verify the release with
   `npm view <pkg> versions` and check the workflow logs before doing anything.

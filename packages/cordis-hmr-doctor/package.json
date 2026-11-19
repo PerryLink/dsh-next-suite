@@ -1,6 +1,6 @@
 {
   "name": "cordis-hmr-doctor",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Explain Cordis HMR logs: parse settled/aborted/skipped lines and suggest likely causes. Unofficial.",
   "type": "module",
   "license": "Apache-2.0",
