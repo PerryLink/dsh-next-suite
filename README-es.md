@@ -74,7 +74,7 @@ Esta suite deliberadamente **no** es otro conjunto de paquetes de gobernanza. Cu
 - **Procedencia de la release**: las releases de GitHub publicadas llevan un asset `.intoto.jsonl` generado a partir de attestations de npm (manual para `v0.2.4`+, automático para las futuras vía `.github/workflows/release-provenance.yml`).
 - **Autenticación de release**: npm Trusted Publishing (OIDC), verificado con la release `v0.2.5`; el secret `NPM_TOKEN` heredado se ha eliminado. Pasos e historial: [`docs/trusted-publishing.md`](docs/trusted-publishing.md).
 - **Compuerta de cobertura**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`).
-- **19 archivos `src/*.js`** pasan `node --check`.
+- **20 archivos `src/*.js`** pasan `node --check`.
 - **Datos**: la semilla local de HCB tiene **36 filas** (6 paquetes × tres versiones: dos versiones semilla de la era 0.1.x y una instantánea `0.2.4`, en Node `22.19.0`/`24.22.1`; las filas de Node 22 son `host_supported=false` con install/dump `unsupported`) y no es el conjunto de datos DOI (canónico: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); el atlas de actualizaciones tiene **50 entradas**, **49** con una release `to` concreta y **1** marcada como `target unknown`.
 - **8/8 nombres** se verificaron libres antes de publicar (npm E404, GitHub 0); ahora los ocho están publicados bajo este proyecto.
 - **Auditoría previa a la release**: [`AUDIT.md`](AUDIT.md) (histórica, 0.1.x); las correcciones de contrato se registran en `CONTRACT-FIX.md`.

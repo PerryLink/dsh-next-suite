@@ -74,7 +74,7 @@
 - **发布溯源**：已发布的 GitHub release 带一个由 npm attestation 生成的 `.intoto.jsonl` 资产（`v0.2.4`+ 为手工，之后由 `.github/workflows/release-provenance.yml` 自动生成）。
 - **发布认证**：npm Trusted Publishing（OIDC），已由 `v0.2.5` 发布验证；旧的 `NPM_TOKEN` secret 已移除。步骤/历史：[`docs/trusted-publishing.md`](docs/trusted-publishing.md)。
 - **覆盖率门禁**：lines 85% / functions 80% / branches 70%（`npm run test:coverage`）。
-- **19 个 `src/*.js` 文件**通过 `node --check`。
+- **20 个 `src/*.js` 文件**通过 `node --check`。
 - **数据**：本地 HCB 种子有 **36 行**（6 个包 × 三个版本：两个 0.1.x 时代种子版本 + 一个 `0.2.4` 快照，在 Node `22.19.0`/`24.22.1` 上；Node 22 行是 `host_supported=false`，install/dump 记为 `unsupported`），不是 DOI 数据集（权威：[`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)）；升级图谱有 **50 条**，其中 **49** 条带具体 `to` 版本，**1** 条标为 `target unknown`。
 - **8/8 个名字**发布前核实可用（npm E404、GitHub 0）；现在都已在本项目下发布。
 - **发布前审计**：[`AUDIT.md`](AUDIT.md)（历史，0.1.x）；契约修复记录在 `CONTRACT-FIX.md`。
