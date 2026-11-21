@@ -1,11 +1,27 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-next-suite-hero-en-dark.webp">
+  <img src="docs/assets/dsh-next-suite-hero-en-light.webp" width="100%" alt="dsh-next-suite: eight small tools in one trust chain — dsh-capdiff compares declared capabilities with imports, testatum-attest signs a trust card, dsh-supply-watch checks npm lookalikes — and the local gates below report 342 tests passing, 2/2 dojo labs, both benchmark corpora and a valid 64-entity atlas">
+</picture>
+
 # dsh-next-suite
 
-[![CI](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml)
+**Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plugin trust, Cordis developer experience, and one domain-data check.**
 
+*Seven CLIs and one library, pure ESM with no build step and offline tests; five local gates are the evidence quoted below. Plus three non-code artifacts: a dojo, an ecosystem atlas and a credential plan.*
+
+English · [简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24.9-brightgreen.svg)]()
+[![CI](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/PerryLink/dsh-next-suite/actions/workflows/ci.yml)
 
 [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
-Eight small, composable tools for the DeepSeek Harness / Cordis / agent-plugin ecosystem — plus three non-code artifacts (credentials, a dojo, an atlas).
+</div>
+
+---
 
 > **Community project. Not affiliated with, sponsored by, or endorsed by DeepSeek.**
 > Apache-2.0. No SLA, no warranty. Early MVP, published as `0.2.5` on npm (2026-11-19).
@@ -24,6 +40,14 @@ This suite is deliberately **not** another set of governance packages. It target
 | [`cordis-testkit`](packages/cordis-testkit/) | library | Mock Cordis context plus effect/listener leak assertions. |
 | [`dsh-xbrl`](packages/dsh-xbrl/) | CLI | Offline XBRL fact reconciliation and restatement diff. |
 | [`dsh-upgrade-atlas`](packages/dsh-upgrade-atlas/) | CLI/data | Curated DSH upgrade breakpoints: query and render Markdown. |
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-next-suite-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-next-suite-flow-v5-light.svg" width="100%" alt="dsh-next-suite structure: eight packages in three groups — plugin trust (dsh-capdiff, testatum-attest, dsh-supply-watch), Cordis developer experience (cordis-hmr-doctor, cordis-migrate, cordis-testkit) and data (dsh-xbrl, dsh-upgrade-atlas) — feeding five local gates: npm test, dojo, bench, atlas and hcb validation; findings are leads, not verdicts">
+</picture>
+
+*Structure: three groups — trust, Cordis DX and data — each package a CLI or a library, and one shared set of five offline gates. `findings[]` from capdiff and supply-watch are static leads a reviewer confirms; testatum verifies a signed card offline. The token labels inside the diagram are the real package, gate and directory names, so the same picture serves all five languages.*
 
 ## npm
 
@@ -57,6 +81,11 @@ This suite is deliberately **not** another set of governance packages. It target
 - **Published**: all eight packages at `0.2.5` on npm (2026-11-19); GitHub repo and `v0.2.5` release.
 
 ## Quick start
+
+![dsh-next-suite local gates: the real dojo run with 2/2 labs passing, the two benchmark runners' real output (capdiff 17 synthetic + 17 real fixtures; supply-watch 20 known / 30 variants / 50 legit), and validation of the 64-entry ecosystem atlas](docs/assets/dsh-next-suite-demo.gif)
+
+*Animated: real stdout of `npm test` (TAP reporter summary), `npm run dojo` and `npm run bench` on 2026-11-21 (Node v24.22.1). The test summary goes through Node's TAP reporter so every line is plain ASCII; benchmark numbers describe the two curated corpora only.*
+
 
 ```sh
 npm test
