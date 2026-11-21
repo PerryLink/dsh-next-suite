@@ -74,7 +74,7 @@ This suite is deliberately **not** another set of governance packages. It target
 - **Release provenance**: published GitHub releases carry a `.intoto.jsonl` asset generated from npm attestations (manually for `v0.2.4`+, automatically for future releases via `.github/workflows/release-provenance.yml`).
 - **Release auth**: npm Trusted Publishing (OIDC), verified by the `v0.2.5` release; the legacy `NPM_TOKEN` secret has been removed. Steps/history: [`docs/trusted-publishing.md`](docs/trusted-publishing.md).
 - **Coverage gate**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`).
-- **19 `src/*.js` files** pass `node --check`.
+- **20 `src/*.js` files** pass `node --check`.
 - **Data**: the local HCB seed has **36 rows** (6 packages × three versions: two 0.1.x-era seed versions + a `0.2.4` snapshot, on Node `22.19.0`/`24.22.1`; Node 22 rows are `host_supported=false` with install/dump `unsupported`) and is not the DOI dataset (canonical: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); the upgrade atlas has **50 entries**, **49** with a concrete `to` release and **1** marked `target unknown`.
 - **8/8 names** were verified free before publish (npm E404, GitHub 0); all are now published under this project.
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md) (historical, 0.1.x); contract fixes tracked in `CONTRACT-FIX.md`.

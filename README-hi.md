@@ -74,7 +74,7 @@
 - **Release provenance**: प्रकाशित GitHub releases के साथ npm attestations से बना `.intoto.jsonl` asset आता है (`v0.2.4`+ के लिए मैनुअल, आगे के लिए `.github/workflows/release-provenance.yml` द्वारा स्वचालित)।
 - **Release auth**: npm Trusted Publishing (OIDC), `v0.2.5` release से सत्यापित; पुराना `NPM_TOKEN` secret हटा दिया गया है। चरण/इतिहास: [`docs/trusted-publishing.md`](docs/trusted-publishing.md)।
 - **Coverage gate**: lines 85% / functions 80% / branches 70% (`npm run test:coverage`)।
-- **19 `src/*.js` फ़ाइलें** `node --check` पास करती हैं।
+- **20 `src/*.js` फ़ाइलें** `node --check` पास करती हैं।
 - **डेटा**: स्थानीय HCB seed में **36 पंक्तियाँ** हैं (6 पैकेज × तीन versions: 0.1.x युग के दो seed versions + एक `0.2.4` snapshot, Node `22.19.0`/`24.22.1` पर; Node 22 की पंक्तियाँ `host_supported=false` हैं और उनकी install/dump `unsupported` है) और यह DOI डेटासेट नहीं है (असली: [`dsh-hcb`](https://github.com/PerryLink/dsh-hcb)); upgrade atlas में **50 entries** हैं, **49** के पास ठोस `to` release है और **1** `target unknown` चिह्नित है।
 - **8/8 नाम** प्रकाशन से पहले मुक्त सत्यापित किए गए (npm E404, GitHub 0); अब सभी आठ इस परियोजना के अंतर्गत प्रकाशित हैं।
 - **Pre-release audit**: [`AUDIT.md`](AUDIT.md) (ऐतिहासिक, 0.1.x); contract सुधार `CONTRACT-FIX.md` में दर्ज हैं।
